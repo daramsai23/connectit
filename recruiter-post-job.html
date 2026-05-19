@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ConnectIT — Post a Job</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f8f8f8;color:#111;display:flex;min-height:100vh}
+.sidebar{width:240px;flex-shrink:0;background:#111;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100}
+.sidebar-logo{padding:24px 24px 20px;border-bottom:1px solid #222}
+.logo{font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.5px;text-decoration:none;display:block}
+.logo span{color:#555}
+.company-tag{font-size:11px;color:#555;margin-top:3px}
+.sidebar-nav{flex:1;padding:16px 12px}
+.nav-section{font-size:10px;font-weight:700;letter-spacing:2px;color:#444;padding:0 12px;margin:16px 0 6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:6px;font-size:13px;font-weight:500;color:#666;cursor:pointer;transition:all .2s;text-decoration:none}
+.nav-item:hover{background:#1a1a1a;color:#fff}
+.nav-item.active{background:#fff;color:#111}
+.nav-item svg{width:15px;height:15px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sidebar-bottom{padding:16px 12px;border-top:1px solid #222}
+.user-row{display:flex;align-items:center;gap:10px;padding:10px 12px}
+.user-av{width:32px;height:32px;border-radius:50%;background:#2563eb;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff}
+.user-name{font-size:13px;font-weight:600;color:#fff}
+.user-role{font-size:11px;color:#555}
+.main{margin-left:240px;flex:1}
+.topbar{background:#fff;border-bottom:1px solid #e5e5e5;padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.page-title{font-size:16px;font-weight:800;color:#111}
+.topbar-actions{display:flex;gap:10px}
+.btn-ghost{background:#fff;color:#111;border:1.5px solid #ddd;padding:7px 16px;border-radius:6px;font-size:13px;cursor:pointer;font-weight:500;font-family:system-ui,-apple-system,sans-serif;transition:.2s}
+.btn-ghost:hover{border-color:#111}
+.btn-solid{background:#111;color:#fff;border:none;padding:8px 18px;border-radius:6px;font-size:13px;cursor:pointer;font-weight:600;font-family:system-ui,-apple-system,sans-serif}
+.btn-solid:hover{background:#333}
+.content{padding:28px 32px}
+.form-wrap{max-width:680px}
+.card{background:#fff;border:1.5px solid #e5e5e5;border-radius:10px;padding:24px;margin-bottom:16px}
+.section-label{font-size:11px;font-weight:700;letter-spacing:2px;color:#aaa;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #f0f0f0}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field.last{margin-bottom:0}
+label{font-size:12px;font-weight:600;color:#555}
+label .req{color:#e55;margin-left:2px}
+input,select,textarea{width:100%;border:1.5px solid #e5e5e5;border-radius:8px;padding:10px 13px;font-size:13px;color:#111;font-family:system-ui,-apple-system,sans-serif;outline:none;transition:.2s;appearance:none;background:#fff}
+input:focus,select:focus,textarea:focus{border-color:#111}
+input::placeholder,textarea::placeholder{color:#bbb}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+textarea{resize:none;min-height:100px;line-height:1.6}
+.hint{font-size:11px;color:#aaa;margin-top:4px}
+/* Skills tags */
+.skills-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.skill-tag{background:#f5f5f5;border:1.5px solid #e5e5e5;border-radius:6px;padding:5px 10px;font-size:12px;font-weight:600;color:#555;display:flex;align-items:center;gap:6px;cursor:pointer}
+.skill-tag svg{width:11px;height:11px;stroke:#aaa;fill:none;stroke-width:2.5;stroke-linecap:round}
+.skill-tag:hover svg{stroke:#e55}
+.add-skill{background:#fff;border:1.5px dashed #ddd;border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600;color:#777;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:system-ui,-apple-system,sans-serif;transition:.2s}
+.add-skill:hover{border-color:#111;color:#111}
+.add-skill svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
+/* Preview card */
+.preview-card{background:#f8f8f8;border:1.5px solid #e5e5e5;border-radius:10px;padding:20px;margin-bottom:16px}
+.preview-label{font-size:11px;font-weight:700;letter-spacing:2px;color:#aaa;margin-bottom:12px}
+.preview-title{font-size:18px;font-weight:800;color:#111;letter-spacing:-0.5px;margin-bottom:4px}
+.preview-company{font-size:13px;color:#777;margin-bottom:10px}
+.preview-tags{display:flex;gap:8px;flex-wrap:wrap}
+.preview-tag{background:#fff;border:1px solid #e5e5e5;color:#555;font-size:11px;font-weight:600;padding:3px 10px;border-radius:4px}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-logo"><a href="recruiter-dashboard.html" class="logo">Connect<span>IT</span></a><div class="company-tag">Acme Corp · Recruiter</div></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">My work</div>
+    <a href="recruiter-dashboard.html" class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
+    <a href="recruiter-post-job.html" class="nav-item active"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>My job listings</a>
+    <a href="recruiter-applicants.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>My applicants</a>
+  </nav>
+  <div class="sidebar-bottom"><div class="user-row"><div class="user-av">PK</div><div><div class="user-name">Priya Kumar</div><div class="user-role">Recruiter · Acme Corp</div></div></div></div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="page-title">Post a Job</div>
+    <div class="topbar-actions">
+      <button class="btn-ghost">Save as draft</button>
+      <button class="btn-solid" onclick="publishJob(this)">Publish listing →</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="form-wrap">
+
+      <!-- Preview -->
+      <div class="preview-card">
+        <div class="preview-label">LIVE PREVIEW</div>
+        <div class="preview-title" id="previewTitle">Job title will appear here</div>
+        <div class="preview-company">Acme Corp · <span id="previewLocation">Location</span> · <span id="previewType">Job type</span></div>
+        <div class="preview-tags" id="previewTags"></div>
+      </div>
+
+      <!-- Basic info -->
+      <div class="card">
+        <div class="section-label">Basic information</div>
+        <div class="field">
+          <label>Job title <span class="req">*</span></label>
+          <input type="text" placeholder="e.g. Frontend Developer Intern" oninput="document.getElementById('previewTitle').textContent=this.value||'Job title will appear here'"/>
+        </div>
+        <div class="row">
+          <div class="field last">
+            <label>Job type <span class="req">*</span></label>
+            <select onchange="document.getElementById('previewType').textContent=this.value">
+              <option value="" disabled selected>Select type</option>
+              <option>Internship</option>
+              <option>Full-time</option>
+              <option>Part-time</option>
+              <option>Contract</option>
+              <option>Remote</option>
+            </select>
+          </div>
+          <div class="field last">
+            <label>Work mode</label>
+            <select><option>On-site</option><option>Remote</option><option>Hybrid</option></select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field last">
+            <label>Location <span class="req">*</span></label>
+            <input type="text" placeholder="e.g. Mumbai, India" oninput="document.getElementById('previewLocation').textContent=this.value||'Location'"/>
+          </div>
+          <div class="field last">
+            <label>Application deadline</label>
+            <input type="date"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="card">
+        <div class="section-label">Job description</div>
+        <div class="field">
+          <label>Description <span class="req">*</span></label>
+          <textarea rows="5" placeholder="What will the student be doing day-to-day? What's the team like?"></textarea>
+        </div>
+        <div class="field last">
+          <label>Requirements</label>
+          <textarea rows="4" placeholder="What skills, qualifications or experience are you looking for?"></textarea>
+        </div>
+      </div>
+
+      <!-- Skills -->
+      <div class="card">
+        <div class="section-label">Required skills</div>
+        <div class="hint" style="margin-bottom:10px">Students will be matched based on these skills</div>
+        <div class="skills-wrap" id="skillsWrap">
+          <div class="skill-tag">React <svg viewBox="0 0 24 24" onclick="this.parentElement.remove()"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+          <div class="skill-tag">JavaScript <svg viewBox="0 0 24 24" onclick="this.parentElement.remove()"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+          <div class="skill-tag">CSS <svg viewBox="0 0 24 24" onclick="this.parentElement.remove()"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+          <button class="add-skill" onclick="addSkill()"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add skill</button>
+        </div>
+      </div>
+
+      <!-- Compensation -->
+      <div class="card">
+        <div class="section-label">Compensation & details</div>
+        <div class="row">
+          <div class="field last">
+            <label>Stipend / Salary</label>
+            <input type="text" placeholder="e.g. ₹15,000/month or $20/hr"/>
+          </div>
+          <div class="field last">
+            <label>Duration</label>
+            <input type="text" placeholder="e.g. 3 months, 6 months, Full-time"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field last">
+            <label>Openings</label>
+            <input type="number" placeholder="e.g. 3" min="1"/>
+          </div>
+          <div class="field last">
+            <label>Experience level</label>
+            <select><option disabled selected>Select level</option><option>No experience needed</option><option>0–1 year</option><option>1–2 years</option></select>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function addSkill(){
+  const skill=prompt('Enter skill name:')
+  if(!skill) return
+  const wrap=document.getElementById('skillsWrap')
+  const btn=wrap.querySelector('.add-skill')
+  const tag=document.createElement('div')
+  tag.className='skill-tag'
+  tag.innerHTML=skill+' <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#aaa" stroke-width="2.5" stroke-linecap="round" onclick="this.parentElement.remove()"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
+  wrap.insertBefore(tag,btn)
+}
+function publishJob(btn){
+  btn.textContent='Publishing…'
+  btn.style.opacity='.7'
+  btn.disabled=true
+  setTimeout(()=>{
+    btn.textContent='✓ Published!'
+    btn.style.opacity='1'
+    btn.style.background='#16a34a'
+  },1400)
+}
+</script>
+</body>
+</html>

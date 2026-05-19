@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ConnectIT — Recruiter Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f7f6;
+  --surface:#ffffff;
+  --border:#e8e8e5;
+  --ink:#111110;
+  --ink2:#6b6b67;
+  --ink3:#a8a8a4;
+  --accent:#1a6bff;
+  --accent-soft:#eef3ff;
+  --green:#16a34a;
+  --green-soft:#f0fdf4;
+  --amber:#d97706;
+  --amber-soft:#fffbeb;
+  --red:#dc2626;
+  --radius-map:#1a6bff22;
+  --sidebar:#0f0f0e;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);display:flex;min-height:100vh;font-size:14px}
+
+/* ── SIDEBAR ── */
+.sidebar{width:232px;flex-shrink:0;background:var(--sidebar);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;border-right:1px solid #1c1c1b}
+.sidebar-logo{padding:22px 20px 18px;border-bottom:1px solid #1c1c1b}
+.logo{font-size:17px;font-weight:800;color:#fff;letter-spacing:-0.5px;text-decoration:none;display:block}
+.logo span{color:#3d3d3a}
+.company-tag{font-size:11px;color:#3d3d3a;margin-top:3px;font-weight:500}
+.sidebar-nav{flex:1;padding:14px 10px;overflow-y:auto}
+.nav-section{font-size:9px;font-weight:700;letter-spacing:2.5px;color:#333;padding:0 10px;margin:18px 0 6px;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;font-size:13px;font-weight:500;color:#5a5a57;cursor:pointer;transition:all .15s;text-decoration:none}
+.nav-item:hover{background:#1a1a19;color:#ccc}
+.nav-item.active{background:#1a1a19;color:#fff}
+.nav-item svg{width:14px;height:14px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nav-badge{margin-left:auto;background:#dc2626;color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:8px;font-family:'DM Mono',monospace}
+.nav-item.active .nav-badge{background:#fff;color:#dc2626}
+.sidebar-bottom{padding:14px 10px;border-top:1px solid #1c1c1b}
+.user-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:7px;cursor:pointer}
+.user-row:hover{background:#1a1a19}
+.user-av{width:30px;height:30px;border-radius:50%;background:#1a6bff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0}
+.user-name{font-size:12px;font-weight:700;color:#fff;line-height:1.3}
+.user-role{font-size:10px;color:#3d3d3a;font-weight:500}
+
+/* ── MAIN ── */
+.main{margin-left:232px;flex:1;min-width:0}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.page-title{font-size:14px;font-weight:800;color:var(--ink);letter-spacing:-0.3px}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.icon-btn{width:34px;height:34px;border-radius:7px;border:1.5px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
+.icon-btn:hover{background:var(--bg)}
+.icon-btn svg{width:14px;height:14px;stroke:var(--ink2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn-solid{background:var(--ink);color:#fff;border:none;padding:8px 16px;border-radius:7px;font-size:12px;cursor:pointer;font-weight:700;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px;transition:background .15s}
+.btn-solid svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.btn-solid:hover{background:#333}
+.btn-outline{background:var(--surface);color:var(--ink);border:1.5px solid var(--border);padding:7px 14px;border-radius:7px;font-size:12px;cursor:pointer;font-weight:600;font-family:'DM Sans',sans-serif;transition:all .15s}
+.btn-outline:hover{border-color:var(--ink);background:var(--bg)}
+
+.content{padding:24px 28px;display:flex;flex-direction:column;gap:20px}
+
+/* ── WELCOME BANNER ── */
+.welcome{background:var(--ink);border-radius:12px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.welcome-text strong{font-size:15px;font-weight:800;color:#fff;display:block;margin-bottom:3px}
+.welcome-text span{font-size:12px;color:#555;font-weight:500}
+.welcome-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+
+/* ── STATS ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:16px}
+.stat-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.stat-icon{width:30px;height:30px;border-radius:7px;background:var(--bg);display:flex;align-items:center;justify-content:center}
+.stat-icon svg{width:13px;height:13px;stroke:var(--ink2);fill:none;stroke-width:2;stroke-linecap:round}
+.stat-num{font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-1px;margin-bottom:2px}
+.stat-label{font-size:11px;color:var(--ink3);font-weight:500}
+.stat-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px}
+.badge-green{color:var(--green);background:var(--green-soft);border:1px solid #bbf7d0}
+.badge-amber{color:var(--amber);background:var(--amber-soft);border:1px solid #fde68a}
+.badge-blue{color:var(--accent);background:var(--accent-soft);border:1px solid #c7d7ff}
+
+/* ── 2-COL GRID ── */
+.grid-2{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+
+/* ── CARD ── */
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;overflow:hidden}
+.card-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:13px;font-weight:800;color:var(--ink);letter-spacing:-0.3px;display:flex;align-items:center;gap:7px}
+.card-link{font-size:11px;color:var(--ink3);font-weight:600;cursor:pointer;text-decoration:none;transition:color .15s}
+.card-link:hover{color:var(--ink)}
+
+.job-item{padding:12px 18px;border-bottom:1px solid #f5f5f4;display:flex;align-items:center;gap:11px}
+.job-item:last-child{border-bottom:none}
+.job-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.job-dot.live{background:#4ade80}
+.job-dot.draft{background:#ddd}
+.job-info{flex:1;min-width:0}
+.job-title{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.job-meta{font-size:10px;color:var(--ink3);display:flex;align-items:center;gap:4px}
+.live-dot{width:5px;height:5px;border-radius:50%;background:#4ade80;display:inline-block;animation:blink 2s infinite}
+.job-apps{font-size:12px;font-weight:800;color:var(--ink);white-space:nowrap}
+.job-apps span{font-size:10px;color:var(--ink3);font-weight:400}
+
+.app-item{padding:11px 18px;border-bottom:1px solid #f5f5f4;display:flex;align-items:center;gap:10px}
+.app-item:last-child{border-bottom:none}
+.app-av{width:28px;height:28px;border-radius:50%;background:#f0f0ed;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:var(--ink2);flex-shrink:0}
+.app-info{flex:1}
+.app-name{font-size:12px;font-weight:700;color:var(--ink)}
+.app-role{font-size:10px;color:var(--ink3)}
+.pill{padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700}
+.pill-new{background:var(--accent-soft);color:var(--accent);border:1px solid #c7d7ff}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   NEARBY STUDENT SEARCH — new section
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.nearby-section{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;overflow:hidden}
+.nearby-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.nearby-title{font-size:13px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:8px}
+.pin-icon{width:28px;height:28px;border-radius:7px;background:#fff3f3;display:flex;align-items:center;justify-content:center}
+.pin-icon svg{width:13px;height:13px;stroke:#dc2626;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nearby-subtitle{font-size:11px;color:var(--ink3);font-weight:500;margin-top:1px}
+
+.search-bar{padding:14px 20px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1.8fr 1fr auto;align-items:end;gap:12px;background:#fafaf9}
+.field-wrap{display:flex;flex-direction:column;gap:5px}
+.field-label{font-size:10px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:1px}
+.field-select,.field-input{background:var(--surface);border:1.5px solid var(--border);border-radius:7px;padding:8px 12px;font-size:12px;font-family:'DM Sans',sans-serif;color:var(--ink);outline:none;transition:border-color .15s;width:100%;cursor:pointer}
+.field-select:focus,.field-input:focus{border-color:var(--accent)}
+.radius-wrap{display:flex;flex-direction:column;gap:5px}
+.radius-header{display:flex;justify-content:space-between;align-items:center}
+.radius-val{font-size:11px;font-weight:800;color:var(--accent);font-family:'DM Mono',monospace}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:4px;background:linear-gradient(to right, var(--accent) var(--pct,40%), var(--border) var(--pct,40%));outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.search-btn{background:var(--accent);color:#fff;border:none;padding:9px 18px;border-radius:7px;font-size:12px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap;transition:background .15s;height:36px}
+.search-btn:hover{background:#1557d6}
+.search-btn svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* MAP VISUAL */
+.map-strip{position:relative;height:180px;background:linear-gradient(135deg,#e8f0fe 0%,#dbeafe 50%,#ede9fe 100%);border-bottom:1px solid var(--border);overflow:hidden;display:flex;align-items:center;justify-content:center}
+.map-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(26,107,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(26,107,255,.06) 1px,transparent 1px);background-size:28px 28px}
+.map-center{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:0}
+.map-pulse{width:60px;height:60px;position:relative;display:flex;align-items:center;justify-content:center}
+.map-pulse::before,.map-pulse::after{content:'';position:absolute;border-radius:50%;background:rgba(26,107,255,.12);animation:pulse-ring 2.4s ease-out infinite}
+.map-pulse::before{width:60px;height:60px;animation-delay:0s}
+.map-pulse::after{width:90px;height:90px;animation-delay:.6s}
+.map-pin-center{width:28px;height:28px;background:var(--accent);border-radius:50% 50% 50% 0;transform:rotate(-45deg);position:relative;z-index:1;border:3px solid #fff;box-shadow:0 3px 10px rgba(26,107,255,.4)}
+.map-label{font-size:11px;font-weight:700;color:var(--accent);background:rgba(255,255,255,.9);padding:3px 9px;border-radius:10px;border:1px solid rgba(26,107,255,.2);margin-top:6px;font-family:'DM Mono',monospace;white-space:nowrap}
+
+/* student dots on map */
+.s-dot{position:absolute;z-index:3;cursor:pointer}
+.s-dot-inner{width:22px;height:22px;border-radius:50%;border:2.5px solid #fff;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:transform .2s}
+.s-dot:hover .s-dot-inner{transform:scale(1.3)}
+.s-dot-tooltip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:10px;font-weight:600;padding:4px 8px;border-radius:5px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s}
+.s-dot-tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:4px solid transparent;border-top-color:var(--ink)}
+.s-dot:hover .s-dot-tooltip{opacity:1}
+.radius-circle{position:absolute;border-radius:50%;border:1.5px dashed rgba(26,107,255,.35);background:rgba(26,107,255,.04);pointer-events:none;z-index:1;left:50%;top:50%;transform:translate(-50%,-50%)}
+
+/* RESULTS TABLE */
+.results-area{padding:0}
+.results-toolbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border)}
+.results-count{font-size:12px;font-weight:700;color:var(--ink)}
+.results-count span{color:var(--ink3);font-weight:500}
+.filter-chips{display:flex;gap:6px}
+.chip{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;transition:all .15s;color:var(--ink2)}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.chip.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+
+.stu-table{width:100%}
+.stu-header{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr 100px;padding:8px 20px;background:#fafaf9;border-bottom:1px solid var(--border)}
+.stu-col{font-size:9px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:1.2px}
+.stu-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr 100px;padding:11px 20px;border-bottom:1px solid #f5f5f4;align-items:center;transition:background .12s;cursor:pointer}
+.stu-row:last-child{border-bottom:none}
+.stu-row:hover{background:#fafaf9}
+.stu-name-cell{display:flex;align-items:center;gap:10px}
+.stu-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;flex-shrink:0}
+.stu-name{font-size:12px;font-weight:700;color:var(--ink)}
+.stu-school{font-size:10px;color:var(--ink3)}
+.stu-cell{font-size:12px;color:var(--ink2);font-weight:500}
+.dist-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:800;font-family:'DM Mono',monospace;white-space:nowrap}
+.dist-near{background:#f0fdf4;color:var(--green);border:1px solid #bbf7d0}
+.dist-mid{background:var(--accent-soft);color:var(--accent);border:1px solid #c7d7ff}
+.dist-far{background:var(--amber-soft);color:var(--amber);border:1px solid #fde68a}
+.tech-tags{display:flex;flex-wrap:wrap;gap:3px}
+.tech-tag{background:#f3f3f2;border:1px solid #e5e5e3;border-radius:4px;padding:1px 6px;font-size:9px;font-weight:700;color:var(--ink2);font-family:'DM Mono',monospace}
+.wa-badge{padding:2px 7px;border-radius:5px;font-size:9px;font-weight:700}
+.wa-gc{background:#f0fdf4;color:var(--green);border:1px solid #bbf7d0}
+.wa-h1{background:var(--accent-soft);color:var(--accent);border:1px solid #c7d7ff}
+.wa-opt{background:var(--amber-soft);color:var(--amber);border:1px solid #fde68a}
+.action-btn{padding:5px 12px;border-radius:6px;font-size:11px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.ab-reach{background:var(--ink);color:#fff}
+.ab-reach:hover{background:#333}
+
+.no-results{padding:40px 20px;text-align:center;color:var(--ink3)}
+.no-results-icon{font-size:28px;margin-bottom:8px}
+.no-results-text{font-size:13px;font-weight:600;color:var(--ink2);margin-bottom:4px}
+.no-results-sub{font-size:11px;color:var(--ink3)}
+
+/* ── FILTER BAR ── */
+.filter-bar{border-bottom:1px solid var(--border);background:#fafaf9}
+.filter-bar-top{padding:12px 20px;display:flex;flex-direction:column;gap:10px}
+.filter-bar-label{font-size:10px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:1.5px;display:flex;align-items:center;gap:5px;margin-bottom:2px}
+.filter-bar-label svg{stroke:var(--ink2)}
+.filter-dropdowns{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+/* Dropdown wrapper */
+.dd-wrap{position:relative}
+.dd-btn{background:var(--surface);border:1.5px solid var(--border);border-radius:7px;padding:6px 11px;font-size:11px;font-weight:600;font-family:'DM Sans',sans-serif;color:var(--ink2);cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap;transition:all .15s;min-width:110px;justify-content:space-between}
+.dd-btn:hover,.dd-btn.open{border-color:var(--accent);color:var(--ink);background:var(--accent-soft)}
+.dd-btn.has-value{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);font-weight:700}
+.dd-caret{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;transition:transform .2s;flex-shrink:0}
+.dd-btn.open .dd-caret{transform:rotate(180deg)}
+.dd-panel{position:absolute;top:calc(100% + 6px);left:0;background:var(--surface);border:1.5px solid var(--border);border-radius:9px;padding:8px 0;min-width:200px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,.1);display:none;max-height:320px;overflow-y:auto}
+.dd-panel.show{display:block;animation:fadeSlide .15s both}
+.dd-panel-wide{min-width:240px}
+.dd-opt{display:flex;align-items:center;gap:8px;padding:6px 14px;font-size:12px;color:var(--ink2);cursor:pointer;transition:background .1s;font-weight:500}
+.dd-opt:hover{background:var(--bg);color:var(--ink)}
+.dd-opt input[type=checkbox],.dd-opt input[type=radio]{width:13px;height:13px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
+.dd-divider{height:1px;background:var(--border);margin:4px 0}
+.dd-group-label{font-size:9px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:1.5px;padding:6px 14px 3px}
+.dd-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dd-dot-green{background:#16a34a}
+.dd-dot-blue{background:#0ea5e9}
+/* Active filter tags */
+.filter-tags-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-height:24px}
+.active-tags{display:flex;flex-wrap:wrap;gap:5px}
+.ftag{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;background:var(--accent-soft);color:var(--accent);border:1px solid #c7d7ff;cursor:default}
+.ftag-x{cursor:pointer;opacity:.6;font-size:12px;line-height:1;transition:opacity .1s}
+.ftag-x:hover{opacity:1}
+.clear-all-btn{background:none;border:1.5px solid #fca5a5;color:#dc2626;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;gap:4px;transition:all .15s}
+.clear-all-btn:hover{background:#fef2f2}
+/* Designation mega-panel */
+.dd-panel-desig{min-width:300px;max-height:420px;display:none;flex-direction:column;padding:0}
+.dd-panel-desig.show{display:flex}
+.desig-header{flex-shrink:0;border-bottom:1px solid var(--border);padding-bottom:4px;background:var(--surface);position:sticky;top:0;z-index:2}
+.desig-search-wrap{display:flex;align-items:center;gap:7px;padding:6px 12px 8px;position:relative}
+.desig-search-icon{width:12px;height:12px;stroke:var(--ink3);fill:none;stroke-width:2;stroke-linecap:round;position:absolute;left:20px;pointer-events:none}
+.desig-search{width:100%;border:1.5px solid var(--border);border-radius:6px;padding:6px 10px 6px 28px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;color:var(--ink);background:var(--bg);transition:border-color .15s}
+.desig-search:focus{border-color:var(--accent);background:#fff}
+.desig-list{flex:1;overflow-y:auto;padding:4px 0 8px}
+.desig-no-results{padding:16px;text-align:center;font-size:12px;color:var(--ink3);font-weight:500}
+.dd-opt.hidden{display:none}
+.status-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:800;white-space:nowrap}
+.status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+/* Actively looking — vivid green, pulsing */
+.status-looking{background:#f0fdf4;color:#15803d;border:1px solid #86efac}
+.status-looking .status-dot{background:#16a34a;animation:pulse-dot 1.6s ease-in-out infinite}
+/* Open / available — soft teal, static */
+.status-open{background:#f0f9ff;color:#0369a1;border:1px solid #bae6fd}
+.status-open .status-dot{background:#0ea5e9}
+/* Legend bar */
+.status-legend{display:flex;align-items:center;gap:14px;padding:10px 20px;background:#fafaf9;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--ink2);font-weight:600}
+.legend-dot{width:8px;height:8px;border-radius:50%}
+.legend-dot.looking{background:#16a34a;animation:pulse-dot 1.6s ease-in-out infinite}
+.legend-dot.open{background:#0ea5e9}
+.legend-sep{width:1px;height:14px;background:var(--border)}
+.legend-counts{margin-left:auto;display:flex;gap:10px}
+.lcount{font-size:11px;font-weight:700}
+.lcount-looking{color:#15803d}
+.lcount-open{color:#0369a1}
+/* Map dot ring for actively-looking */
+.s-dot-ring{position:absolute;inset:-5px;border-radius:50%;border:2px solid rgba(22,163,74,.5);animation:map-pulse-ring 1.8s ease-out infinite;pointer-events:none}
+/* Status filter chips group */
+.chip-group-sep{width:1px;height:18px;background:var(--border);margin:0 2px}
+
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.4)}}
+@keyframes map-pulse-ring{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.2);opacity:0}}
+@keyframes pulse-ring{0%{transform:translate(-50%,-50%) scale(.6);opacity:.8}100%{transform:translate(-50%,-50%) scale(2.2);opacity:0}}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.stu-row{animation:fadeSlide .2s both}
+/* Dim rows for "open" students slightly so "looking" pop */
+.stu-row.row-open{background:#fafcff}
+.stu-row.row-open:hover{background:#f0f9ff}
+</style>
+</head>
+<body>
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <a href="#" class="logo">Connect<span>IT</span></a>
+    <div class="company-tag">Acme Corp · Recruiter</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">My work</div>
+    <a href="#" class="nav-item active">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </a>
+    <a href="recruiter-post-job.html" class="nav-item">
+      <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      My job listings
+    </a>
+    <a href="recruiter-applicants.html" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      My applicants<span class="nav-badge">12</span>
+    </a>
+    <div class="nav-section">Discover</div>
+    <a href="#nearby" class="nav-item" id="nearby-nav" onclick="scrollNearby()">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+      Nearby Students
+    </a>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="user-row">
+      <div class="user-av">PK</div>
+      <div>
+        <div class="user-name">Priya Kumar</div>
+        <div class="user-role">Recruiter · Acme Corp</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<div class="main">
+  <div class="topbar">
+    <div class="page-title">My Dashboard</div>
+    <div class="topbar-right">
+      <div class="icon-btn">
+        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </div>
+      <a href="recruiter-post-job.html"><button class="btn-solid"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Post a job</button></a>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- Welcome Banner -->
+    <div class="welcome">
+      <div class="welcome-text">
+        <strong>Welcome back, Priya 👋</strong>
+        <span>You have 12 new applicants to review across your active listings</span>
+      </div>
+      <div class="welcome-actions">
+        <a href="recruiter-post-job.html"><button class="btn-solid" style="background:#fff;color:#111"><svg viewBox="0 0 24 24" style="stroke:#111"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Post new job</button></a>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+          <span class="stat-badge badge-green">2 live</span>
+        </div>
+        <div class="stat-num">3</div><div class="stat-label">My job listings</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+          <span class="stat-badge badge-blue">+12 new</span>
+        </div>
+        <div class="stat-num">42</div><div class="stat-label">Total applicants</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <span class="stat-badge badge-green">This week</span>
+        </div>
+        <div class="stat-num">4</div><div class="stat-label">Shortlisted</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <span class="stat-badge badge-amber">Pending</span>
+        </div>
+        <div class="stat-num">12</div><div class="stat-label">Awaiting review</div>
+      </div>
+    </div>
+
+    <!-- Jobs + Recent Applicants -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">My job listings</div>
+          <a href="recruiter-post-job.html" class="card-link">View all →</a>
+        </div>
+        <div class="job-item">
+          <div class="job-dot live"></div>
+          <div class="job-info">
+            <div class="job-title">Frontend Developer Intern</div>
+            <div class="job-meta"><span class="live-dot"></span>Live · Jersey City, NJ · Posted 2 days ago</div>
+          </div>
+          <div class="job-apps">24 <span>apps</span></div>
+        </div>
+        <div class="job-item">
+          <div class="job-dot live"></div>
+          <div class="job-info">
+            <div class="job-title">React Native Developer</div>
+            <div class="job-meta"><span class="live-dot"></span>Live · New York, NY · Posted 5 days ago</div>
+          </div>
+          <div class="job-apps">18 <span>apps</span></div>
+        </div>
+        <div class="job-item">
+          <div class="job-dot draft"></div>
+          <div class="job-info">
+            <div class="job-title">DevOps Intern</div>
+            <div class="job-meta">Draft · Not published yet</div>
+          </div>
+          <div class="job-apps" style="color:var(--ink3)">Draft</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">Recent applicants</div>
+          <a href="recruiter-applicants.html" class="card-link">View all →</a>
+        </div>
+        <div class="app-item"><div class="app-av" style="background:#7c3aed">AK</div><div class="app-info"><div class="app-name">Aditya Kapoor</div><div class="app-role">Frontend Developer Intern</div></div><div><span class="pill pill-new">New</span></div></div>
+        <div class="app-item"><div class="app-av" style="background:#059669">NK</div><div class="app-info"><div class="app-name">Neha Kulkarni</div><div class="app-role">Frontend Developer Intern</div></div><div><span class="pill pill-new">New</span></div></div>
+        <div class="app-item"><div class="app-av" style="background:#dc2626">VR</div><div class="app-info"><div class="app-name">Vikram Rao</div><div class="app-role">React Native Developer</div></div><div><span class="pill pill-new">New</span></div></div>
+        <div class="app-item"><div class="app-av" style="background:#d97706">AS</div><div class="app-info"><div class="app-name">Anjali Singh</div><div class="app-role">React Native Developer</div></div><div><span class="pill pill-new">New</span></div></div>
+      </div>
+    </div>
+
+    <!-- ━━━━━━━━━━━ NEARBY STUDENT SEARCH ━━━━━━━━━━━ -->
+    <div class="nearby-section" id="nearby">
+      <div class="nearby-head">
+        <div>
+          <div class="nearby-title">
+            <div class="pin-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+            </div>
+            Find Students Near Job Location
+          </div>
+          <div class="nearby-subtitle" style="margin-top:4px;padding-left:36px">Search students by proximity to any of your job postings</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span id="live-count" class="stat-badge badge-green" style="font-size:11px">8 students found</span>
+        </div>
+      </div>
+
+      <!-- Search Controls -->
+      <div class="search-bar">
+        <div class="field-wrap">
+          <label class="field-label">Job posting location</label>
+          <select class="field-select" id="job-select" onchange="runSearch()">
+            <option value="jc">Frontend Developer Intern — Jersey City, NJ</option>
+            <option value="ny">React Native Developer — New York, NY</option>
+          </select>
+        </div>
+        <div class="radius-wrap">
+          <div class="radius-header">
+            <label class="field-label">Radius</label>
+            <span class="radius-val" id="radius-label">25 miles</span>
+          </div>
+          <input type="range" id="radius-slider" min="5" max="75" step="5" value="25"
+            oninput="updateRadius(this.value)" onchange="runSearch()"/>
+        </div>
+        <button class="search-btn" onclick="runSearch()">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Search
+        </button>
+      </div>
+
+      <!-- Map Visual -->
+      <div class="map-strip" id="map-strip">
+        <div class="map-grid"></div>
+        <!-- radius circle rendered by JS -->
+        <div class="radius-circle" id="radius-ring"></div>
+        <!-- center pin -->
+        <div class="map-center" style="z-index:5;display:flex;flex-direction:column;align-items:center">
+          <div class="map-pulse">
+            <div class="map-pin-center"></div>
+          </div>
+          <div class="map-label" id="map-label">Jersey City, NJ</div>
+        </div>
+        <!-- student dots injected by JS -->
+        <div id="map-dots"></div>
+      </div>
+
+      <!-- Results area -->
+      <div class="results-area">
+
+        <!-- ── DROPDOWN FILTER BAR ── -->
+        <div class="filter-bar">
+          <div class="filter-bar-top">
+            <span class="filter-bar-label">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+              Filters
+            </span>
+            <div class="filter-dropdowns">
+
+              <!-- Status -->
+              <div class="dd-wrap">
+                <button class="dd-btn" id="dd-status-btn" onclick="toggleDD('status')">
+                  <span id="dd-status-label">Job Status</span>
+                  <svg class="dd-caret" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="dd-panel" id="dd-status">
+                  <label class="dd-opt"><input type="radio" name="status" value="all-status" checked onchange="applyFilters()"> All statuses</label>
+                  <label class="dd-opt status-looking-opt"><input type="radio" name="status" value="looking" onchange="applyFilters()"> <span class="dd-dot dd-dot-green"></span>Actively looking</label>
+                  <label class="dd-opt status-open-opt"><input type="radio" name="status" value="open" onchange="applyFilters()"> <span class="dd-dot dd-dot-blue"></span>Open to offers</label>
+                </div>
+              </div>
+
+              <!-- Visa / Work Auth -->
+              <div class="dd-wrap">
+                <button class="dd-btn" id="dd-visa-btn" onclick="toggleDD('visa')">
+                  <span id="dd-visa-label">Visa Type</span>
+                  <svg class="dd-caret" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="dd-panel" id="dd-visa">
+                  <label class="dd-opt"><input type="checkbox" value="all"  onchange="ddAllToggle(this,'visa')" checked> All visa types</label>
+                  <div class="dd-divider"></div>
+                  <label class="dd-opt"><input type="checkbox" name="visa" value="gc"    onchange="applyFilters()"> 🟢 GC / Green Card</label>
+                  <label class="dd-opt"><input type="checkbox" name="visa" value="citizen" onchange="applyFilters()"> 🇺🇸 US Citizen</label>
+                  <label class="dd-opt"><input type="checkbox" name="visa" value="h1b"  onchange="applyFilters()"> H1B</label>
+                  <label class="dd-opt"><input type="checkbox" name="visa" value="opt"  onchange="applyFilters()"> OPT</label>
+                  <label class="dd-opt"><input type="checkbox" name="visa" value="cpt"  onchange="applyFilters()"> CPT</label>
+                  <label class="dd-opt"><input type="checkbox" name="visa" value="l1"   onchange="applyFilters()"> L1</label>
+                  <label class="dd-opt"><input type="checkbox" name="visa" value="tn"   onchange="applyFilters()"> TN Visa</label>
+                  <label class="dd-opt"><input type="checkbox" name="visa" value="e3"   onchange="applyFilters()"> E3</label>
+                </div>
+              </div>
+
+              <!-- Contract Type -->
+              <div class="dd-wrap">
+                <button class="dd-btn" id="dd-contract-btn" onclick="toggleDD('contract')">
+                  <span id="dd-contract-label">Contract Type</span>
+                  <svg class="dd-caret" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="dd-panel" id="dd-contract">
+                  <label class="dd-opt"><input type="checkbox" value="all" onchange="ddAllToggle(this,'contract')" checked> All types</label>
+                  <div class="dd-divider"></div>
+                  <label class="dd-opt"><input type="checkbox" name="contract" value="W2"   onchange="applyFilters()"> W2 — Employee</label>
+                  <label class="dd-opt"><input type="checkbox" name="contract" value="1099" onchange="applyFilters()"> 1099 — Independent</label>
+                  <label class="dd-opt"><input type="checkbox" name="contract" value="C2C"  onchange="applyFilters()"> C2C — Corp to Corp</label>
+                  <label class="dd-opt"><input type="checkbox" name="contract" value="FT"   onchange="applyFilters()"> FT — Full Time</label>
+                </div>
+              </div>
+
+              <!-- Tech Stack -->
+              <div class="dd-wrap">
+                <button class="dd-btn" id="dd-tech-btn" onclick="toggleDD('tech')">
+                  <span id="dd-tech-label">Tech Stack</span>
+                  <svg class="dd-caret" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="dd-panel dd-panel-wide" id="dd-tech">
+                  <label class="dd-opt"><input type="checkbox" value="all" onchange="ddAllToggle(this,'tech')" checked> All technologies</label>
+                  <div class="dd-divider"></div>
+                  <div class="dd-group-label">Frontend</div>
+                  <label class="dd-opt"><input type="checkbox" name="tech" value="React"       onchange="applyFilters()"> React</label>
+                  <label class="dd-opt"><input type="checkbox" name="tech" value="React Native" onchange="applyFilters()"> React Native</label>
+                  <label class="dd-opt"><input type="checkbox" name="tech" value="Angular"     onchange="applyFilters()"> Angular</label>
+                  <label class="dd-opt"><input type="checkbox" name="tech" value="Vue"         onchange="applyFilters()"> Vue.js</label>
+                  <label class="dd-opt"><input type="checkbox" name="tech" value="Flutter"     onchange="applyFilters()"> Flutter</label>
+                  <label class="dd-opt"><input type="checkbox" name="tech" value="TypeScript"  onchange="applyFilters()"> TypeScript</label>
+                  <div class="dd-group-label">Backend</div>
+                  <label class="dd-opt"><input type="checkbox" name="tech" value="Java"        onchange="applyFilters()"> Java</label>
+                  <label class="dd-opt"><input type="checkbox" name="tech" value="Spring"      onchange="applyFilters()"> Spring Boot</label>
+                  <label class="dd-opt"><input type="checkbox" name="tech" value="Node.js"     onchange="applyFilters()"> Node.js</label>
+                  <label class="dd-opt"><input type="checkbox" name="tech" value="Python"      onchange="applyFilters()"> Python</label>
+                  <label class="dd-opt"><input type="checkbox" name="tech" value="Django"      onchange="applyFilters()"> Django</label>
+                  <label class="dd-opt"><input type="checkbox" name="tech" value="Go"          onchange="applyFilters()"> Go / Golang</label>
+                  <div class="dd-group-label">Cloud & DevOps</div>
+                  <label class="dd-opt"><input type="checkbox" name="tech" value="AWS"         onchange="applyFilters()"> AWS</label>
+                  <label class="dd-opt"><input type="checkbox" name="tech" value="Docker"      onchange="applyFilters()"> Docker</label>
+                  <label class="dd-opt"><input type="checkbox" name="tech" value="Firebase"    onchange="applyFilters()"> Firebase</label>
+                  <label class="dd-opt"><input type="checkbox" name="tech" value="Dart"        onchange="applyFilters()"> Dart</label>
+                </div>
+              </div>
+
+              <!-- Job Designation -->
+              <div class="dd-wrap">
+                <button class="dd-btn" id="dd-desig-btn" onclick="toggleDD('desig')" style="min-width:130px">
+                  <span id="dd-desig-label">Designation</span>
+                  <svg class="dd-caret" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="dd-panel dd-panel-desig" id="dd-desig">
+                  <!-- sticky header: all + search -->
+                  <div class="desig-header">
+                    <label class="dd-opt" style="padding:6px 12px 4px"><input type="checkbox" value="all" id="desig-all-cb" onchange="ddAllToggle(this,'desig')" checked> All designations</label>
+                    <div class="desig-search-wrap">
+                      <svg viewBox="0 0 24 24" class="desig-search-icon"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="15.65" y2="15.65"/></svg>
+                      <input type="text" id="desig-search" class="desig-search" placeholder="Search job titles…" oninput="filterDesigList(this.value)">
+                    </div>
+                  </div>
+                  <div id="desig-list" class="desig-list">
+                    <!-- Software Engineering -->
+                    <div class="dd-group-label" data-group>Software Engineering</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Software Engineer" onchange="applyFilters()"> Software Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Senior Software Engineer" onchange="applyFilters()"> Senior Software Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Staff Software Engineer" onchange="applyFilters()"> Staff Software Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Principal Software Engineer" onchange="applyFilters()"> Principal Software Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Lead Software Engineer" onchange="applyFilters()"> Lead Software Engineer</label>
+                    <!-- Frontend -->
+                    <div class="dd-group-label" data-group>Frontend Development</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Frontend Developer" onchange="applyFilters()"> Frontend Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Senior Frontend Developer" onchange="applyFilters()"> Senior Frontend Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="UI Developer" onchange="applyFilters()"> UI Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="UI Engineer" onchange="applyFilters()"> UI Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="React Developer" onchange="applyFilters()"> React Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Angular Developer" onchange="applyFilters()"> Angular Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Vue.js Developer" onchange="applyFilters()"> Vue.js Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Next.js Developer" onchange="applyFilters()"> Next.js Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Web Developer" onchange="applyFilters()"> Web Developer</label>
+                    <!-- Backend -->
+                    <div class="dd-group-label" data-group>Backend Development</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Backend Developer" onchange="applyFilters()"> Backend Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Senior Backend Developer" onchange="applyFilters()"> Senior Backend Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Java Developer" onchange="applyFilters()"> Java Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Spring Boot Developer" onchange="applyFilters()"> Spring Boot Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Python Developer" onchange="applyFilters()"> Python Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Node.js Developer" onchange="applyFilters()"> Node.js Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value=".NET Developer" onchange="applyFilters()"> .NET Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Go Developer" onchange="applyFilters()"> Go / Golang Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Ruby on Rails Developer" onchange="applyFilters()"> Ruby on Rails Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="PHP Developer" onchange="applyFilters()"> PHP Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Scala Developer" onchange="applyFilters()"> Scala Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Rust Developer" onchange="applyFilters()"> Rust Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="C++ Developer" onchange="applyFilters()"> C++ Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="C# Developer" onchange="applyFilters()"> C# Developer</label>
+                    <!-- Full Stack -->
+                    <div class="dd-group-label" data-group>Full Stack</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Full Stack Developer" onchange="applyFilters()"> Full Stack Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Senior Full Stack Developer" onchange="applyFilters()"> Senior Full Stack Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="MERN Stack Developer" onchange="applyFilters()"> MERN Stack Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="MEAN Stack Developer" onchange="applyFilters()"> MEAN Stack Developer</label>
+                    <!-- Mobile -->
+                    <div class="dd-group-label" data-group>Mobile Development</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Mobile Developer" onchange="applyFilters()"> Mobile Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="iOS Developer" onchange="applyFilters()"> iOS Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Android Developer" onchange="applyFilters()"> Android Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="React Native Developer" onchange="applyFilters()"> React Native Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Flutter Developer" onchange="applyFilters()"> Flutter Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Swift Developer" onchange="applyFilters()"> Swift Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Kotlin Developer" onchange="applyFilters()"> Kotlin Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Cross-Platform Developer" onchange="applyFilters()"> Cross-Platform Developer</label>
+                    <!-- DevOps / Cloud -->
+                    <div class="dd-group-label" data-group>DevOps &amp; Cloud</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="DevOps Engineer" onchange="applyFilters()"> DevOps Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Senior DevOps Engineer" onchange="applyFilters()"> Senior DevOps Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Cloud Engineer" onchange="applyFilters()"> Cloud Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Cloud Architect" onchange="applyFilters()"> Cloud Architect</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="AWS Engineer" onchange="applyFilters()"> AWS Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Azure Engineer" onchange="applyFilters()"> Azure Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="GCP Engineer" onchange="applyFilters()"> GCP Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Site Reliability Engineer" onchange="applyFilters()"> Site Reliability Engineer (SRE)</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Platform Engineer" onchange="applyFilters()"> Platform Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Infrastructure Engineer" onchange="applyFilters()"> Infrastructure Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Kubernetes Engineer" onchange="applyFilters()"> Kubernetes Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="CI/CD Engineer" onchange="applyFilters()"> CI/CD Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Systems Engineer" onchange="applyFilters()"> Systems Engineer</label>
+                    <!-- Data & Analytics -->
+                    <div class="dd-group-label" data-group>Data &amp; Analytics</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Data Engineer" onchange="applyFilters()"> Data Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Senior Data Engineer" onchange="applyFilters()"> Senior Data Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Data Analyst" onchange="applyFilters()"> Data Analyst</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Senior Data Analyst" onchange="applyFilters()"> Senior Data Analyst</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Data Scientist" onchange="applyFilters()"> Data Scientist</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Senior Data Scientist" onchange="applyFilters()"> Senior Data Scientist</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Data Architect" onchange="applyFilters()"> Data Architect</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="BI Developer" onchange="applyFilters()"> BI Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="ETL Developer" onchange="applyFilters()"> ETL Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Database Administrator" onchange="applyFilters()"> Database Administrator (DBA)</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="SQL Developer" onchange="applyFilters()"> SQL Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Hadoop Developer" onchange="applyFilters()"> Hadoop Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Spark Developer" onchange="applyFilters()"> Spark Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Data Warehouse Engineer" onchange="applyFilters()"> Data Warehouse Engineer</label>
+                    <!-- AI / ML -->
+                    <div class="dd-group-label" data-group>AI &amp; Machine Learning</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="ML Engineer" onchange="applyFilters()"> ML Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="AI Engineer" onchange="applyFilters()"> AI Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Machine Learning Engineer" onchange="applyFilters()"> Machine Learning Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="NLP Engineer" onchange="applyFilters()"> NLP Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Computer Vision Engineer" onchange="applyFilters()"> Computer Vision Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Deep Learning Engineer" onchange="applyFilters()"> Deep Learning Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="GenAI Engineer" onchange="applyFilters()"> Generative AI Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="MLOps Engineer" onchange="applyFilters()"> MLOps Engineer</label>
+                    <!-- Architecture -->
+                    <div class="dd-group-label" data-group>Architecture</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Solutions Architect" onchange="applyFilters()"> Solutions Architect</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Enterprise Architect" onchange="applyFilters()"> Enterprise Architect</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Technical Architect" onchange="applyFilters()"> Technical Architect</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Software Architect" onchange="applyFilters()"> Software Architect</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Integration Architect" onchange="applyFilters()"> Integration Architect</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Security Architect" onchange="applyFilters()"> Security Architect</label>
+                    <!-- QA / Testing -->
+                    <div class="dd-group-label" data-group>QA &amp; Testing</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="QA Engineer" onchange="applyFilters()"> QA Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="QA Analyst" onchange="applyFilters()"> QA Analyst</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Test Engineer" onchange="applyFilters()"> Test Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Automation Test Engineer" onchange="applyFilters()"> Automation Test Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="SDET" onchange="applyFilters()"> SDET (Software Dev in Test)</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Performance Test Engineer" onchange="applyFilters()"> Performance Test Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Manual Tester" onchange="applyFilters()"> Manual Tester</label>
+                    <!-- Cybersecurity -->
+                    <div class="dd-group-label" data-group>Cybersecurity</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Security Engineer" onchange="applyFilters()"> Security Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Cybersecurity Analyst" onchange="applyFilters()"> Cybersecurity Analyst</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Penetration Tester" onchange="applyFilters()"> Penetration Tester</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="SOC Analyst" onchange="applyFilters()"> SOC Analyst</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Cloud Security Engineer" onchange="applyFilters()"> Cloud Security Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="AppSec Engineer" onchange="applyFilters()"> Application Security Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Information Security Analyst" onchange="applyFilters()"> Information Security Analyst</label>
+                    <!-- Networking / IT Ops -->
+                    <div class="dd-group-label" data-group>Networking &amp; IT Ops</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Network Engineer" onchange="applyFilters()"> Network Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Network Administrator" onchange="applyFilters()"> Network Administrator</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Systems Administrator" onchange="applyFilters()"> Systems Administrator</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Linux Administrator" onchange="applyFilters()"> Linux Administrator</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="IT Support Engineer" onchange="applyFilters()"> IT Support Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Help Desk Technician" onchange="applyFilters()"> Help Desk Technician</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="IT Manager" onchange="applyFilters()"> IT Manager</label>
+                    <!-- Product & Design -->
+                    <div class="dd-group-label" data-group>Product &amp; Design</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Product Manager" onchange="applyFilters()"> Product Manager</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Senior Product Manager" onchange="applyFilters()"> Senior Product Manager</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Technical Product Manager" onchange="applyFilters()"> Technical Product Manager</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Product Owner" onchange="applyFilters()"> Product Owner</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="UX Designer" onchange="applyFilters()"> UX Designer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="UI Designer" onchange="applyFilters()"> UI Designer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="UX/UI Designer" onchange="applyFilters()"> UX/UI Designer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Product Designer" onchange="applyFilters()"> Product Designer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="UX Researcher" onchange="applyFilters()"> UX Researcher</label>
+                    <!-- Project / Delivery -->
+                    <div class="dd-group-label" data-group>Project &amp; Delivery</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Project Manager" onchange="applyFilters()"> Project Manager</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Senior Project Manager" onchange="applyFilters()"> Senior Project Manager</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="IT Project Manager" onchange="applyFilters()"> IT Project Manager</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Program Manager" onchange="applyFilters()"> Program Manager</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Delivery Manager" onchange="applyFilters()"> Delivery Manager</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Scrum Master" onchange="applyFilters()"> Scrum Master</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Agile Coach" onchange="applyFilters()"> Agile Coach</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Release Manager" onchange="applyFilters()"> Release Manager</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="PMO Analyst" onchange="applyFilters()"> PMO Analyst</label>
+                    <!-- Business Analysis -->
+                    <div class="dd-group-label" data-group>Business Analysis</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Business Analyst" onchange="applyFilters()"> Business Analyst</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Senior Business Analyst" onchange="applyFilters()"> Senior Business Analyst</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="IT Business Analyst" onchange="applyFilters()"> IT Business Analyst</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Systems Analyst" onchange="applyFilters()"> Systems Analyst</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Functional Analyst" onchange="applyFilters()"> Functional Analyst</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Technical Business Analyst" onchange="applyFilters()"> Technical Business Analyst</label>
+                    <!-- Salesforce -->
+                    <div class="dd-group-label" data-group>Salesforce</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Salesforce Developer" onchange="applyFilters()"> Salesforce Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Salesforce Administrator" onchange="applyFilters()"> Salesforce Administrator</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Salesforce Consultant" onchange="applyFilters()"> Salesforce Consultant</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Salesforce Architect" onchange="applyFilters()"> Salesforce Architect</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Salesforce BA" onchange="applyFilters()"> Salesforce Business Analyst</label>
+                    <!-- SAP -->
+                    <div class="dd-group-label" data-group>SAP</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="SAP Consultant" onchange="applyFilters()"> SAP Consultant</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="SAP ABAP Developer" onchange="applyFilters()"> SAP ABAP Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="SAP Basis Admin" onchange="applyFilters()"> SAP Basis Administrator</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="SAP SD Consultant" onchange="applyFilters()"> SAP SD Consultant</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="SAP MM Consultant" onchange="applyFilters()"> SAP MM Consultant</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="SAP FICO Consultant" onchange="applyFilters()"> SAP FICO Consultant</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="SAP BI/BW Consultant" onchange="applyFilters()"> SAP BI/BW Consultant</label>
+                    <!-- ERP / CRM -->
+                    <div class="dd-group-label" data-group>ERP &amp; CRM</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Oracle Developer" onchange="applyFilters()"> Oracle Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Oracle DBA" onchange="applyFilters()"> Oracle DBA</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Oracle Consultant" onchange="applyFilters()"> Oracle Consultant</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Dynamics CRM Developer" onchange="applyFilters()"> Dynamics CRM Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="ServiceNow Developer" onchange="applyFilters()"> ServiceNow Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="ServiceNow Admin" onchange="applyFilters()"> ServiceNow Administrator</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Workday Consultant" onchange="applyFilters()"> Workday Consultant</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="PeopleSoft Developer" onchange="applyFilters()"> PeopleSoft Developer</label>
+                    <!-- Blockchain / Web3 -->
+                    <div class="dd-group-label" data-group>Blockchain &amp; Web3</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Blockchain Developer" onchange="applyFilters()"> Blockchain Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Smart Contract Developer" onchange="applyFilters()"> Smart Contract Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Web3 Developer" onchange="applyFilters()"> Web3 Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Solidity Developer" onchange="applyFilters()"> Solidity Developer</label>
+                    <!-- Embedded / Hardware -->
+                    <div class="dd-group-label" data-group>Embedded &amp; Hardware</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Embedded Systems Engineer" onchange="applyFilters()"> Embedded Systems Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Firmware Engineer" onchange="applyFilters()"> Firmware Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Hardware Engineer" onchange="applyFilters()"> Hardware Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="FPGA Engineer" onchange="applyFilters()"> FPGA Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="IoT Engineer" onchange="applyFilters()"> IoT Engineer</label>
+                    <!-- Gaming / AR/VR -->
+                    <div class="dd-group-label" data-group>Gaming &amp; AR/VR</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Game Developer" onchange="applyFilters()"> Game Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Unity Developer" onchange="applyFilters()"> Unity Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Unreal Engine Developer" onchange="applyFilters()"> Unreal Engine Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="AR/VR Developer" onchange="applyFilters()"> AR/VR Developer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="XR Developer" onchange="applyFilters()"> XR Developer</label>
+                    <!-- Other IT Roles -->
+                    <div class="dd-group-label" data-group>Other IT Roles</div>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Technical Writer" onchange="applyFilters()"> Technical Writer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Solutions Engineer" onchange="applyFilters()"> Solutions Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Pre-Sales Engineer" onchange="applyFilters()"> Pre-Sales Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Technical Support Engineer" onchange="applyFilters()"> Technical Support Engineer</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="Implementation Consultant" onchange="applyFilters()"> Implementation Consultant</label>
+                    <label class="dd-opt"><input type="checkbox" name="desig" value="IT Recruiter" onchange="applyFilters()"> IT / Technical Recruiter</label>
+                    <div class="desig-no-results" id="desig-no-results" style="display:none">No titles match your search</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Work Mode -->
+              <div class="dd-wrap">
+                <button class="dd-btn" id="dd-mode-btn" onclick="toggleDD('mode')">
+                  <span id="dd-mode-label">Work Mode</span>
+                  <svg class="dd-caret" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="dd-panel" id="dd-mode">
+                  <label class="dd-opt"><input type="checkbox" value="all" onchange="ddAllToggle(this,'mode')" checked> All modes</label>
+                  <div class="dd-divider"></div>
+                  <label class="dd-opt"><input type="checkbox" name="mode" value="Remote"   onchange="applyFilters()"> 🏠 Remote</label>
+                  <label class="dd-opt"><input type="checkbox" name="mode" value="Hybrid"   onchange="applyFilters()"> 🔀 Hybrid</label>
+                  <label class="dd-opt"><input type="checkbox" name="mode" value="Onsite"   onchange="applyFilters()"> 🏢 Full Onsite</label>
+                </div>
+              </div>
+
+            </div><!-- /filter-dropdowns -->
+
+            <!-- Active filter tags + clear -->
+            <div class="filter-tags-row">
+              <div id="active-tags" class="active-tags"></div>
+              <button class="clear-all-btn" id="clear-all-btn" onclick="clearAllFilters()" style="display:none">
+                <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Clear all
+              </button>
+            </div>
+
+          </div><!-- /filter-bar-top -->
+        </div><!-- /filter-bar -->
+
+        <div class="results-toolbar">
+          <div class="results-count" id="results-count">Showing <strong>8 students</strong> within 25 miles <span>of Jersey City, NJ</span></div>
+          <div style="display:flex;gap:12px;align-items:center">
+            <span class="lcount lcount-looking" id="count-looking">— actively looking</span>
+            <span class="lcount lcount-open"    id="count-open">— open to offers</span>
+          </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="status-legend">
+          <div class="legend-item"><div class="legend-dot looking"></div>Actively looking for a job</div>
+          <div class="legend-sep"></div>
+          <div class="legend-item"><div class="legend-dot open"></div>Available but not actively looking</div>
+        </div>
+
+        <div class="stu-table">
+          <div class="stu-header" style="grid-template-columns:1.8fr 90px 1fr 60px 90px 70px 90px 100px">
+            <span class="stu-col">Student</span>
+            <span class="stu-col">Status</span>
+            <span class="stu-col">Distance</span>
+            <span class="stu-col">Tech stack</span>
+            <span class="stu-col">Exp</span>
+            <span class="stu-col">Work auth</span>
+            <span class="stu-col">Contract</span>
+            <span class="stu-col"></span>
+          </div>
+          <div id="results-body"></div>
+        </div>
+      </div>
+    </div><!-- /nearby-section -->
+
+  </div>
+</div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────────
+const STUDENTS = [
+  {id:1, name:"Aditya Kapoor",  initials:"AK", color:"#7c3aed", school:"Rutgers University",  city:"Jersey City, NJ",  status:"looking", dist:{jc:2, ny:9},  tech:["React","Node.js"],          exp:"2 yrs", visa:"gc",      contract:"W2",   desig:"Full Stack Developer",  mode:"Hybrid",  mapPos:{jc:{x:-60,y:-30},ny:{x:-80,y:10}}},
+  {id:2, name:"Neha Kulkarni",  initials:"NK", color:"#059669", school:"Stevens Institute",    city:"Hoboken, NJ",      status:"open",    dist:{jc:4, ny:11}, tech:["Vue","Python"],             exp:"1 yr",  visa:"opt",     contract:"C2C",  desig:"Backend Developer",     mode:"Remote",  mapPos:{jc:{x:30,y:40},  ny:{x:10,y:60}}},
+  {id:3, name:"Vikram Rao",     initials:"VR", color:"#dc2626", school:"NYU Tandon",           city:"Brooklyn, NY",     status:"looking", dist:{jc:12,ny:6},  tech:["React Native","TypeScript"], exp:"3 yrs", visa:"h1b",     contract:"W2",   desig:"Mobile Developer",      mode:"Onsite",  mapPos:{jc:{x:70,y:-50}, ny:{x:40,y:-70}}},
+  {id:4, name:"Anjali Singh",   initials:"AS", color:"#d97706", school:"Columbia University",  city:"New York, NY",     status:"open",    dist:{jc:8, ny:3},  tech:["Angular","Java"],           exp:"2 yrs", visa:"opt",     contract:"1099", desig:"Frontend Developer",    mode:"Hybrid",  mapPos:{jc:{x:-30,y:-60},ny:{x:-20,y:-50}}},
+  {id:5, name:"Rohan Mehta",    initials:"RM", color:"#0891b2", school:"Kean University",      city:"Newark, NJ",       status:"looking", dist:{jc:6, ny:14}, tech:["Python","Django"],           exp:"1 yr",  visa:"gc",      contract:"W2",   desig:"Backend Developer",     mode:"Remote",  mapPos:{jc:{x:-70,y:30}, ny:{x:-100,y:40}}},
+  {id:6, name:"Preethi Nair",   initials:"PN", color:"#be185d", school:"NJIT",                 city:"Newark, NJ",       status:"looking", dist:{jc:7, ny:13}, tech:["Java","Spring"],             exp:"2 yrs", visa:"citizen", contract:"FT",   desig:"Software Engineer",     mode:"Hybrid",  mapPos:{jc:{x:55,y:55},  ny:{x:80,y:70}}},
+  {id:7, name:"Sameer Patel",   initials:"SP", color:"#4f46e5", school:"Montclair State",      city:"Montclair, NJ",    status:"open",    dist:{jc:18,ny:19}, tech:["React","AWS"],               exp:"3 yrs", visa:"h1b",     contract:"C2C",  desig:"Cloud Engineer",        mode:"Remote",  mapPos:{jc:{x:-90,y:-20},ny:{x:-110,y:-10}}},
+  {id:8, name:"Divya Thomas",   initials:"DT", color:"#0f766e", school:"Seton Hall",           city:"South Orange, NJ", status:"open",    dist:{jc:22,ny:24}, tech:["Flutter","Dart"],            exp:"1 yr",  visa:"cpt",     contract:"1099", desig:"Mobile Developer",      mode:"Remote",  mapPos:{jc:{x:100,y:20}, ny:{x:120,y:35}}},
+  {id:9, name:"Kiran Shah",     initials:"KS", color:"#b45309", school:"Fairleigh Dickinson",  city:"Hackensack, NJ",   status:"looking", dist:{jc:28,ny:26}, tech:["Go","Docker"],               exp:"2 yrs", visa:"gc",      contract:"W2",   desig:"DevOps Engineer",       mode:"Hybrid",  mapPos:{jc:{x:-40,y:70}, ny:{x:-30,y:80}}},
+  {id:10,name:"Meera Joseph",   initials:"MJ", color:"#6d28d9", school:"Pace University",      city:"White Plains, NY", status:"open",    dist:{jc:35,ny:28}, tech:["Vue","Firebase"],            exp:"1 yr",  visa:"l1",      contract:"C2C",  desig:"Frontend Developer",    mode:"Onsite",  mapPos:{jc:{x:110,y:-30},ny:{x:90,y:-60}}},
+];
+
+const JOB_LABELS = {jc:"Jersey City, NJ", ny:"New York, NY"};
+
+let activeJob    = "jc";
+let activeRadius = 25;
+
+// ── DROPDOWN STATE ────────────────────────────────────────────────────────────
+const filters = { status:"all-status", visa:[], contract:[], tech:[], desig:[], mode:[] };
+
+// ── RADIUS ────────────────────────────────────────────────────────────────────
+function updateRadius(val){
+  activeRadius = +val;
+  document.getElementById('radius-label').textContent = val+' miles';
+  const pct = ((val-5)/70)*100;
+  document.getElementById('radius-slider').style.setProperty('--pct',pct+'%');
+  const size = Math.min((val/75)*180*1.8, 180*1.9);
+  const ring = document.getElementById('radius-ring');
+  ring.style.width = size+'px'; ring.style.height = size+'px';
+}
+updateRadius(25);
+
+document.getElementById('job-select').addEventListener('change', function(){ activeJob=this.value; runSearch(); });
+
+// ── DROPDOWN TOGGLE ───────────────────────────────────────────────────────────
+function toggleDD(name){
+  const panel = document.getElementById('dd-'+name);
+  const btn   = document.getElementById('dd-'+name+'-btn');
+  const allOpen = document.querySelectorAll('.dd-panel.show');
+  allOpen.forEach(p=>{ if(p.id!=='dd-'+name){ p.classList.remove('show'); document.getElementById(p.id.replace('dd-','dd-')+'-btn') && document.getElementById(p.id+'-btn')?.classList.remove('open'); }});
+  // fix btn ids
+  document.querySelectorAll('.dd-btn').forEach(b=>{ if(b.id!==('dd-'+name+'-btn')) b.classList.remove('open'); });
+  panel.classList.toggle('show');
+  btn.classList.toggle('open', panel.classList.contains('show'));
+}
+document.addEventListener('click', e=>{
+  if(!e.target.closest('.dd-wrap')){
+    document.querySelectorAll('.dd-panel.show, .dd-panel-desig.show').forEach(p=>p.classList.remove('show'));
+    document.querySelectorAll('.dd-btn.open').forEach(b=>b.classList.remove('open'));
+    // reset designation search
+    const ds = document.getElementById('desig-search');
+    if(ds){ ds.value=''; filterDesigList(''); }
+  }
+});
+
+// ── "ALL" CHECKBOX TOGGLE ─────────────────────────────────────────────────────
+function ddAllToggle(cb, group){
+  const others = document.querySelectorAll(`input[name="${group}"]`);
+  others.forEach(o=>{ o.checked = false; });
+  cb.checked = true;
+  filters[group] = [];
+  applyFilters();
+}
+
+// ── COLLECT FILTERS & APPLY ───────────────────────────────────────────────────
+function applyFilters(){
+  // status (radio)
+  const sr = document.querySelector('input[name="status"]:checked');
+  filters.status = sr ? sr.value : 'all-status';
+
+  // checkbox groups — uncheck "all" if any specific picked
+  ['visa','contract','tech','desig','mode'].forEach(g=>{
+    const checked = [...document.querySelectorAll(`input[name="${g}"]:checked`)].map(i=>i.value);
+    filters[g] = checked;
+    // if any specific checked, uncheck "all"
+    const allCb = document.querySelector(`#dd-${g} input[value="all"]`);
+    if(allCb){ allCb.checked = checked.length===0; }
+  });
+
+  renderActiveTags();
+  runSearch();
+}
+
+function getFiltered(){
+  return STUDENTS.filter(s=>{
+    if(s.dist[activeJob] > activeRadius) return false;
+    if(filters.status !== 'all-status' && s.status !== filters.status) return false;
+    if(filters.visa.length     && !filters.visa.includes(s.visa))           return false;
+    if(filters.contract.length && !filters.contract.includes(s.contract))   return false;
+    if(filters.tech.length     && !filters.tech.some(t=>s.tech.includes(t)))return false;
+    if(filters.desig.length    && !filters.desig.includes(s.desig))         return false;
+    if(filters.mode.length     && !filters.mode.includes(s.mode))           return false;
+    return true;
+  }).sort((a,b)=>{
+    if(a.status==='looking'&&b.status!=='looking') return -1;
+    if(a.status!=='looking'&&b.status==='looking') return 1;
+    return a.dist[activeJob]-b.dist[activeJob];
+  });
+}
+
+// ── ACTIVE FILTER TAGS ────────────────────────────────────────────────────────
+const TAG_LABELS = {
+  visa:     {gc:'GC',citizen:'US Citizen',h1b:'H1B',opt:'OPT',cpt:'CPT',l1:'L1',tn:'TN Visa',e3:'E3'},
+  contract: {W2:'W2','1099':'1099',C2C:'C2C',FT:'Full Time'},
+  mode:     {Remote:'🏠 Remote',Hybrid:'🔀 Hybrid',Onsite:'🏢 Onsite'},
+};
+function renderActiveTags(){
+  const container = document.getElementById('active-tags');
+  const clearBtn  = document.getElementById('clear-all-btn');
+  const tags = [];
+
+  if(filters.status!=='all-status'){
+    tags.push({label: filters.status==='looking'?'🟢 Actively looking':'🔵 Open to offers', clear:()=>{ document.querySelector('input[name="status"][value="all-status"]').checked=true; filters.status='all-status'; applyFilters(); }});
+  }
+  ['visa','contract','tech','desig','mode'].forEach(g=>{
+    filters[g].forEach(v=>{
+      const label = (TAG_LABELS[g]&&TAG_LABELS[g][v]) ? TAG_LABELS[g][v] : v;
+      tags.push({label, clear:()=>{ const cb=document.querySelector(`input[name="${g}"][value="${v}"]`); if(cb){ cb.checked=false; } filters[g]=filters[g].filter(x=>x!==v); if(!filters[g].length){ const allCb=document.querySelector(`#dd-${g} input[value="all"]`); if(allCb) allCb.checked=true; } applyFilters(); }});
+    });
+  });
+
+  // update btn labels
+  updateBtnLabels();
+
+  container.innerHTML = tags.map((_,i)=>`<span class="ftag" data-i="${i}">${_.label} <span class="ftag-x">×</span></span>`).join('');
+  container.querySelectorAll('.ftag').forEach((el,i)=>{ el.querySelector('.ftag-x').onclick=()=>tags[i].clear(); });
+  clearBtn.style.display = tags.length ? 'flex' : 'none';
+}
+
+function updateBtnLabels(){
+  const groups = {status:'Job Status',visa:'Visa Type',contract:'Contract Type',tech:'Tech Stack',desig:'Designation',mode:'Work Mode'};
+  Object.entries(groups).forEach(([g,def])=>{
+    const el = document.getElementById(`dd-${g}-label`);
+    const btn = document.getElementById(`dd-${g}-btn`);
+    if(!el||!btn) return;
+    let label = def, hasVal = false;
+    if(g==='status'){ hasVal=filters.status!=='all-status'; label=hasVal?(filters.status==='looking'?'🟢 Looking':'🔵 Open'):def; }
+    else{ const arr=filters[g]; if(arr.length){ hasVal=true; label=arr.length===1?((TAG_LABELS[g]&&TAG_LABELS[g][arr[0]])||arr[0]):`${def} (${arr.length})`; } }
+    el.textContent = label;
+    btn.classList.toggle('has-value', hasVal);
+  });
+}
+
+function clearAllFilters(){
+  filters.status='all-status'; ['visa','contract','tech','desig','mode'].forEach(g=>{ filters[g]=[]; });
+  document.querySelectorAll('.dd-panel input[type=checkbox]').forEach(cb=>{ cb.checked = cb.value==='all'; });
+  document.querySelector('input[name="status"][value="all-status"]').checked=true;
+  renderActiveTags(); runSearch();
+}
+
+// ── SEARCH ────────────────────────────────────────────────────────────────────
+function runSearch(){
+  activeJob = document.getElementById('job-select').value;
+  document.getElementById('map-label').textContent = JOB_LABELS[activeJob];
+  updateRadius(activeRadius);
+  const filtered = getFiltered();
+  renderMapDots(filtered);
+  renderResults(filtered);
+  document.getElementById('live-count').textContent = filtered.length+' students found';
+}
+
+// ── MAP DOTS ──────────────────────────────────────────────────────────────────
+function renderMapDots(students){
+  const container = document.getElementById('map-dots');
+  container.innerHTML='';
+  const mapEl=document.getElementById('map-strip');
+  const cx=mapEl.offsetWidth/2, cy=90;
+  students.forEach((s)=>{
+    const pos=s.mapPos[activeJob]||{x:0,y:0};
+    const dot=document.createElement('div');
+    dot.className='s-dot';
+    dot.style.left=(cx+pos.x-11)+'px';
+    dot.style.top=(cy+pos.y-11)+'px';
+    const border=s.status==='looking'?'#16a34a':'#0ea5e9';
+    const ring=s.status==='looking'?'<div class="s-dot-ring"></div>':'';
+    dot.innerHTML=`${ring}<div class="s-dot-inner" style="background:${s.color};border-color:${border};border-width:3px">${s.initials}</div>
+      <div class="s-dot-tooltip">${s.name} · ${s.dist[activeJob]}mi<br><span style="font-size:9px;opacity:.8">${s.status==='looking'?'🟢 Actively looking':'🔵 Open to offers'}</span></div>`;
+    container.appendChild(dot);
+  });
+}
+
+// ── RESULTS TABLE ─────────────────────────────────────────────────────────────
+const VISA_LABELS = {gc:'GC',citizen:'Citizen',h1b:'H1B',opt:'OPT',cpt:'CPT',l1:'L1',tn:'TN',e3:'E3'};
+const VISA_STYLE  = {gc:'wa-gc',citizen:'wa-gc',h1b:'wa-h1',opt:'wa-opt',cpt:'wa-opt',l1:'wa-h1',tn:'wa-h1',e3:'wa-h1'};
+const MODE_ICON   = {Remote:'🏠',Hybrid:'🔀',Onsite:'🏢'};
+const CONTRACT_STYLE = {W2:'badge-green',FT:'badge-blue','1099':'badge-amber',C2C:'badge-amber'};
+
+function visaBadge(v){ return `<span class="wa-badge ${VISA_STYLE[v]||'wa-opt'}">${VISA_LABELS[v]||v}</span>`; }
+function distBadge(d){ return d<=8?`<span class="dist-badge dist-near">📍 ${d}mi</span>`:d<=20?`<span class="dist-badge dist-mid">📍 ${d}mi</span>`:`<span class="dist-badge dist-far">📍 ${d}mi</span>`; }
+function statusBadge(s){ return s==='looking'?`<span class="status-badge status-looking"><span class="status-dot"></span>Actively looking</span>`:`<span class="status-badge status-open"><span class="status-dot"></span>Open to offers</span>`; }
+function contractBadge(c){ return `<span class="stat-badge ${CONTRACT_STYLE[c]||'badge-blue'}">${c}</span>`; }
+
+function renderResults(students){
+  const body=document.getElementById('results-body');
+  const loc=JOB_LABELS[activeJob];
+  const nL=students.filter(s=>s.status==='looking').length;
+  const nO=students.filter(s=>s.status==='open').length;
+  document.getElementById('results-count').innerHTML=`Showing <strong>${students.length} student${students.length!==1?'s':''}</strong> within ${activeRadius} miles <span>of ${loc}</span>`;
+  document.getElementById('count-looking').textContent=nL+' actively looking';
+  document.getElementById('count-open').textContent=nO+' open to offers';
+
+  if(!students.length){
+    body.innerHTML=`<div class="no-results"><div class="no-results-icon">🔍</div><div class="no-results-text">No students match your filters</div><div class="no-results-sub">Try widening the radius or clearing some filters</div></div>`;
+    return;
+  }
+
+  const COLS="1.6fr 100px 80px 120px 55px 65px 70px 70px 95px";
+  body.innerHTML=students.map((s,i)=>`
+    <div class="stu-row ${s.status==='open'?'row-open':''}" style="animation-delay:${i*.04}s;grid-template-columns:${COLS}">
+      <div class="stu-name-cell">
+        <div class="stu-av" style="background:${s.color};${s.status==='looking'?'box-shadow:0 0 0 2.5px #16a34a,0 0 0 4.5px #dcfce7':'box-shadow:0 0 0 2.5px #0ea5e9,0 0 0 4.5px #e0f2fe'}">${s.initials}</div>
+        <div><div class="stu-name">${s.name}</div><div class="stu-school">${s.desig} · ${s.city}</div></div>
+      </div>
+      <div class="stu-cell">${statusBadge(s.status)}</div>
+      <div class="stu-cell">${distBadge(s.dist[activeJob])}</div>
+      <div class="stu-cell"><div class="tech-tags">${s.tech.map(t=>`<span class="tech-tag">${t}</span>`).join('')}</div></div>
+      <div class="stu-cell">${s.exp}</div>
+      <div class="stu-cell">${visaBadge(s.visa)}</div>
+      <div class="stu-cell">${contractBadge(s.contract)}</div>
+      <div class="stu-cell"><span style="font-size:12px">${MODE_ICON[s.mode]||''}</span> <span style="font-size:11px;color:var(--ink2)">${s.mode}</span></div>
+      <div class="stu-cell"><button class="action-btn ab-reach">Reach out</button></div>
+    </div>`).join('');
+}
+
+// ── DESIGNATION SEARCH ───────────────────────────────────────────────────────
+function filterDesigList(query){
+  const q = query.trim().toLowerCase();
+  const list = document.getElementById('desig-list');
+  const opts = list.querySelectorAll('.dd-opt');
+  const groups = list.querySelectorAll('.dd-group-label');
+  let anyVisible = false;
+
+  // show/hide options
+  opts.forEach(opt=>{
+    const text = opt.textContent.trim().toLowerCase();
+    const match = !q || text.includes(q);
+    opt.classList.toggle('hidden', !match);
+    if(match) anyVisible = true;
+  });
+
+  // hide group headers that have no visible options underneath
+  groups.forEach(grp=>{
+    let next = grp.nextElementSibling;
+    let hasVisible = false;
+    while(next && !next.hasAttribute('data-group')){
+      if(!next.classList.contains('hidden') && next.classList.contains('dd-opt')) hasVisible = true;
+      next = next.nextElementSibling;
+    }
+    grp.classList.toggle('hidden', !hasVisible);
+  });
+
+  document.getElementById('desig-no-results').style.display = anyVisible ? 'none' : 'block';
+}
+
+function scrollNearby(){ document.getElementById('nearby').scrollIntoView({behavior:'smooth',block:'start'}); return false; }
+
+window.addEventListener('DOMContentLoaded',()=>{ renderActiveTags(); runSearch(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ConnectIT — My Applicants</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f8f8f8;color:#111;display:flex;min-height:100vh}
+.sidebar{width:240px;flex-shrink:0;background:#111;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100}
+.sidebar-logo{padding:24px 24px 20px;border-bottom:1px solid #222}
+.logo{font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.5px;text-decoration:none;display:block}
+.logo span{color:#555}
+.company-tag{font-size:11px;color:#555;margin-top:3px}
+.sidebar-nav{flex:1;padding:16px 12px}
+.nav-section{font-size:10px;font-weight:700;letter-spacing:2px;color:#444;padding:0 12px;margin:16px 0 6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:6px;font-size:13px;font-weight:500;color:#666;cursor:pointer;transition:all .2s;text-decoration:none}
+.nav-item:hover{background:#1a1a1a;color:#fff}
+.nav-item.active{background:#fff;color:#111}
+.nav-item svg{width:15px;height:15px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nav-badge{margin-left:auto;background:#e55;color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:10px}
+.sidebar-bottom{padding:16px 12px;border-top:1px solid #222}
+.user-av{width:32px;height:32px;border-radius:50%;background:#2563eb;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff}
+.user-name{font-size:13px;font-weight:600;color:#fff}
+.user-role{font-size:11px;color:#555}
+.user-row{display:flex;align-items:center;gap:10px;padding:10px 12px}
+.main{margin-left:240px;flex:1}
+.topbar{background:#fff;border-bottom:1px solid #e5e5e5;padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.page-title{font-size:16px;font-weight:800;color:#111}
+.btn-ghost{background:#fff;color:#111;border:1.5px solid #ddd;padding:7px 16px;border-radius:6px;font-size:13px;cursor:pointer;font-weight:500;font-family:system-ui,-apple-system,sans-serif}
+.content{padding:28px 32px}
+.filter-row{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.search-wrap{position:relative;flex:1;max-width:280px}
+.search-wrap svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:13px;height:13px;stroke:#aaa;fill:none;stroke-width:2;stroke-linecap:round;pointer-events:none}
+.search-wrap input{width:100%;border:1.5px solid #e5e5e5;border-radius:8px;padding:9px 12px 9px 30px;font-size:13px;color:#111;font-family:system-ui,-apple-system,sans-serif;outline:none;background:#fff}
+.search-wrap input:focus{border-color:#111}
+.filter-btn{background:#fff;border:1.5px solid #e5e5e5;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;color:#555;cursor:pointer;font-family:system-ui,-apple-system,sans-serif;transition:.2s}
+.filter-btn:hover,.filter-btn.active{border-color:#111;color:#111;background:#f5f5f5}
+select.fs{border:1.5px solid #e5e5e5;border-radius:8px;padding:8px 28px 8px 12px;font-size:12px;color:#555;font-family:system-ui,-apple-system,sans-serif;outline:none;background:#fff;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+.kanban{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px}
+.col-head{font-size:11px;font-weight:700;letter-spacing:2px;color:#aaa;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.col-count{background:#f0f0f0;color:#777;font-size:10px;font-weight:800;padding:2px 7px;border-radius:10px}
+.app-card{background:#fff;border:1.5px solid #e5e5e5;border-radius:10px;padding:14px;margin-bottom:10px;transition:.15s;cursor:pointer}
+.app-card:hover{border-color:#aaa;transform:translateY(-1px)}
+.app-av{width:36px;height:36px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#555;margin-bottom:10px}
+.app-name{font-size:13px;font-weight:700;color:#111;margin-bottom:2px}
+.app-detail{font-size:11px;color:#777;margin-bottom:8px;line-height:1.5}
+.tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.tag{background:#f5f5f5;border:1px solid #e5e5e5;color:#555;font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px}
+.card-actions{display:flex;gap:6px}
+.ca{flex:1;background:#fff;border:1.5px solid #e5e5e5;border-radius:6px;padding:5px 0;font-size:11px;font-weight:600;color:#555;cursor:pointer;font-family:system-ui,-apple-system,sans-serif;transition:.2s;text-align:center}
+.ca:hover{border-color:#111;color:#111}
+.ca.dark{background:#111;color:#fff;border-color:#111}
+.ca.dark:hover{background:#333}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-logo"><a href="recruiter-dashboard.html" class="logo">Connect<span>IT</span></a><div class="company-tag">Acme Corp · Recruiter</div></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">My work</div>
+    <a href="recruiter-dashboard.html" class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
+    <a href="recruiter-post-job.html" class="nav-item"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>My job listings</a>
+    <a href="recruiter-applicants.html" class="nav-item active"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>My applicants<span class="nav-badge">12</span></a>
+  </nav>
+  <div class="sidebar-bottom"><div class="user-row"><div class="user-av">PK</div><div><div class="user-name">Priya Kumar</div><div class="user-role">Recruiter · Acme Corp</div></div></div></div>
+</aside>
+<div class="main">
+  <div class="topbar"><div class="page-title">My Applicants</div><button class="btn-ghost">Export CSV</button></div>
+  <div class="content">
+    <div class="filter-row">
+      <div class="search-wrap"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" placeholder="Search student…"/></div>
+      <select class="fs"><option>All jobs</option><option>Frontend Developer Intern</option><option>React Native Developer</option></select>
+      <button class="filter-btn active">Board view</button>
+      <button class="filter-btn">List view</button>
+    </div>
+    <div class="kanban">
+      <!-- New -->
+      <div>
+        <div class="col-head">NEW <span class="col-count">5</span></div>
+        <div class="app-card"><div class="app-av">AK</div><div class="app-name">Aditya Kapoor</div><div class="app-detail">Frontend Developer Intern<br/>B.Tech CSE · Mumbai</div><div class="tags"><span class="tag">React</span><span class="tag">JS</span></div><div class="card-actions"><div class="ca">Profile</div><div class="ca dark">Shortlist</div></div></div>
+        <div class="app-card"><div class="app-av">NK</div><div class="app-name">Neha Kulkarni</div><div class="app-detail">Frontend Developer Intern<br/>B.E IT · Pune</div><div class="tags"><span class="tag">Vue</span><span class="tag">CSS</span></div><div class="card-actions"><div class="ca">Profile</div><div class="ca dark">Shortlist</div></div></div>
+        <div class="app-card"><div class="app-av">VR</div><div class="app-name">Vikram Rao</div><div class="app-detail">React Native Developer<br/>B.Tech · Hyderabad</div><div class="tags"><span class="tag">React</span><span class="tag">Mobile</span></div><div class="card-actions"><div class="ca">Profile</div><div class="ca dark">Shortlist</div></div></div>
+      </div>
+      <!-- Reviewing -->
+      <div>
+        <div class="col-head">REVIEWING <span class="col-count">4</span></div>
+        <div class="app-card"><div class="app-av">MS</div><div class="app-name">Meera Sinha</div><div class="app-detail">Frontend Developer Intern<br/>B.Tech CSE · Bangalore</div><div class="tags"><span class="tag">React</span><span class="tag">TS</span></div><div class="card-actions"><div class="ca">Profile</div><div class="ca dark">Shortlist</div></div></div>
+        <div class="app-card"><div class="app-av">AS</div><div class="app-name">Anjali Singh</div><div class="app-detail">React Native Developer<br/>B.E · Chennai</div><div class="tags"><span class="tag">React Native</span></div><div class="card-actions"><div class="ca">Profile</div><div class="ca dark">Shortlist</div></div></div>
+      </div>
+      <!-- Shortlisted -->
+      <div>
+        <div class="col-head">SHORTLISTED <span class="col-count">2</span></div>
+        <div class="app-card"><div class="app-av">RK</div><div class="app-name">Rohan Kumar</div><div class="app-detail">Frontend Developer Intern<br/>B.Tech · Delhi</div><div class="tags"><span class="tag">React</span><span class="tag">Node</span></div><div class="card-actions"><div class="ca">Profile</div><div class="ca">Download CV</div></div></div>
+        <div class="app-card"><div class="app-av">PT</div><div class="app-name">Pooja Trivedi</div><div class="app-detail">React Native Developer<br/>B.E CS · Ahmedabad</div><div class="tags"><span class="tag">React Native</span><span class="tag">Firebase</span></div><div class="card-actions"><div class="ca">Profile</div><div class="ca">Download CV</div></div></div>
+      </div>
+      <!-- Rejected -->
+      <div>
+        <div class="col-head">REJECTED <span class="col-count">1</span></div>
+        <div class="app-card" style="opacity:.6"><div class="app-av">SP</div><div class="app-name">Sahil Patil</div><div class="app-detail">Frontend Developer Intern<br/>B.E · Mumbai</div><div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span></div><div class="card-actions"><div class="ca">Profile</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

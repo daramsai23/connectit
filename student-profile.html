@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ConnectIT — Student Profile</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f8f8f8;color:#111}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:60px;border-bottom:1px solid #e5e5e5;background:#fff;position:sticky;top:0;z-index:200}
+.logo{font-size:20px;font-weight:800;color:#111;letter-spacing:-0.5px;text-decoration:none}
+.logo span{color:#555}
+.nav-r{display:flex;gap:10px;align-items:center}
+.nav-links a{font-size:13px;color:#666;text-decoration:none;padding:0 14px;height:60px;display:inline-flex;align-items:center;border-bottom:2px solid transparent;transition:.2s}
+.nav-links a:hover{color:#111;border-bottom-color:#111}
+.btn-ghost{background:#fff;color:#111;border:1.5px solid #ddd;padding:7px 18px;border-radius:6px;font-size:13px;cursor:pointer;font-weight:500}
+.btn-solid{background:#111;color:#fff;border:none;padding:8px 20px;border-radius:6px;font-size:13px;cursor:pointer;font-weight:600}
+.btn-solid:hover{background:#333}
+.page{max-width:860px;margin:0 auto;padding:32px 24px 80px}
+.profile-hero{background:#fff;border:1.5px solid #e5e5e5;border-radius:12px;overflow:hidden;margin-bottom:16px}
+.hero-bg{height:120px;background:#111;position:relative}
+.hero-body{padding:0 28px 24px;position:relative}
+.avatar{width:88px;height:88px;border-radius:50%;background:#2563eb;border:4px solid #fff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:#fff;margin-top:-44px;margin-bottom:12px}
+.profile-actions{position:absolute;top:16px;right:28px;display:flex;gap:8px}
+.student-name{font-size:22px;font-weight:800;color:#111;letter-spacing:-0.5px;margin-bottom:4px}
+.student-headline{font-size:14px;color:#555;margin-bottom:8px}
+.student-meta{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.meta-item{display:flex;align-items:center;gap:5px;font-size:13px;color:#777}
+.meta-item svg{width:13px;height:13px;stroke:#aaa;fill:none;stroke-width:2;stroke-linecap:round}
+.open-badge{background:#f0fdf4;border:1px solid #bbf7d0;color:#16a34a;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:5px}
+.open-dot{width:5px;height:5px;border-radius:50%;background:#4ade80;animation:blink 2s infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.grid{display:grid;grid-template-columns:1fr 300px;gap:16px}
+.card{background:#fff;border:1.5px solid #e5e5e5;border-radius:10px;padding:22px;margin-bottom:16px}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.card-title{font-size:14px;font-weight:800;color:#111;letter-spacing:-0.3px}
+.edit-btn{background:none;border:1.5px solid #e5e5e5;border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600;color:#555;cursor:pointer;font-family:system-ui,-apple-system,sans-serif;transition:.2s}
+.edit-btn:hover{border-color:#111;color:#111}
+.about-text{font-size:13px;color:#555;line-height:1.7}
+.exp-item{display:flex;gap:14px;margin-bottom:16px}
+.exp-item:last-child{margin-bottom:0}
+.exp-logo{width:40px;height:40px;border-radius:8px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#555;flex-shrink:0;border:1px solid #e5e5e5}
+.exp-title{font-size:13px;font-weight:700;color:#111;margin-bottom:2px}
+.exp-company{font-size:12px;color:#555;margin-bottom:2px}
+.exp-period{font-size:11px;color:#aaa}
+.exp-desc{font-size:12px;color:#777;margin-top:6px;line-height:1.6}
+.edu-item{display:flex;gap:14px;margin-bottom:14px}
+.edu-item:last-child{margin-bottom:0}
+.edu-logo{width:40px;height:40px;border-radius:8px;background:#111;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
+.edu-degree{font-size:13px;font-weight:700;color:#111;margin-bottom:2px}
+.edu-school{font-size:12px;color:#555;margin-bottom:2px}
+.edu-period{font-size:11px;color:#aaa}
+.skills-wrap{display:flex;flex-wrap:wrap;gap:8px}
+.skill-tag{background:#f5f5f5;border:1px solid #e5e5e5;color:#555;font-size:12px;font-weight:600;padding:5px 12px;border-radius:6px}
+.skill-tag.endorsed{background:#111;color:#fff;border-color:#111}
+.resume-box{border:1.5px dashed #e5e5e5;border-radius:8px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:.2s}
+.resume-box:hover{border-color:#111}
+.resume-icon{width:36px;height:36px;border-radius:8px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.resume-icon svg{width:16px;height:16px;stroke:#555;fill:none;stroke-width:1.5;stroke-linecap:round}
+.resume-text strong{font-size:13px;font-weight:700;color:#111;display:block}
+.resume-text span{font-size:11px;color:#aaa}
+.sidebar-card{background:#fff;border:1.5px solid #e5e5e5;border-radius:10px;padding:18px;margin-bottom:14px}
+.sidebar-title{font-size:13px;font-weight:800;color:#111;margin-bottom:12px;letter-spacing:-0.3px}
+.cert-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f5f5f5}
+.cert-item:last-child{border-bottom:none}
+.cert-icon{width:28px;height:28px;border-radius:6px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cert-icon svg{width:13px;height:13px;stroke:#555;fill:none;stroke-width:2;stroke-linecap:round}
+.cert-name{font-size:12px;font-weight:700;color:#111}
+.cert-issuer{font-size:11px;color:#aaa}
+.stat-item{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f5f5f5}
+.stat-item:last-child{border-bottom:none}
+.stat-label{font-size:12px;color:#555;font-weight:500}
+.stat-val{font-size:14px;font-weight:800;color:#111}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="student-jobs.html" class="logo">Connect<span>IT</span></a>
+  <div class="nav-links"><a href="student-jobs.html">Browse Jobs</a><a href="#">Companies</a></div>
+  <div class="nav-r">
+    <button class="btn-ghost">Edit profile</button>
+    <div class="user-av" style="width:32px;height:32px;border-radius:50%;background:#2563eb;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;cursor:pointer">AK</div>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="profile-hero">
+    <div class="hero-bg"></div>
+    <div class="hero-body">
+      <div class="profile-actions">
+        <button class="edit-btn">Edit profile</button>
+        <button class="btn-solid">Open to work</button>
+      </div>
+      <div class="avatar">AK</div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <div>
+          <div class="student-name">Aditya Kapoor</div>
+          <div class="student-headline">Final year B.Tech CSE · Looking for Frontend & Full-stack roles</div>
+          <div class="student-meta" style="margin-top:8px">
+            <div class="meta-item"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Mumbai, India</div>
+            <div class="meta-item"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>IIT Bombay</div>
+            <div class="meta-item"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>aditya@iitb.ac.in</div>
+            <span class="open-badge"><span class="open-dot"></span>Open to opportunities</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div>
+      <!-- About -->
+      <div class="card">
+        <div class="card-head"><div class="card-title">About</div><button class="edit-btn">Edit</button></div>
+        <div class="about-text">Final year Computer Science student at IIT Bombay with a passion for building clean, performant web interfaces. I've worked on React-based projects and have a strong foundation in JavaScript, TypeScript, and modern CSS. Looking for internships or full-time opportunities in frontend or full-stack development.</div>
+      </div>
+
+      <!-- Experience -->
+      <div class="card">
+        <div class="card-head"><div class="card-title">Experience</div><button class="edit-btn">+ Add</button></div>
+        <div class="exp-item">
+          <div class="exp-logo">TI</div>
+          <div>
+            <div class="exp-title">Frontend Developer Intern</div>
+            <div class="exp-company">TechIndia Pvt Ltd · Internship</div>
+            <div class="exp-period">May 2023 – Aug 2023 · 4 months</div>
+            <div class="exp-desc">Built responsive UI components in React, improved page load time by 30%, and worked closely with the product team to deliver new features.</div>
+          </div>
+        </div>
+        <div class="exp-item">
+          <div class="exp-logo">F</div>
+          <div>
+            <div class="exp-title">Web Developer</div>
+            <div class="exp-company">Freelance · Part-time</div>
+            <div class="exp-period">Jan 2023 – Apr 2023 · 4 months</div>
+            <div class="exp-desc">Developed landing pages and e-commerce sites for small businesses using HTML, CSS, and JavaScript.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="card">
+        <div class="card-head"><div class="card-title">Education</div><button class="edit-btn">+ Add</button></div>
+        <div class="edu-item">
+          <div class="edu-logo">IIT</div>
+          <div>
+            <div class="edu-degree">B.Tech — Computer Science & Engineering</div>
+            <div class="edu-school">IIT Bombay</div>
+            <div class="edu-period">2020 – 2024 · CGPA: 8.4/10</div>
+          </div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-logo" style="background:#2563eb">DPS</div>
+          <div>
+            <div class="edu-degree">Class XII — Science (PCM)</div>
+            <div class="edu-school">Delhi Public School, Mumbai</div>
+            <div class="edu-period">Passed 2020 · 94.2%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills -->
+      <div class="card">
+        <div class="card-head"><div class="card-title">Skills</div><button class="edit-btn">+ Add</button></div>
+        <div class="skills-wrap">
+          <span class="skill-tag endorsed">React</span>
+          <span class="skill-tag endorsed">JavaScript</span>
+          <span class="skill-tag endorsed">TypeScript</span>
+          <span class="skill-tag">Node.js</span>
+          <span class="skill-tag">CSS / Tailwind</span>
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">REST APIs</span>
+          <span class="skill-tag">Firebase</span>
+          <span class="skill-tag">Figma</span>
+          <span class="skill-tag">Python</span>
+        </div>
+      </div>
+
+      <!-- Resume -->
+      <div class="card">
+        <div class="card-head"><div class="card-title">Resume</div><button class="edit-btn">Update</button></div>
+        <div class="resume-box">
+          <div class="resume-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div class="resume-text"><strong>Aditya_Kapoor_Resume.pdf</strong><span>Uploaded 3 days ago · 420 KB</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div>
+      <div class="sidebar-card">
+        <div class="sidebar-title">Profile activity</div>
+        <div class="stat-item"><div class="stat-label">Profile views</div><div class="stat-val">48</div></div>
+        <div class="stat-item"><div class="stat-label">Jobs applied</div><div class="stat-val">6</div></div>
+        <div class="stat-item"><div class="stat-label">Shortlisted</div><div class="stat-val">2</div></div>
+        <div class="stat-item"><div class="stat-label">Profile strength</div><div class="stat-val">82%</div></div>
+      </div>
+      <div class="sidebar-card">
+        <div class="sidebar-title">Certifications</div>
+        <div class="cert-item"><div class="cert-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div><div><div class="cert-name">Meta Frontend Developer</div><div class="cert-issuer">Coursera · 2023</div></div></div>
+        <div class="cert-item"><div class="cert-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div><div><div class="cert-name">AWS Cloud Practitioner</div><div class="cert-issuer">Amazon · 2023</div></div></div>
+        <div class="cert-item"><div class="cert-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div><div><div class="cert-name">Google Analytics</div><div class="cert-issuer">Google · 2022</div></div></div>
+      </div>
+      <div class="sidebar-card">
+        <div class="sidebar-title">Looking for</div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px">
+          <span style="background:#f5f5f5;border:1px solid #e5e5e5;color:#555;font-size:11px;font-weight:600;padding:4px 10px;border-radius:4px">Internship</span>
+          <span style="background:#f5f5f5;border:1px solid #e5e5e5;color:#555;font-size:11px;font-weight:600;padding:4px 10px;border-radius:4px">Full-time</span>
+          <span style="background:#f5f5f5;border:1px solid #e5e5e5;color:#555;font-size:11px;font-weight:600;padding:4px 10px;border-radius:4px">Remote OK</span>
+          <span style="background:#f5f5f5;border:1px solid #e5e5e5;color:#555;font-size:11px;font-weight:600;padding:4px 10px;border-radius:4px">Mumbai</span>
+          <span style="background:#f5f5f5;border:1px solid #e5e5e5;color:#555;font-size:11px;font-weight:600;padding:4px 10px;border-radius:4px">Bangalore</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

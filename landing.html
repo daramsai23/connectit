@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ConnectIT — The IT Talent Marketplace</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#0f0f0e;color:#fff;min-height:100vh}
+a{text-decoration:none;color:inherit}
+
+/* ── NAV ── */
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:60px;border-bottom:1px solid #1c1c1b;position:sticky;top:0;background:#0f0f0e;z-index:100}
+.logo{font-size:18px;font-weight:800;letter-spacing:-0.5px}.logo span{color:#3d3d3a}
+.nav-links{display:flex;gap:28px}.nav-links a{font-size:13px;color:#666;font-weight:500;transition:color .15s}.nav-links a:hover{color:#fff}
+.nav-cta{display:flex;gap:10px;align-items:center}
+.btn-ghost{background:transparent;color:#aaa;border:1.5px solid #2a2a29;padding:7px 18px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.btn-ghost:hover{border-color:#555;color:#fff}
+.btn-white{background:#fff;color:#111;border:none;padding:8px 20px;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}
+.btn-white:hover{background:#e5e5e5}
+
+/* ── HERO ── */
+.hero{text-align:center;padding:100px 24px 80px;max-width:780px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;background:#1a1a19;border:1px solid #2a2a29;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;color:#888;margin-bottom:28px}
+.hero-badge span{width:6px;height:6px;border-radius:50%;background:#16a34a;display:inline-block;animation:pulse 2s infinite}
+h1{font-size:56px;font-weight:800;line-height:1.1;letter-spacing:-2px;margin-bottom:22px;color:#fff}
+h1 em{font-style:normal;color:#4ade80}
+.hero-sub{font-size:17px;color:#666;line-height:1.7;max-width:520px;margin:0 auto 42px}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-green{background:#16a34a;color:#fff;border:none;padding:13px 28px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}
+.btn-green:hover{background:#15803d}
+.btn-outline-white{background:transparent;color:#fff;border:1.5px solid #2a2a29;padding:12px 26px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.btn-outline-white:hover{border-color:#666}
+
+/* ── STATS ── */
+.stats{display:flex;justify-content:center;gap:60px;padding:32px 0;border-top:1px solid #1c1c1b;border-bottom:1px solid #1c1c1b;margin:0 48px}
+.stat-num{font-size:28px;font-weight:800;color:#fff;letter-spacing:-1px}
+.stat-label{font-size:12px;color:#555;font-weight:500;margin-top:2px}
+
+/* ── ROLE CARDS ── */
+.roles-section{padding:80px 48px}
+.section-label{font-size:11px;font-weight:700;letter-spacing:3px;color:#555;text-transform:uppercase;text-align:center;margin-bottom:12px}
+.section-title{font-size:30px;font-weight:800;text-align:center;letter-spacing:-0.8px;margin-bottom:48px}
+.roles-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1100px;margin:0 auto}
+.role-card{background:#141413;border:1.5px solid #1c1c1b;border-radius:12px;padding:28px 24px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.role-card:hover{border-color:#333;transform:translateY(-3px)}
+.role-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .2s;border-radius:11px}
+.role-card.vendor::before{background:linear-gradient(135deg,#0d2a1a 0%,transparent 60%)}
+.role-card.recruiter::before{background:linear-gradient(135deg,#0d1a2e 0%,transparent 60%)}
+.role-card.student::before{background:linear-gradient(135deg,#1c1408 0%,transparent 60%)}
+.role-card.admin::before{background:linear-gradient(135deg,#1c0d0d 0%,transparent 60%)}
+.role-card:hover::before{opacity:1}
+.role-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:20px}
+.role-card.vendor .role-icon{background:#0d2a1a}
+.role-card.recruiter .role-icon{background:#0d1a2e}
+.role-card.student .role-icon{background:#1c1408}
+.role-card.admin .role-icon{background:#1c0d0d}
+.role-name{font-size:16px;font-weight:800;margin-bottom:8px;letter-spacing:-0.3px}
+.role-desc{font-size:12px;color:#555;line-height:1.6;margin-bottom:22px}
+.role-perks{display:flex;flex-direction:column;gap:5px;margin-bottom:24px}
+.role-perk{font-size:11px;color:#444;display:flex;align-items:center;gap:6px}
+.role-perk::before{content:'✓';color:#16a34a;font-weight:800;flex-shrink:0}
+.role-btn{width:100%;padding:10px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;border:none;transition:all .15s}
+.role-card.vendor   .role-btn{background:#16a34a;color:#fff}
+.role-card.vendor   .role-btn:hover{background:#15803d}
+.role-card.recruiter .role-btn{background:#1a6bff;color:#fff}
+.role-card.recruiter .role-btn:hover{background:#1557d6}
+.role-card.student  .role-btn{background:#d97706;color:#fff}
+.role-card.student  .role-btn:hover{background:#b45309}
+.role-card.admin    .role-btn{background:#dc2626;color:#fff}
+.role-card.admin    .role-btn:hover{background:#b91c1c}
+
+/* ── HOW IT WORKS ── */
+.how-section{padding:80px 48px;border-top:1px solid #1c1c1b;max-width:1000px;margin:0 auto}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.how-card{background:#141413;border:1.5px solid #1c1c1b;border-radius:12px;padding:28px}
+.how-num{font-size:11px;font-weight:800;color:#333;letter-spacing:2px;margin-bottom:14px}
+.how-title{font-size:15px;font-weight:700;margin-bottom:8px}
+.how-desc{font-size:12px;color:#555;line-height:1.7}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid #1c1c1b;padding:32px 48px;display:flex;align-items:center;justify-content:space-between}
+.footer-logo{font-size:15px;font-weight:800}.footer-logo span{color:#3d3d3a}
+.footer-links{display:flex;gap:24px}.footer-links a{font-size:12px;color:#444;transition:color .15s}.footer-links a:hover{color:#fff}
+.footer-copy{font-size:11px;color:#333}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@media(max-width:900px){
+  .roles-grid{grid-template-columns:repeat(2,1fr)}
+  h1{font-size:38px}
+  .stats{gap:32px;margin:0 24px}
+  .how-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .roles-grid{grid-template-columns:1fr}
+  nav{padding:0 20px}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Connect<span>IT</span></div>
+  <div class="nav-links">
+    <a href="student-jobs.html">Browse Jobs</a>
+    <a href="vendor-register.html">For Companies</a>
+    <a href="#">Certifications</a>
+    <a href="#">Training</a>
+  </div>
+  <div class="nav-cta">
+    <button class="btn-ghost" onclick="location.href='login.html'">Sign in</button>
+    <button class="btn-white" onclick="location.href='student-register.html'">Get started free</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge"><span></span>Now live — IT Talent Marketplace</div>
+  <h1>Connect IT talent<br/>with <em>real opportunity</em></h1>
+  <p class="hero-sub">ConnectIT bridges companies, recruiters, and students — verified identities, smart location matching, and real job pipelines all in one place.</p>
+  <div class="hero-actions">
+    <button class="btn-green" onclick="location.href='student-register.html'">Join as a student →</button>
+    <button class="btn-outline-white" onclick="location.href='vendor-register.html'">Register your company</button>
+    <button class="btn-ghost" onclick="location.href='login.html'">Sign in</button>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div><div class="stat-num">2,400+</div><div class="stat-label">Verified students</div></div>
+  <div><div class="stat-num">340+</div><div class="stat-label">Active companies</div></div>
+  <div><div class="stat-num">1,800+</div><div class="stat-label">Jobs posted</div></div>
+  <div><div class="stat-num">94%</div><div class="stat-label">Placement rate</div></div>
+</div>
+
+<!-- ROLE CARDS -->
+<div class="roles-section">
+  <div class="section-label">Who is ConnectIT for?</div>
+  <div class="section-title">Pick your role and get started</div>
+  <div class="roles-grid">
+
+    <div class="role-card vendor" onclick="location.href='vendor-register.html'">
+      <div class="role-icon">🏢</div>
+      <div class="role-name">Vendor / Company</div>
+      <div class="role-desc">Register your company and hire verified IT talent across all visa types and contract structures.</div>
+      <div class="role-perks">
+        <div class="role-perk">Company EIN verification</div>
+        <div class="role-perk">Manage recruiter team</div>
+        <div class="role-perk">View all applicants</div>
+        <div class="role-perk">Filter by visa & contract</div>
+      </div>
+      <button class="role-btn">Register company →</button>
+    </div>
+
+    <div class="role-card recruiter" onclick="location.href='login.html?role=recruiter'">
+      <div class="role-icon">🔍</div>
+      <div class="role-name">Recruiter</div>
+      <div class="role-desc">Post jobs, find students near your job location, and manage your full applicant pipeline.</div>
+      <div class="role-perks">
+        <div class="role-perk">Nearby student search</div>
+        <div class="role-perk">Radius & filter tools</div>
+        <div class="role-perk">Post & manage jobs</div>
+        <div class="role-perk">Invite-only access</div>
+      </div>
+      <button class="role-btn">Sign in as recruiter →</button>
+    </div>
+
+    <div class="role-card student" onclick="location.href='student-register.html'">
+      <div class="role-icon">🎓</div>
+      <div class="role-name">Student</div>
+      <div class="role-desc">Build your verified profile, browse real IT jobs, and apply with a single click.</div>
+      <div class="role-perks">
+        <div class="role-perk">DL-verified identity</div>
+        <div class="role-perk">Upload resume & skills</div>
+        <div class="role-perk">Browse & filter jobs</div>
+        <div class="role-perk">GC/Citizen part-time jobs</div>
+      </div>
+      <button class="role-btn">Create student profile →</button>
+    </div>
+
+    <div class="role-card admin" onclick="location.href='login.html?role=admin'">
+      <div class="role-icon">🛡️</div>
+      <div class="role-name">ConnectIT Admin</div>
+      <div class="role-desc">Internal team panel — review vendor applications, approve or reject by Case ID.</div>
+      <div class="role-perks">
+        <div class="role-perk">Approve vendor accounts</div>
+        <div class="role-perk">Search by Case ID</div>
+        <div class="role-perk">Assign team members</div>
+        <div class="role-perk">Platform oversight</div>
+      </div>
+      <button class="role-btn">Admin sign in →</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how-section">
+  <div class="section-label" style="text-align:left">How it works</div>
+  <div class="section-title" style="text-align:left">From signup to hired in 3 steps</div>
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-num">STEP 01</div>
+      <div class="how-title">Verify your identity</div>
+      <div class="how-desc">Students verify with a driver's license tied to their primary address. Vendors verify with their company EIN or tax ID. No fake accounts, no ghost candidates.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">STEP 02</div>
+      <div class="how-title">Match by location & skills</div>
+      <div class="how-desc">Recruiters search for students within a custom radius of each job posting — filter by visa, contract type, tech stack, designation, and work mode all at once.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">STEP 03</div>
+      <div class="how-title">Apply and get hired</div>
+      <div class="how-desc">Students apply directly from the job detail page. Recruiters review, shortlist, and reach out — the full pipeline from discovery to offer in one place.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Connect<span>IT</span></div>
+  <div class="footer-links">
+    <a href="student-jobs.html">Browse Jobs</a>
+    <a href="vendor-register.html">For Companies</a>
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+  </div>
+  <div class="footer-copy">© 2025 ConnectIT. All rights reserved.</div>
+</footer>
+
+</body>
+</html>

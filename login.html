@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ConnectIT — Sign In</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#0f0f0e;color:#fff;min-height:100vh;display:flex;flex-direction:column}
+a{text-decoration:none;color:inherit}
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:56px;border-bottom:1px solid #1c1c1b}
+.logo{font-size:17px;font-weight:800;letter-spacing:-0.5px;cursor:pointer}.logo span{color:#3d3d3a}
+.back-link{font-size:13px;color:#555;display:flex;align-items:center;gap:5px;cursor:pointer;transition:color .15s}
+.back-link:hover{color:#fff}
+.page{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px}
+.box{width:100%;max-width:460px}
+.box-title{font-size:26px;font-weight:800;letter-spacing:-0.8px;text-align:center;margin-bottom:6px}
+.box-sub{font-size:13px;color:#555;text-align:center;margin-bottom:32px}
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px}
+.role-btn{background:#141413;border:1.5px solid #1c1c1b;border-radius:9px;padding:14px 12px;cursor:pointer;transition:all .15s;text-align:left;font-family:'DM Sans',sans-serif}
+.role-btn:hover{border-color:#333}
+.role-btn.selected{border-color:#1a6bff;background:#0d1a2e}
+.role-btn.selected.vendor{border-color:#16a34a;background:#0d2a1a}
+.role-btn.selected.student{border-color:#d97706;background:#1c1408}
+.role-btn.selected.admin{border-color:#dc2626;background:#1c0d0d}
+.role-icon{font-size:18px;margin-bottom:7px;display:block}
+.role-label{font-size:12px;font-weight:700;color:#fff;display:block;margin-bottom:2px}
+.role-sub{font-size:10px;color:#555;display:block}
+.role-btn.selected .role-sub{color:#888}
+.divider{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.divider-line{flex:1;height:1px;background:#1c1c1b}
+.divider-text{font-size:11px;color:#444;font-weight:600}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:11px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px}
+.field input{width:100%;background:#141413;border:1.5px solid #1c1c1b;border-radius:7px;padding:11px 14px;font-size:13px;font-family:'DM Sans',sans-serif;color:#fff;outline:none;transition:border-color .15s}
+.field input::placeholder{color:#333}
+.field input:focus{border-color:#1a6bff}
+.submit-btn{width:100%;background:#fff;color:#111;border:none;padding:12px;border-radius:8px;font-size:14px;font-weight:800;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;margin-top:4px}
+.submit-btn:disabled{opacity:0.6;cursor:not-allowed}
+.submit-btn.vendor-active{background:#16a34a;color:#fff}
+.submit-btn.recruiter-active{background:#1a6bff;color:#fff}
+.submit-btn.student-active{background:#d97706;color:#fff}
+.submit-btn.admin-active{background:#dc2626;color:#fff}
+.error-msg{background:#1c0d0d;border:1px solid #dc2626;color:#fca5a5;padding:10px 14px;border-radius:7px;font-size:12px;margin-bottom:16px;display:none}
+.success-msg{background:#0d2a1a;border:1px solid #16a34a;color:#86efac;padding:10px 14px;border-radius:7px;font-size:12px;margin-bottom:16px;display:none}
+.form-footer{text-align:center;margin-top:20px;font-size:12px;color:#444}
+.form-footer a{color:#666;transition:color .15s}.form-footer a:hover{color:#fff}
+.new-user-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px;padding-top:24px;border-top:1px solid #1c1c1b}
+.new-user-btn{background:#141413;border:1.5px solid #1c1c1b;border-radius:8px;padding:12px;text-align:center;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.new-user-btn:hover{border-color:#333}
+.new-user-btn .label{font-size:11px;font-weight:700;color:#fff;display:block;margin-bottom:2px}
+.new-user-btn .sub{font-size:10px;color:#555;display:block}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo" onclick="location.href='landing.html'">Connect<span>IT</span></div>
+  <div class="back-link" onclick="location.href='landing.html'">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to home
+  </div>
+</nav>
+
+<div class="page">
+  <div class="box">
+    <div class="box-title">Welcome back</div>
+    <div class="box-sub">Select your role and sign in to continue</div>
+
+    <div class="role-grid">
+      <button class="role-btn vendor" id="role-vendor" onclick="selectRole('vendor')">
+        <span class="role-icon">🏢</span>
+        <span class="role-label">Vendor / Admin</span>
+        <span class="role-sub">Company account</span>
+      </button>
+      <button class="role-btn recruiter selected" id="role-recruiter" onclick="selectRole('recruiter')">
+        <span class="role-icon">🔍</span>
+        <span class="role-label">Recruiter</span>
+        <span class="role-sub">Invite-only account</span>
+      </button>
+      <button class="role-btn student" id="role-student" onclick="selectRole('student')">
+        <span class="role-icon">🎓</span>
+        <span class="role-label">Student</span>
+        <span class="role-sub">Job seeker account</span>
+      </button>
+      <button class="role-btn admin" id="role-admin" onclick="selectRole('admin')">
+        <span class="role-icon">🛡️</span>
+        <span class="role-label">ConnectIT Admin</span>
+        <span class="role-sub">Internal team only</span>
+      </button>
+    </div>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-text">SIGN IN</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- error / success messages -->
+    <div class="error-msg"   id="error-msg"></div>
+    <div class="success-msg" id="success-msg"></div>
+
+    <div class="field">
+      <label>Email address</label>
+      <input type="email" id="email" placeholder="you@company.com"/>
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="••••••••"/>
+    </div>
+
+    <button class="submit-btn recruiter-active" id="submit-btn" onclick="handleLogin()">
+      Sign in as Recruiter →
+    </button>
+
+    <div class="form-footer">
+      <a href="#">Forgot password?</a> &nbsp;·&nbsp; New here?
+    </div>
+
+    <div class="new-user-row">
+      <div class="new-user-btn" onclick="location.href='vendor-register.html'">
+        <span class="label">🏢 Register company</span>
+        <span class="sub">New vendor account</span>
+      </div>
+      <div class="new-user-btn" onclick="location.href='student-register.html'">
+        <span class="label">🎓 Create profile</span>
+        <span class="sub">New student account</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+  // ── Supabase client ──────────────────────────────────
+  const supabase = createClient(
+    'https://vveipugwiabigzkxqfcy.supabase.co',
+    'sb_publishable_ctzp6wWO1KFbbbf6L4q8YA_olh7u1rZ'
+  )
+
+  // ── Route map ────────────────────────────────────────
+  const ROUTES = {
+    vendor:    'vendor-dashboard.html',
+    recruiter: 'recruiter-dashboard.html',
+    student:   'student-jobs.html',
+    admin:     'admin-panel.html',
+  }
+  const COLORS = {
+    vendor:'vendor-active', recruiter:'recruiter-active',
+    student:'student-active', admin:'admin-active'
+  }
+  const LABELS = {
+    vendor:'Sign in as Vendor →', recruiter:'Sign in as Recruiter →',
+    student:'Sign in as Student →', admin:'Sign in as Admin →'
+  }
+
+  let currentRole = 'recruiter'
+
+  // Pre-select from URL param
+  const urlRole = new URLSearchParams(location.search).get('role')
+  if(urlRole && ROUTES[urlRole]) selectRole(urlRole)
+
+  // ── Role selector ────────────────────────────────────
+  window.selectRole = function(role) {
+    currentRole = role
+    document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'))
+    document.getElementById('role-' + role).classList.add('selected')
+    const btn = document.getElementById('submit-btn')
+    btn.className = 'submit-btn ' + COLORS[role]
+    btn.textContent = LABELS[role]
+    document.getElementById('email').focus()
+  }
+
+  // ── Show messages ────────────────────────────────────
+  function showError(msg) {
+    const el = document.getElementById('error-msg')
+    el.textContent = msg
+    el.style.display = 'block'
+    document.getElementById('success-msg').style.display = 'none'
+  }
+  function showSuccess(msg) {
+    const el = document.getElementById('success-msg')
+    el.textContent = msg
+    el.style.display = 'block'
+    document.getElementById('error-msg').style.display = 'none'
+  }
+  function hideMessages() {
+    document.getElementById('error-msg').style.display   = 'none'
+    document.getElementById('success-msg').style.display = 'none'
+  }
+
+  // ── Login handler ────────────────────────────────────
+  window.handleLogin = async function() {
+    const email    = document.getElementById('email').value.trim()
+    const password = document.getElementById('password').value
+    const btn      = document.getElementById('submit-btn')
+
+    hideMessages()
+
+    if(!email)    { showError('Please enter your email address'); return }
+    if(!password) { showError('Please enter your password');      return }
+
+    btn.textContent = 'Signing in...'
+    btn.disabled    = true
+
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+
+    if(error) {
+      showError('Login failed: ' + error.message)
+      btn.textContent = LABELS[currentRole]
+      btn.disabled    = false
+      return
+    }
+
+    showSuccess('Login successful! Redirecting...')
+    setTimeout(() => location.href = ROUTES[currentRole], 800)
+  }
+
+  // Enter key submits
+  document.addEventListener('keydown', e => { if(e.key === 'Enter') handleLogin() })
+</script>
+</body>
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ConnectIT — Admin Setup</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f8f8f8;color:#111;line-height:1.6}
+
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:60px;border-bottom:1px solid #e5e5e5;background:#fff;position:sticky;top:0;z-index:200}
+.logo{font-size:20px;font-weight:800;color:#111;letter-spacing:-0.5px;text-decoration:none}
+.logo span{color:#555}
+.nav-r{display:flex;gap:10px}
+.btn-ghost{background:#fff;color:#111;border:1.5px solid #ddd;padding:7px 18px;border-radius:6px;font-size:13px;cursor:pointer;font-weight:500}
+.btn-solid{background:#111;color:#fff;border:none;padding:8px 20px;border-radius:6px;font-size:13px;cursor:pointer;font-weight:600}
+.btn-solid:hover{background:#333}
+
+/* PAGE */
+.page{max-width:640px;margin:0 auto;padding:52px 24px 80px}
+
+/* Step bar */
+.step-bar{display:flex;align-items:center;gap:0;margin-bottom:44px;border:1px solid #e5e5e5;border-radius:8px;overflow:hidden;background:#fff}
+.step{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 10px;font-size:12px;font-weight:600;color:#aaa;border-right:1px solid #e5e5e5;background:#fafafa}
+.step:last-child{border-right:none}
+.step.active{background:#111;color:#fff}
+.step.done{background:#f5f5f5;color:#555}
+.step-num{width:20px;height:20px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0}
+.step.active .step-num{background:#fff;color:#111;border-color:#fff}
+.step.done .step-num{background:#111;color:#fff;border-color:#111}
+
+/* Heading */
+.page-title{font-size:26px;font-weight:800;color:#111;letter-spacing:-0.8px;margin-bottom:8px}
+.page-sub{font-size:14px;color:#777;margin-bottom:32px;line-height:1.6}
+
+/* YES / NO CHOICE */
+.choice-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px}
+.choice-card{border:2px solid #e5e5e5;border-radius:12px;padding:24px 20px;cursor:pointer;transition:all .2s;background:#fff;text-align:center;user-select:none}
+.choice-card:hover{border-color:#aaa}
+.choice-card.selected-yes{border-color:#111;background:#111}
+.choice-card.selected-no{border-color:#111;background:#fff}
+.choice-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;transition:.2s}
+.yes-icon{background:#f0f0f0}
+.no-icon{background:#f0f0f0}
+.choice-card.selected-yes .yes-icon{background:rgba(255,255,255,.15)}
+.choice-card.selected-no .no-icon{background:#f5f5f5}
+.choice-icon svg{width:18px;height:18px;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke:#111;transition:.2s}
+.choice-card.selected-yes .choice-icon svg{stroke:#fff}
+.choice-title{font-size:15px;font-weight:700;color:#111;margin-bottom:4px;transition:.2s}
+.choice-card.selected-yes .choice-title{color:#fff}
+.choice-desc{font-size:12px;color:#777;line-height:1.5;transition:.2s}
+.choice-card.selected-yes .choice-desc{color:rgba(255,255,255,.6)}
+
+/* ROLE EXPLAINER */
+.role-box{background:#fff;border:1.5px solid #e5e5e5;border-radius:12px;overflow:hidden;margin-bottom:28px}
+.role-header{background:#111;padding:18px 22px;display:flex;align-items:center;gap:12px}
+.role-header-icon{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.role-header-icon svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.role-header-text strong{font-size:14px;font-weight:700;color:#fff;display:block}
+.role-header-text span{font-size:12px;color:#888}
+.role-body{padding:0}
+.role-item{display:flex;align-items:flex-start;gap:12px;padding:14px 22px;border-bottom:1px solid #f0f0f0}
+.role-item:last-child{border-bottom:none}
+.role-dot{width:22px;height:22px;border-radius:50%;background:#111;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.role-dot svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.role-item-text strong{font-size:13px;font-weight:700;color:#111;display:block;margin-bottom:1px}
+.role-item-text span{font-size:12px;color:#777;line-height:1.5}
+
+/* CANNOT DO */
+.cannot-box{background:#fafafa;border:1px solid #e5e5e5;border-radius:10px;padding:16px 20px;margin-bottom:28px}
+.cannot-title{font-size:11px;font-weight:700;letter-spacing:2px;color:#aaa;margin-bottom:12px}
+.cannot-list{display:flex;flex-direction:column;gap:8px}
+.cannot-item{display:flex;align-items:center;gap:10px;font-size:13px;color:#777}
+.cannot-x{width:18px;height:18px;border-radius:50%;background:#f0f0f0;border:1.5px solid #e5e5e5;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cannot-x svg{width:9px;height:9px;stroke:#bbb;fill:none;stroke-width:2.5;stroke-linecap:round}
+
+/* ADMIN FORM */
+.admin-form{background:#fff;border:1.5px solid #e5e5e5;border-radius:12px;padding:24px;margin-bottom:20px}
+.form-title-sm{font-size:14px;font-weight:700;color:#111;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid #f0f0f0}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field.last{margin-bottom:0}
+label{font-size:12px;font-weight:600;color:#555;letter-spacing:0.2px}
+label .req{color:#e55;margin-left:2px}
+input,select{width:100%;background:#fff;border:1.5px solid #e5e5e5;border-radius:8px;padding:11px 14px;font-size:13px;color:#111;font-family:system-ui,-apple-system,sans-serif;outline:none;transition:border-color .2s;appearance:none;-webkit-appearance:none}
+input::placeholder{color:#bbb}
+input:focus,select:focus{border-color:#111}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px;cursor:pointer}
+
+/* SKIP info box */
+.skip-box{background:#fff;border:1.5px solid #e5e5e5;border-radius:12px;padding:22px;margin-bottom:28px;text-align:center}
+.skip-icon{width:44px;height:44px;border-radius:50%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.skip-icon svg{width:18px;height:18px;stroke:#aaa;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.skip-title{font-size:14px;font-weight:700;color:#111;margin-bottom:6px}
+.skip-desc{font-size:13px;color:#777;line-height:1.6}
+
+/* Buttons */
+.btn-row{display:flex;gap:10px;margin-top:4px}
+.btn-outline{flex:1;background:#fff;color:#111;border:1.5px solid #ddd;padding:12px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:system-ui,-apple-system,sans-serif;transition:all .2s}
+.btn-outline:hover{border-color:#111}
+.btn-primary{flex:2;background:#111;color:#fff;border:none;padding:12px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:system-ui,-apple-system,sans-serif;transition:background .2s}
+.btn-primary:hover{background:#333}
+.btn-primary:disabled{background:#ccc;cursor:not-allowed}
+
+/* Step 3 locked preview */
+.step3-locked{border:1.5px dashed #e5e5e5;border-radius:12px;overflow:hidden;margin-bottom:24px}
+.step3-locked-inner{display:flex;align-items:center;gap:14px;padding:16px 20px;background:#fafafa;border-bottom:1px solid #e5e5e5}
+.lock-icon{width:36px;height:36px;border-radius:50%;background:#f0f0f0;border:1.5px solid #e5e5e5;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lock-icon svg{width:15px;height:15px;stroke:#aaa;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.step3-locked-text strong{font-size:13px;font-weight:700;color:#111;display:block;margin-bottom:2px}
+.step3-locked-text span{font-size:12px;color:#777}
+.step3-preview{padding:20px}
+.preview-label{font-size:11px;font-weight:700;letter-spacing:2px;color:#aaa;margin-bottom:14px}
+.preview-list{display:flex;flex-direction:column;gap:0}
+.preview-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid #f5f5f5}
+.preview-item:last-child{border-bottom:none}
+.preview-num{width:22px;height:22px;border-radius:50%;background:#f0f0f0;border:1.5px solid #e5e5e5;color:#bbb;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.preview-item div strong{font-size:13px;font-weight:700;color:#aaa;display:block;margin-bottom:2px}
+.preview-item div span{font-size:12px;color:#bbb;line-height:1.5}
+.preview-note{display:flex;align-items:flex-start;gap:8px;margin-top:16px;padding:12px 14px;background:#f5f5f5;border-radius:8px;font-size:12px;color:#777;line-height:1.6}
+.preview-note svg{width:13px;height:13px;stroke:#aaa;fill:none;stroke-width:2;flex-shrink:0;margin-top:1px;stroke-linecap:round;stroke-linejoin:round}
+
+/* Hidden */
+.hidden{display:none}
+
+@media(max-width:480px){.choice-row{grid-template-columns:1fr}.row{grid-template-columns:1fr}.step span{display:none}.btn-row{flex-direction:column}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="landing.html" class="logo">Connect<span>IT</span></a>
+  <div class="nav-r">
+    <button class="btn-ghost">Need help?</button>
+    <button class="btn-solid" onclick="location.href='login.html'">Sign in</button>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- Step bar -->
+  <div class="step-bar">
+    <div class="step done">
+      <div class="step-num">1</div>
+      <span>Company info</span>
+    </div>
+    <div class="step active">
+      <div class="step-num">2</div>
+      <span>Admin setup</span>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <span>Verify &amp; go</span>
+    </div>
+  </div>
+
+  <h1 class="page-title">Set up a vendor admin?</h1>
+  <p class="page-sub">A vendor admin manages your recruiters and job listings. You can set one up now or do it after approval.</p>
+
+  <!-- YES / NO -->
+  <div class="choice-row">
+    <div class="choice-card" id="yesCard" onclick="selectChoice('yes')">
+      <div class="choice-icon yes-icon">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="choice-title">Yes, set up now</div>
+      <div class="choice-desc">Add admin details right away so they're ready the moment we approve your account</div>
+    </div>
+    <div class="choice-card" id="noCard" onclick="selectChoice('no')">
+      <div class="choice-icon no-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg>
+      </div>
+      <div class="choice-title">No, do it later</div>
+      <div class="choice-desc">Skip for now and set up your admin from the vendor dashboard after approval</div>
+    </div>
+  </div>
+
+  <!-- SHOWN WHEN YES -->
+  <div id="yesSection" class="hidden">
+
+    <!-- Role explainer -->
+    <div class="role-box">
+      <div class="role-header">
+        <div class="role-header-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="role-header-text">
+          <strong>What the vendor admin can do</strong>
+          <span>Full control over your company's account on ConnectIT</span>
+        </div>
+      </div>
+      <div class="role-body">
+        <div class="role-item">
+          <div class="role-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="role-item-text">
+            <strong>Invite &amp; manage recruiters</strong>
+            <span>Add new recruiters by email, set what each one can or cannot do, and remove access anytime</span>
+          </div>
+        </div>
+        <div class="role-item">
+          <div class="role-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="role-item-text">
+            <strong>View all job listings</strong>
+            <span>See every job posted by every recruiter under your company — full visibility</span>
+          </div>
+        </div>
+        <div class="role-item">
+          <div class="role-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="role-item-text">
+            <strong>Edit or remove any listing</strong>
+            <span>Override or take down any recruiter's job post if needed</span>
+          </div>
+        </div>
+        <div class="role-item">
+          <div class="role-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="role-item-text">
+            <strong>Manage company profile</strong>
+            <span>Update company description, logo, website, and contact details</span>
+          </div>
+        </div>
+        <div class="role-item">
+          <div class="role-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="role-item-text">
+            <strong>View all applicants</strong>
+            <span>Browse every student who applied to any job under your company</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cannot do -->
+    <div class="cannot-box">
+      <div class="cannot-title">Admin cannot</div>
+      <div class="cannot-list">
+        <div class="cannot-item">
+          <div class="cannot-x"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+          Access ConnectIT platform settings or other vendor accounts
+        </div>
+        <div class="cannot-item">
+          <div class="cannot-x"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+          Approve or reject other vendors — that's ConnectIT's job
+        </div>
+        <div class="cannot-item">
+          <div class="cannot-x"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+          Change the company's registered email or tax ID
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin details form -->
+    <div class="admin-form">
+      <div class="form-title-sm">Admin details</div>
+      <div class="row">
+        <div class="field">
+          <label>First name <span class="req">*</span></label>
+          <input type="text" placeholder="e.g. Rahul"/>
+        </div>
+        <div class="field">
+          <label>Last name <span class="req">*</span></label>
+          <input type="text" placeholder="e.g. Sharma"/>
+        </div>
+      </div>
+      <div class="field">
+        <label>Work email <span class="req">*</span></label>
+        <input type="email" placeholder="admin@yourcompany.com"/>
+      </div>
+      <div class="row">
+        <div class="field last">
+          <label>Job title <span class="req">*</span></label>
+          <input type="text" placeholder="e.g. HR Manager"/>
+        </div>
+        <div class="field last">
+          <label>Phone number</label>
+          <input type="tel" placeholder="+91 00000 00000"/>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SHOWN WHEN NO -->
+  <div id="noSection" class="hidden">
+    <div class="skip-box">
+      <div class="skip-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg>
+      </div>
+      <div class="skip-title">You can set this up later</div>
+      <div class="skip-desc">Once your account is approved, log in to your vendor dashboard and set up your admin from there. Your recruiters won't be able to post jobs until an admin is assigned.</div>
+    </div>
+  </div>
+
+  <!-- Step 3 locked preview — always visible -->
+  <div class="step3-locked">
+    <div class="step3-locked-inner">
+      <div class="lock-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <div class="step3-locked-text">
+        <strong>Step 3 — Admin setup unlocks after verification</strong>
+        <span>Once ConnectIT approves your account you'll be able to complete Step 3. Here's what's waiting for you.</span>
+      </div>
+    </div>
+    <div class="step3-preview">
+      <div class="preview-label">What you'll do in Step 3</div>
+      <div class="preview-list">
+        <div class="preview-item">
+          <div class="preview-num">1</div>
+          <div>
+            <strong>Set up your vendor admin account</strong>
+            <span>The admin manages recruiters and has full visibility over all job listings and applicants</span>
+          </div>
+        </div>
+        <div class="preview-item">
+          <div class="preview-num">2</div>
+          <div>
+            <strong>Invite your recruiters</strong>
+            <span>Add team members by email — each recruiter gets their own login and can post jobs independently</span>
+          </div>
+        </div>
+        <div class="preview-item">
+          <div class="preview-num">3</div>
+          <div>
+            <strong>Set recruiter permissions</strong>
+            <span>Decide if each recruiter can post jobs, view all applicants, shortlist candidates, or manage listings</span>
+          </div>
+        </div>
+        <div class="preview-item">
+          <div class="preview-num">4</div>
+          <div>
+            <strong>Post your first job listing</strong>
+            <span>Go live on ConnectIT and start receiving applications from verified students</span>
+          </div>
+        </div>
+      </div>
+      <div class="preview-note">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        You'll receive an email from ConnectIT with a direct link to Step 3 once your account is approved. Your Case ID will be in that email.
+      </div>
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="btn-row">
+    <button class="btn-outline" onclick="location.href='vendor-register.html'">← Back</button>
+    <button class="btn-primary" id="continueBtn" onclick="location.href='vendor-verify.html'" disabled>Continue to Step 3 →</button>
+  </div>
+
+</div>
+
+<script>
+let currentChoice = null
+
+function selectChoice(choice){
+  currentChoice = choice
+  const yesCard = document.getElementById('yesCard')
+  const noCard  = document.getElementById('noCard')
+  const yesSection = document.getElementById('yesSection')
+  const noSection  = document.getElementById('noSection')
+  const btn = document.getElementById('continueBtn')
+
+  yesCard.className = 'choice-card' + (choice==='yes' ? ' selected-yes' : '')
+  noCard.className  = 'choice-card' + (choice==='no'  ? ' selected-no'  : '')
+
+  yesSection.classList.toggle('hidden', choice !== 'yes')
+  noSection.classList.toggle('hidden',  choice !== 'no')
+
+  btn.disabled = false
+  btn.textContent = choice === 'yes' ? 'Continue to Step 3 →' : 'Skip & continue to Step 3 →'
+}
+
+function goBack(){ history.back() }
+function goNext(){
+  if(!currentChoice) return
+  // Navigate to step 3 (verify & go)
+  alert('Proceeding to Step 3 — Verify & Go')
+}
+</script>
+</body>
+</html>

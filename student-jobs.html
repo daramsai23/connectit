@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ConnectIT — Browse Jobs</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f8f8f8;color:#111}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:60px;border-bottom:1px solid #e5e5e5;background:#fff;position:sticky;top:0;z-index:200}
+.logo{font-size:20px;font-weight:800;color:#111;letter-spacing:-0.5px;text-decoration:none}
+.logo span{color:#555}
+.nav-links a{font-size:13px;color:#666;text-decoration:none;padding:0 14px;height:60px;display:inline-flex;align-items:center;border-bottom:2px solid transparent;transition:.2s}
+.nav-links a.active,.nav-links a:hover{color:#111;border-bottom-color:#111}
+.nav-r{display:flex;gap:10px;align-items:center}
+.btn-ghost{background:#fff;color:#111;border:1.5px solid #ddd;padding:7px 18px;border-radius:6px;font-size:13px;cursor:pointer;font-weight:500}
+.user-av{width:32px;height:32px;border-radius:50%;background:#2563eb;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;cursor:pointer}
+/* Search hero */
+.search-hero{background:#111;padding:36px 48px}
+.hero-title{font-size:26px;font-weight:800;color:#fff;letter-spacing:-0.8px;margin-bottom:16px}
+.search-bar{display:flex;gap:0;background:#fff;border-radius:8px;overflow:hidden;max-width:700px}
+.search-input{flex:1;border:none;padding:14px 18px;font-size:14px;color:#111;font-family:system-ui,-apple-system,sans-serif;outline:none}
+.search-input::placeholder{color:#bbb}
+.search-divider{width:1px;background:#e5e5e5;margin:10px 0}
+.location-input{width:180px;border:none;padding:14px 18px;font-size:14px;color:#111;font-family:system-ui,-apple-system,sans-serif;outline:none}
+.location-input::placeholder{color:#bbb}
+.search-btn{background:#111;color:#fff;border:none;padding:0 24px;font-size:13px;font-weight:700;cursor:pointer;font-family:system-ui,-apple-system,sans-serif;transition:.2s}
+.search-btn:hover{background:#333}
+.quick-tags{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.quick-tag{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#ccc;font-size:12px;font-weight:500;padding:5px 12px;border-radius:20px;cursor:pointer;transition:.2s}
+.quick-tag:hover{background:rgba(255,255,255,.2);color:#fff}
+/* Layout */
+.page{display:grid;grid-template-columns:260px 1fr;gap:20px;max-width:1100px;margin:0 auto;padding:24px}
+/* Filters sidebar */
+.filters{background:#fff;border:1.5px solid #e5e5e5;border-radius:10px;padding:20px;height:fit-content;position:sticky;top:80px}
+.filter-title{font-size:13px;font-weight:800;color:#111;margin-bottom:14px;letter-spacing:-0.3px}
+.filter-section{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f0f0f0}
+.filter-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.filter-label{font-size:11px;font-weight:700;letter-spacing:2px;color:#aaa;margin-bottom:10px}
+.filter-option{display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer}
+.filter-option input[type=checkbox]{width:14px;height:14px;accent-color:#111;cursor:pointer}
+.filter-option label{font-size:13px;color:#555;cursor:pointer;flex:1}
+.filter-count{font-size:11px;color:#aaa}
+/* Job cards */
+.results-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.results-count{font-size:14px;font-weight:700;color:#111}
+.sort-select{border:1.5px solid #e5e5e5;border-radius:6px;padding:7px 28px 7px 12px;font-size:12px;color:#555;font-family:system-ui,-apple-system,sans-serif;outline:none;background:#fff;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+.job-card{background:#fff;border:1.5px solid #e5e5e5;border-radius:10px;padding:20px;margin-bottom:12px;transition:.15s;cursor:pointer}
+.job-card:hover{border-color:#aaa;transform:translateY(-1px)}
+.job-card.featured{border-color:#111;border-width:2px}
+.job-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:12px}
+.company-logo{width:44px;height:44px;border-radius:10px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#555;flex-shrink:0;border:1px solid #e5e5e5}
+.job-title{font-size:15px;font-weight:800;color:#111;letter-spacing:-0.3px;margin-bottom:3px}
+.job-company{font-size:13px;color:#555;margin-bottom:6px}
+.job-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.job-meta-item{display:flex;align-items:center;gap:4px;font-size:12px;color:#777}
+.job-meta-item svg{width:12px;height:12px;stroke:#aaa;fill:none;stroke-width:2;stroke-linecap:round}
+.job-tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}
+.tag{background:#f5f5f5;border:1px solid #e5e5e5;color:#555;font-size:11px;font-weight:600;padding:3px 9px;border-radius:4px}
+.job-footer{display:flex;align-items:center;justify-content:space-between}
+.job-salary{font-size:13px;font-weight:700;color:#111}
+.job-actions{display:flex;gap:8px}
+.save-btn{background:#fff;border:1.5px solid #ddd;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:600;color:#555;cursor:pointer;font-family:system-ui,-apple-system,sans-serif;transition:.2s}
+.save-btn:hover{border-color:#111;color:#111}
+.apply-btn{background:#111;color:#fff;border:none;border-radius:6px;padding:7px 20px;font-size:12px;font-weight:700;cursor:pointer;font-family:system-ui,-apple-system,sans-serif;transition:.2s}
+.apply-btn:hover{background:#333}
+.featured-badge{background:#111;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:0.5px}
+.new-badge{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.live-dot{width:5px;height:5px;border-radius:50%;background:#4ade80;animation:blink 2s infinite;display:inline-block;margin-right:3px}
+@media(max-width:760px){.page{grid-template-columns:1fr}.filters{display:none}.search-hero{padding:24px}.hero-title{font-size:20px}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="student-jobs.html" class="logo">Connect<span>IT</span></a>
+  <div class="nav-links"><a href="student-jobs.html" class="active">Browse Jobs</a><a href="#">Companies</a><a href="student-profile.html">My Profile</a></div>
+  <div class="nav-r"><button class="btn-ghost">My profile</button><div class="user-av">AK</div></div>
+</nav>
+
+<div class="search-hero">
+  <div class="hero-title">Find your next opportunity</div>
+  <div class="search-bar">
+    <input class="search-input" type="text" placeholder="Job title, skill or keyword"/>
+    <div class="search-divider"></div>
+    <input class="location-input" type="text" placeholder="City or remote"/>
+    <button class="search-btn">Search</button>
+  </div>
+  <div class="quick-tags">
+    <span class="quick-tag">Frontend</span>
+    <span class="quick-tag">Data Analyst</span>
+    <span class="quick-tag">Design</span>
+    <span class="quick-tag">Backend</span>
+    <span class="quick-tag">Marketing</span>
+    <span class="quick-tag">Remote</span>
+    <span class="quick-tag">Internship</span>
+  </div>
+</div>
+
+<div class="page">
+  <!-- Filters -->
+  <div class="filters">
+    <div class="filter-title">Filters</div>
+    <div class="filter-section">
+      <div class="filter-label">Job type</div>
+      <div class="filter-option"><input type="checkbox" checked/><label>Internship</label><span class="filter-count">48</span></div>
+      <div class="filter-option"><input type="checkbox"/><label>Full-time</label><span class="filter-count">124</span></div>
+      <div class="filter-option"><input type="checkbox"/><label>Part-time</label><span class="filter-count">22</span></div>
+      <div class="filter-option"><input type="checkbox"/><label>Contract</label><span class="filter-count">15</span></div>
+    </div>
+    <div class="filter-section">
+      <div class="filter-label">Work mode</div>
+      <div class="filter-option"><input type="checkbox"/><label>Remote</label><span class="filter-count">56</span></div>
+      <div class="filter-option"><input type="checkbox" checked/><label>On-site</label><span class="filter-count">89</span></div>
+      <div class="filter-option"><input type="checkbox"/><label>Hybrid</label><span class="filter-count">34</span></div>
+    </div>
+    <div class="filter-section">
+      <div class="filter-label">Location</div>
+      <div class="filter-option"><input type="checkbox" checked/><label>Mumbai</label><span class="filter-count">32</span></div>
+      <div class="filter-option"><input type="checkbox"/><label>Bangalore</label><span class="filter-count">44</span></div>
+      <div class="filter-option"><input type="checkbox"/><label>Delhi</label><span class="filter-count">28</span></div>
+      <div class="filter-option"><input type="checkbox"/><label>Hyderabad</label><span class="filter-count">19</span></div>
+    </div>
+    <div class="filter-section">
+      <div class="filter-label">Industry</div>
+      <div class="filter-option"><input type="checkbox" checked/><label>Technology</label></div>
+      <div class="filter-option"><input type="checkbox"/><label>Finance</label></div>
+      <div class="filter-option"><input type="checkbox"/><label>Design</label></div>
+      <div class="filter-option"><input type="checkbox"/><label>Marketing</label></div>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div>
+    <div class="results-head">
+      <div class="results-count">209 jobs found</div>
+      <select class="sort-select"><option>Most relevant</option><option>Most recent</option><option>Highest salary</option></select>
+    </div>
+
+    <div class="job-card featured" onclick="location.href='student-job-detail.html'">
+      <div class="job-top">
+        <div class="company-logo">AC</div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><div class="job-title">Frontend Developer Intern</div><span class="featured-badge">FEATURED</span></div>
+          <div class="job-company">Acme Corp · Verified ✓</div>
+          <div class="job-meta"><div class="job-meta-item"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Mumbai, India</div><div class="job-meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Full-time</div><div class="job-meta-item"><span class="live-dot"></span>Posted 2 days ago</div></div>
+        </div>
+      </div>
+      <div class="job-tags"><span class="tag">React</span><span class="tag">JavaScript</span><span class="tag">CSS</span><span class="tag">Git</span></div>
+      <div class="job-footer"><div class="job-salary">₹15,000 – ₹20,000/month</div><div class="job-actions"><button class="save-btn">Save</button><button class="apply-btn">Apply now</button></div></div>
+    </div>
+
+    <div class="job-card" onclick="location.href='student-job-detail.html'">
+      <div class="job-top">
+        <div class="company-logo" style="background:#7c3aed;color:#fff">TB</div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><div class="job-title">Data Analyst — Entry Level</div><span class="new-badge">NEW</span></div>
+          <div class="job-company">TechBridge India · Verified ✓</div>
+          <div class="job-meta"><div class="job-meta-item"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Bangalore</div><div class="job-meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Internship</div><div class="job-meta-item"><span class="live-dot"></span>Posted today</div></div>
+        </div>
+      </div>
+      <div class="job-tags"><span class="tag">Python</span><span class="tag">SQL</span><span class="tag">Excel</span><span class="tag">Power BI</span></div>
+      <div class="job-footer"><div class="job-salary">₹12,000/month</div><div class="job-actions"><button class="save-btn">Save</button><button class="apply-btn">Apply now</button></div></div>
+    </div>
+
+    <div class="job-card" onclick="location.href='student-job-detail.html'">
+      <div class="job-top">
+        <div class="company-logo" style="background:#0891b2;color:#fff">DZ</div>
+        <div style="flex:1">
+          <div class="job-title" style="margin-bottom:4px">UI/UX Design Trainee</div>
+          <div class="job-company">DesignZone · Verified ✓</div>
+          <div class="job-meta"><div class="job-meta-item"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Remote</div><div class="job-meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Internship</div><div class="job-meta-item"><span class="live-dot"></span>Posted 1 week ago</div></div>
+        </div>
+      </div>
+      <div class="job-tags"><span class="tag">Figma</span><span class="tag">Adobe XD</span><span class="tag">Prototyping</span></div>
+      <div class="job-footer"><div class="job-salary">₹10,000/month</div><div class="job-actions"><button class="save-btn">Save</button><button class="apply-btn">Apply now</button></div></div>
+    </div>
+
+    <div class="job-card" onclick="location.href='student-job-detail.html'">
+      <div class="job-top">
+        <div class="company-logo" style="background:#16a34a;color:#fff">GF</div>
+        <div style="flex:1">
+          <div class="job-title" style="margin-bottom:4px">Marketing Intern</div>
+          <div class="job-company">GrowFast Media · Verified ✓</div>
+          <div class="job-meta"><div class="job-meta-item"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Delhi</div><div class="job-meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Internship</div><div class="job-meta-item">Posted 3 days ago</div></div>
+        </div>
+      </div>
+      <div class="job-tags"><span class="tag">Social Media</span><span class="tag">Content Writing</span><span class="tag">SEO</span></div>
+      <div class="job-footer"><div class="job-salary">₹8,000/month</div><div class="job-actions"><button class="save-btn">Save</button><button class="apply-btn">Apply now</button></div></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

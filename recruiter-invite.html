@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ConnectIT — Accept Invite</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f8f8f8;color:#111;min-height:100vh;display:flex;flex-direction:column}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:60px;border-bottom:1px solid #e5e5e5;background:#fff}
+.logo{font-size:20px;font-weight:800;color:#111;letter-spacing:-0.5px;text-decoration:none}
+.logo span{color:#555}
+.page{max-width:520px;margin:0 auto;padding:52px 24px 80px;width:100%}
+.invite-card{background:#fff;border:1.5px solid #e5e5e5;border-radius:14px;overflow:hidden;margin-bottom:20px}
+.invite-top{background:#111;padding:28px;text-align:center}
+.company-av{width:60px;height:60px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#111;margin:0 auto 14px}
+.invite-top h2{font-size:20px;font-weight:800;color:#fff;letter-spacing:-0.5px;margin-bottom:6px}
+.invite-top p{font-size:13px;color:#666;line-height:1.6}
+.invite-body{padding:24px}
+.invite-from{display:flex;align-items:center;gap:12px;padding:14px 16px;background:#f8f8f8;border:1px solid #e5e5e5;border-radius:8px;margin-bottom:20px}
+.from-av{width:36px;height:36px;border-radius:50%;background:#111;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
+.from-name{font-size:13px;font-weight:700;color:#111}
+.from-role{font-size:11px;color:#777}
+.perms-title{font-size:11px;font-weight:700;letter-spacing:2px;color:#aaa;margin-bottom:10px}
+.perms-list{display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
+.perm-row{display:flex;align-items:center;gap:8px;font-size:13px;color:#555}
+.perm-row svg{width:14px;height:14px;stroke:#16a34a;fill:none;stroke-width:2.5;stroke-linecap:round;flex-shrink:0}
+.section-label{font-size:11px;font-weight:700;letter-spacing:2px;color:#aaa;margin:20px 0 12px;padding-bottom:10px;border-bottom:1px solid #e5e5e5}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-size:12px;font-weight:600;color:#555}
+.field input{border:1.5px solid #e5e5e5;border-radius:8px;padding:11px 14px;font-size:13px;color:#111;font-family:system-ui,-apple-system,sans-serif;outline:none;transition:.2s;width:100%}
+.field input:focus{border-color:#111}
+.field input::placeholder{color:#bbb}
+.field input[disabled]{background:#f5f5f5;color:#aaa}
+.strength-bar{display:flex;gap:4px;margin-top:6px}
+.seg{height:3px;flex:1;border-radius:2px;background:#e5e5e5;transition:.25s}
+.seg.weak{background:#e55}
+.seg.fair{background:#f59e0b}
+.seg.good{background:#4ade80}
+.strength-label{font-size:11px;color:#aaa;margin-top:4px}
+.btn-primary{width:100%;background:#111;color:#fff;border:none;padding:13px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:system-ui,-apple-system,sans-serif;transition:.2s;margin-top:6px}
+.btn-primary:hover{background:#333}
+.terms{text-align:center;margin-top:14px;font-size:12px;color:#aaa;line-height:1.6}
+.terms a{color:#111;font-weight:600;text-decoration:none}
+</style>
+</head>
+<body>
+<nav class="nav"><a href="login.html" class="logo">Connect<span>IT</span></a></nav>
+<div class="page">
+
+  <div class="invite-card">
+    <div class="invite-top">
+      <div class="company-av">AC</div>
+      <h2>You're invited to join Acme Corp</h2>
+      <p>Rahul Sharma (Vendor Admin) has invited you to join Acme Corp's recruiter team on ConnectIT</p>
+    </div>
+    <div class="invite-body">
+      <div class="invite-from">
+        <div class="from-av">RS</div>
+        <div>
+          <div class="from-name">Rahul Sharma</div>
+          <div class="from-role">Vendor Admin · Acme Corp</div>
+        </div>
+      </div>
+
+      <div class="perms-title">Your permissions</div>
+      <div class="perms-list">
+        <div class="perm-row"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Post job listings</div>
+        <div class="perm-row"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>View applicants for your jobs</div>
+        <div class="perm-row"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Shortlist and reject candidates</div>
+        <div class="perm-row"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Download student resumes</div>
+      </div>
+
+      <div class="section-label">Set up your account</div>
+
+      <div class="field">
+        <label>Your name</label>
+        <input type="text" value="Priya Kumar" disabled/>
+      </div>
+      <div class="field">
+        <label>Work email</label>
+        <input type="email" value="priya@acme.com" disabled/>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="field">
+          <label>Create password *</label>
+          <input type="password" placeholder="Min. 8 characters" oninput="checkStr(this.value)"/>
+          <div class="strength-bar"><div class="seg" id="s1"></div><div class="seg" id="s2"></div><div class="seg" id="s3"></div><div class="seg" id="s4"></div></div>
+          <div class="strength-label" id="sl">—</div>
+        </div>
+        <div class="field">
+          <label>Confirm password *</label>
+          <input type="password" placeholder="Re-enter password"/>
+        </div>
+      </div>
+      <div class="field">
+        <label>Phone number</label>
+        <input type="tel" placeholder="+91 00000 00000"/>
+      </div>
+
+      <button class="btn-primary" onclick="acceptInvite(this)">Accept invite & get started →</button>
+      <div class="terms">By accepting you agree to ConnectIT's <a href="recruiter-dashboard.html">Terms of Service</a></div>
+    </div>
+  </div>
+
+</div>
+<script>
+function checkStr(v){
+  const segs=[document.getElementById('s1'),document.getElementById('s2'),document.getElementById('s3'),document.getElementById('s4')]
+  const lbl=document.getElementById('sl')
+  segs.forEach(s=>s.className='seg')
+  if(!v){lbl.textContent='—';return}
+  let sc=0
+  if(v.length>=8)sc++
+  if(/[A-Z]/.test(v))sc++
+  if(/[0-9]/.test(v))sc++
+  if(/[^A-Za-z0-9]/.test(v))sc++
+  const cls=['weak','weak','fair','good']
+  const labels=['Too short','Weak','Fair','Strong']
+  for(let i=0;i<sc;i++)segs[i].classList.add(cls[sc-1])
+  lbl.textContent=labels[sc-1]||''
+}
+function acceptInvite(btn){
+  btn.textContent='Setting up your account…'
+  btn.style.opacity='.7'
+  btn.disabled=true
+  setTimeout(()=>{
+    btn.textContent='✓ Account ready! Taking you to your dashboard…'
+    btn.style.background='#16a34a'
+    btn.style.opacity='1'
+  },1500)
+}
+</script>
+</body>
+</html>

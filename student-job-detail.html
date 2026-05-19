@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ConnectIT — Job Detail</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f8f8f8;color:#111}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:60px;border-bottom:1px solid #e5e5e5;background:#fff;position:sticky;top:0;z-index:200}
+.logo{font-size:20px;font-weight:800;color:#111;letter-spacing:-0.5px;text-decoration:none}
+.logo span{color:#555}
+.nav-links a{font-size:13px;color:#666;text-decoration:none;padding:0 14px;height:60px;display:inline-flex;align-items:center;border-bottom:2px solid transparent}
+.nav-links a:hover{color:#111;border-bottom-color:#111}
+.nav-r{display:flex;gap:10px;align-items:center}
+.btn-ghost{background:#fff;color:#111;border:1.5px solid #ddd;padding:7px 18px;border-radius:6px;font-size:13px;cursor:pointer;font-weight:500}
+.user-av{width:32px;height:32px;border-radius:50%;background:#2563eb;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;cursor:pointer}
+.page{max-width:960px;margin:0 auto;padding:28px 24px 80px;display:grid;grid-template-columns:1fr 320px;gap:20px}
+.back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#777;font-weight:600;cursor:pointer;margin-bottom:16px;text-decoration:none}
+.back:hover{color:#111}
+.back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.card{background:#fff;border:1.5px solid #e5e5e5;border-radius:10px;padding:24px;margin-bottom:16px}
+/* Job header */
+.job-header{display:flex;gap:16px;align-items:flex-start;margin-bottom:20px}
+.company-logo{width:56px;height:56px;border-radius:12px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#555;flex-shrink:0;border:1.5px solid #e5e5e5}
+.job-title{font-size:22px;font-weight:800;color:#111;letter-spacing:-0.5px;margin-bottom:4px}
+.job-company{font-size:14px;color:#555;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.verified{background:#f0fdf4;color:#16a34a;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid #bbf7d0}
+.meta-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.meta-item{display:flex;align-items:center;gap:5px;font-size:13px;color:#777}
+.meta-item svg{width:13px;height:13px;stroke:#aaa;fill:none;stroke-width:2;stroke-linecap:round}
+.tags-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid #f0f0f0}
+.tag{background:#f5f5f5;border:1px solid #e5e5e5;color:#555;font-size:12px;font-weight:600;padding:4px 10px;border-radius:5px}
+/* Section */
+.section-title{font-size:14px;font-weight:800;color:#111;margin-bottom:12px;letter-spacing:-0.3px}
+.body-text{font-size:13px;color:#555;line-height:1.8}
+.body-text p{margin-bottom:10px}
+.body-text ul{padding-left:18px}
+.body-text li{margin-bottom:6px}
+/* Apply sidebar */
+.apply-card{background:#fff;border:1.5px solid #e5e5e5;border-radius:10px;padding:22px;position:sticky;top:80px}
+.salary{font-size:22px;font-weight:800;color:#111;letter-spacing:-0.5px;margin-bottom:4px}
+.salary-label{font-size:12px;color:#aaa;margin-bottom:20px}
+.apply-btn{width:100%;background:#111;color:#fff;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:700;font-family:system-ui,-apple-system,sans-serif;cursor:pointer;transition:.2s;margin-bottom:10px}
+.apply-btn:hover{background:#333}
+.save-btn{width:100%;background:#fff;color:#111;border:1.5px solid #ddd;border-radius:8px;padding:11px;font-size:13px;font-weight:600;font-family:system-ui,-apple-system,sans-serif;cursor:pointer;transition:.2s;margin-bottom:20px}
+.save-btn:hover{border-color:#111}
+.detail-list{display:flex;flex-direction:column;gap:10px}
+.detail-item{display:flex;align-items:flex-start;gap:10px}
+.detail-icon{width:30px;height:30px;border-radius:7px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.detail-icon svg{width:13px;height:13px;stroke:#555;fill:none;stroke-width:2;stroke-linecap:round}
+.detail-label{font-size:11px;color:#aaa;margin-bottom:1px}
+.detail-val{font-size:13px;font-weight:600;color:#111}
+.company-card{background:#fff;border:1.5px solid #e5e5e5;border-radius:10px;padding:18px;margin-top:14px}
+.company-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.co-logo{width:40px;height:40px;border-radius:9px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#555;border:1px solid #e5e5e5}
+.co-name{font-size:13px;font-weight:700;color:#111}
+.co-type{font-size:11px;color:#aaa}
+.co-desc{font-size:12px;color:#555;line-height:1.6}
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:300;display:none;align-items:center;justify-content:center;padding:24px}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:12px;width:100%;max-width:500px;overflow:hidden}
+.modal-head{padding:20px 24px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-size:15px;font-weight:800;color:#111}
+.modal-sub{font-size:13px;color:#777;margin-top:2px}
+.modal-close{background:none;border:none;cursor:pointer}
+.modal-close svg{width:16px;height:16px;stroke:#aaa;fill:none;stroke-width:2;stroke-linecap:round}
+.modal-body{padding:20px 24px}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.field label{font-size:12px;font-weight:600;color:#555}
+.field input,.field textarea,.field select{border:1.5px solid #e5e5e5;border-radius:8px;padding:10px 13px;font-size:13px;color:#111;font-family:system-ui,-apple-system,sans-serif;outline:none;transition:.2s;width:100%;appearance:none}
+.field input:focus,.field textarea:focus{border-color:#111}
+.field textarea{resize:none;min-height:80px;line-height:1.6}
+.file-zone{border:1.5px dashed #e5e5e5;border-radius:8px;padding:18px;text-align:center;cursor:pointer;transition:.2s;background:#fafafa}
+.file-zone:hover{border-color:#111}
+.file-zone strong{font-size:13px;color:#111;display:block;margin-bottom:3px}
+.file-zone span{font-size:12px;color:#aaa}
+.modal-footer{display:flex;gap:10px;padding:0 24px 20px}
+.btn-cancel{flex:1;background:#fff;color:#111;border:1.5px solid #ddd;padding:11px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:system-ui,-apple-system,sans-serif}
+.btn-submit{flex:2;background:#111;color:#fff;border:none;padding:11px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:system-ui,-apple-system,sans-serif}
+.btn-submit:hover{background:#333}
+.applied-state{text-align:center;padding:32px 24px}
+.applied-icon{width:56px;height:56px;border-radius:50%;background:#111;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.applied-icon svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round}
+@media(max-width:760px){.page{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="student-jobs.html" class="logo">Connect<span>IT</span></a>
+  <div class="nav-links"><a href="student-jobs.html">Browse Jobs</a></div>
+  <div class="nav-r"><button class="btn-ghost">My profile</button><div class="user-av">AK</div></div>
+</nav>
+
+<div class="page">
+  <div>
+    <a href="student-jobs.html" class="back"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Back to jobs</a>
+
+    <div class="card">
+      <div class="job-header">
+        <div class="company-logo">AC</div>
+        <div>
+          <div class="job-title">Frontend Developer Intern</div>
+          <div class="job-company">Acme Corp <span class="verified">Verified ✓</span></div>
+          <div class="meta-row">
+            <div class="meta-item"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Mumbai, India</div>
+            <div class="meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Internship · 3 months</div>
+            <div class="meta-item"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>On-site</div>
+          </div>
+        </div>
+      </div>
+      <div class="tags-row"><span class="tag">React</span><span class="tag">JavaScript</span><span class="tag">CSS</span><span class="tag">Git</span><span class="tag">REST APIs</span></div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">About the role</div>
+      <div class="body-text">
+        <p>We're looking for a motivated frontend development intern to join our product team in Mumbai. You'll be working closely with senior engineers and designers to build and improve our web products.</p>
+        <p>This is a paid internship with a chance to convert to a full-time role based on performance.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">What you'll do</div>
+      <div class="body-text">
+        <ul>
+          <li>Build and maintain React components for our customer-facing dashboard</li>
+          <li>Work closely with the design team to implement pixel-perfect UIs</li>
+          <li>Participate in code reviews and learn from experienced engineers</li>
+          <li>Write clean, maintainable, and well-documented code</li>
+          <li>Debug and fix UI issues reported by users or QA team</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">What we're looking for</div>
+      <div class="body-text">
+        <ul>
+          <li>Strong foundation in HTML, CSS, and JavaScript</li>
+          <li>Experience with React or willingness to learn quickly</li>
+          <li>Understanding of responsive design principles</li>
+          <li>Good eye for design and attention to detail</li>
+          <li>Currently enrolled in B.Tech/B.E/BCA or equivalent (2024/2025 batch preferred)</li>
+          <li>Good communication skills — we're a collaborative team</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div>
+    <div class="apply-card">
+      <div class="salary">₹15,000 – ₹20,000</div>
+      <div class="salary-label">per month · 3 months internship</div>
+      <button class="apply-btn" onclick="document.getElementById('applyModal').classList.add('show')">Apply now →</button>
+      <button class="save-btn">Save job</button>
+      <div class="detail-list">
+        <div class="detail-item"><div class="detail-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="detail-label">Duration</div><div class="detail-val">3 months</div></div></div>
+        <div class="detail-item"><div class="detail-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div><div class="detail-label">Openings</div><div class="detail-val">3 positions</div></div></div>
+        <div class="detail-item"><div class="detail-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div><div class="detail-label">Apply by</div><div class="detail-val">30 Apr 2024</div></div></div>
+        <div class="detail-item"><div class="detail-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div><div><div class="detail-label">Posted by</div><div class="detail-val">Priya Kumar</div></div></div>
+      </div>
+    </div>
+
+    <div class="company-card">
+      <div class="company-head">
+        <div class="co-logo">AC</div>
+        <div><div class="co-name">Acme Corp</div><div class="co-type">Technology · 200–500 employees</div></div>
+      </div>
+      <div class="co-desc">Acme Corp builds enterprise software for mid-sized businesses. We're known for our culture of learning and work-life balance.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Apply Modal -->
+<div class="modal-bg" id="applyModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div><div class="modal-title">Apply — Frontend Developer Intern</div><div class="modal-sub">Acme Corp · Mumbai</div></div>
+      <button class="modal-close" onclick="document.getElementById('applyModal').classList.remove('show')"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body" id="applyBody">
+      <div class="field"><label>Your name</label><input type="text" value="Aditya Kapoor" disabled/></div>
+      <div class="field"><label>Email</label><input type="email" value="aditya@iitb.ac.in" disabled/></div>
+      <div class="field"><label>Cover note (optional)</label><textarea placeholder="Why are you interested in this role? Keep it short and genuine…"></textarea></div>
+      <div class="field">
+        <label>Resume</label>
+        <div class="file-zone">
+          <strong>Aditya_Kapoor_Resume.pdf</strong>
+          <span>Already attached from your profile · Click to change</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" id="applyFooter">
+      <button class="btn-cancel" onclick="document.getElementById('applyModal').classList.remove('show')">Cancel</button>
+      <button class="btn-submit" onclick="submitApp()">Submit application →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function submitApp(){
+  document.getElementById('applyFooter').style.display='none'
+  document.getElementById('applyBody').innerHTML=`
+    <div class="applied-state">
+      <div class="applied-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div style="font-size:16px;font-weight:800;color:#111;margin-bottom:6px">Application submitted!</div>
+      <div style="font-size:13px;color:#777;line-height:1.6">Acme Corp will review your profile and get back to you. You can track the status from your profile.</div>
+      <button onclick="document.getElementById('applyModal').classList.remove('show')" style="margin-top:20px;background:#111;color:#fff;border:none;padding:11px 28px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:system-ui,-apple-system,sans-serif">Done</button>
+    </div>`
+}
+document.getElementById('applyModal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('show')})
+</script>
+</body>
+</html>

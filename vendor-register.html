@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ConnectIT — Vendor Registration</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,sans-serif;background:#fff;color:#111;line-height:1.6}
+
+/* NAV — identical to original */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:60px;border-bottom:1px solid #e5e5e5;background:#fff;position:sticky;top:0;z-index:200}
+.logo{font-size:20px;font-weight:800;color:#111;letter-spacing:-0.5px;text-decoration:none}
+.logo span{color:#555}
+.nav-links{display:flex;gap:0}
+.nav-links a{font-size:13px;color:#666;text-decoration:none;padding:0 16px;height:60px;display:flex;align-items:center;border-bottom:2px solid transparent;transition:all .2s}
+.nav-links a:hover,.nav-links a.active{color:#111;border-bottom-color:#111}
+.nav-r{display:flex;gap:10px}
+.btn-ghost{background:#fff;color:#111;border:1.5px solid #ddd;padding:7px 18px;border-radius:6px;font-size:13px;cursor:pointer;font-weight:500;transition:all .2s}
+.btn-ghost:hover{border-color:#111}
+.btn-solid{background:#111;color:#fff;border:none;padding:8px 20px;border-radius:6px;font-size:13px;cursor:pointer;font-weight:600}
+.btn-solid:hover{background:#333}
+
+/* PAGE LAYOUT */
+.page-wrap{display:grid;grid-template-columns:380px 1fr;min-height:calc(100vh - 60px)}
+
+/* LEFT PANEL */
+.panel{background:#111;padding:52px 44px;display:flex;flex-direction:column;justify-content:space-between;position:sticky;top:60px;height:calc(100vh - 60px);overflow:hidden}
+.panel-eyebrow{font-size:11px;font-weight:700;letter-spacing:3px;color:#aaa;margin-bottom:14px}
+.panel-headline{font-size:32px;font-weight:800;color:#fff;letter-spacing:-1.2px;line-height:1.1;margin-bottom:16px}
+.panel-headline em{color:#ccc;font-style:normal}
+.panel-body{font-size:14px;color:#666;line-height:1.75;max-width:280px}
+
+.perks{display:flex;flex-direction:column;gap:14px}
+.perk{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1px solid #222;border-radius:10px;background:#161616}
+.perk-icon{width:30px;height:30px;border-radius:6px;background:#222;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.perk-icon svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.perk-text strong{font-size:13px;font-weight:700;color:#fff;display:block;margin-bottom:2px}
+.perk-text span{font-size:12px;color:#666;line-height:1.5}
+
+.live-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#888;font-size:11px;font-weight:600;padding:6px 14px;border-radius:20px;letter-spacing:0.5px}
+.live-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:blink 2s ease-in-out infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* MAIN FORM */
+.main{padding:52px 60px;overflow-y:auto;background:#fff}
+.form-inner{max-width:560px}
+
+/* Step bar */
+.step-bar{display:flex;align-items:center;gap:0;margin-bottom:40px;border:1px solid #e5e5e5;border-radius:8px;overflow:hidden}
+.step{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 10px;font-size:12px;font-weight:600;color:#aaa;border-right:1px solid #e5e5e5;background:#fafafa;transition:.2s}
+.step:last-child{border-right:none}
+.step.active{background:#111;color:#fff}
+.step.done{background:#f5f5f5;color:#555}
+.step-num{width:20px;height:20px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0}
+.step.active .step-num{background:#fff;color:#111;border-color:#fff}
+.step.done .step-num{background:#111;color:#fff;border-color:#111}
+
+.form-title{font-size:26px;font-weight:800;color:#111;letter-spacing:-0.8px;margin-bottom:6px}
+.form-sub{font-size:14px;color:#777;margin-bottom:36px;line-height:1.6}
+
+/* SSO */
+.sso-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0}
+.sso-btn{width:100%;background:#fff;border:1.5px solid #ddd;border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;font-size:13px;color:#333;font-family:system-ui,-apple-system,sans-serif;font-weight:500;transition:all .2s}
+.sso-btn:hover{border-color:#111;color:#111}
+.sso-btn svg{flex-shrink:0}
+
+.divider{display:flex;align-items:center;gap:12px;margin:20px 0}
+.divider-line{flex:1;height:1px;background:#e5e5e5}
+.divider-text{font-size:12px;color:#aaa;font-weight:500;white-space:nowrap}
+
+.section-label{font-size:11px;font-weight:700;letter-spacing:3px;color:#aaa;margin:28px 0 16px;padding-bottom:10px;border-bottom:1px solid #e5e5e5}
+
+/* Fields */
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+label{font-size:12px;font-weight:600;color:#555;letter-spacing:0.2px}
+label .req{color:#e55;margin-left:2px}
+
+input,select,textarea{width:100%;background:#fff;border:1.5px solid #e5e5e5;border-radius:8px;padding:11px 14px;font-size:13px;color:#111;font-family:system-ui,-apple-system,sans-serif;outline:none;transition:border-color .2s;appearance:none;-webkit-appearance:none}
+input::placeholder,textarea::placeholder{color:#bbb}
+input:focus,select:focus,textarea:focus{border-color:#111}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px;cursor:pointer}
+textarea{resize:none;min-height:88px;line-height:1.6}
+
+.phone-row{display:flex;gap:10px}
+.country-code{width:96px;flex-shrink:0}
+
+.strength-bar{display:flex;gap:4px;margin-top:7px;margin-bottom:4px}
+.strength-seg{height:3px;flex:1;border-radius:2px;background:#e5e5e5;transition:.25s}
+.strength-seg.weak{background:#e55}
+.strength-seg.fair{background:#f59e0b}
+.strength-seg.good{background:#4ade80}
+.strength-label{font-size:11px;color:#aaa}
+
+.upload-zone{border:1.5px dashed #e5e5e5;border-radius:8px;padding:20px;text-align:center;cursor:pointer;transition:.2s;background:#fafafa}
+.upload-zone:hover{border-color:#111;background:#f5f5f5}
+.upload-icon{width:34px;height:34px;background:#f0f0f0;border-radius:8px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.upload-icon svg{width:15px;height:15px;stroke:#555;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.upload-text strong{font-size:13px;color:#111;font-weight:600;display:block;margin-bottom:2px}
+.upload-text span{font-size:12px;color:#aaa}
+
+.info-box{background:#f5f5f5;border:1px solid #e5e5e5;border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#555;line-height:1.6;display:flex;align-items:flex-start;gap:8px}
+.info-box svg{width:14px;height:14px;stroke:#aaa;fill:none;stroke-width:2;flex-shrink:0;margin-top:1px;stroke-linecap:round;stroke-linejoin:round}
+
+.check-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.check-row input[type=checkbox]{width:15px;height:15px;flex-shrink:0;margin-top:3px;accent-color:#111;padding:0;cursor:pointer}
+.check-row label{font-size:13px;color:#555;font-weight:400;line-height:1.55;cursor:pointer}
+.check-row label a{color:#111;font-weight:600;text-decoration:none}
+.check-row label a:hover{text-decoration:underline}
+
+.submit-btn{width:100%;background:#111;color:#fff;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:700;font-family:system-ui,-apple-system,sans-serif;cursor:pointer;transition:background .2s;margin-top:8px;letter-spacing:0.1px}
+.submit-btn:hover{background:#333}
+
+.login-link{text-align:center;margin-top:18px;font-size:13px;color:#777}
+.login-link a{color:#111;font-weight:600;text-decoration:none}
+.login-link a:hover{text-decoration:underline}
+
+@media(max-width:960px){.panel{display:none}.page-wrap{grid-template-columns:1fr}.main{padding:40px 28px}}
+@media(max-width:480px){.row{grid-template-columns:1fr}.step span{display:none}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="landing.html" class="logo">Connect<span>IT</span></a>
+  <div class="nav-links">
+    <a href="student-jobs.html">Jobs</a>
+    <a href="vendor-dashboard.html">Talent</a>
+    <a href="vendor-dashboard.html">Companies</a>
+    <a href="#">Resources</a>
+  </div>
+  <div class="nav-r">
+    <button class="btn-ghost">Sign in</button>
+    <button class="btn-solid">Post a job</button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- LEFT PANEL -->
+  <aside class="panel">
+    <div>
+      <div class="panel-eyebrow">For Employers</div>
+      <h2 class="panel-headline">Hire the <em>next generation</em> of talent</h2>
+      <p class="panel-body">Access thousands of verified students and fresh graduates. Post jobs, browse profiles, and shortlist in minutes.</p>
+    </div>
+
+    <div class="perks">
+      <div class="perk">
+        <div class="perk-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="perk-text">
+          <strong>Free to register</strong>
+          <span>No credit card needed to get started</span>
+        </div>
+      </div>
+      <div class="perk">
+        <div class="perk-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="perk-text">
+          <strong>Verified student profiles</strong>
+          <span>Every student verified through their institution</span>
+        </div>
+      </div>
+      <div class="perk">
+        <div class="perk-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+        <div class="perk-text">
+          <strong>Post unlimited jobs</strong>
+          <span>Reach students across 200+ colleges</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="live-badge">
+      <div class="live-dot"></div>
+      1,240 vendors active today
+    </div>
+  </aside>
+
+  <!-- FORM -->
+  <main class="main">
+    <div class="form-inner">
+
+      <div class="step-bar">
+        <div class="step active">
+          <div class="step-num">1</div>
+          <span>Company info</span>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <span>Admin setup</span>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <span>Verify &amp; go</span>
+        </div>
+      </div>
+
+      <h1 class="form-title">Create vendor account</h1>
+      <p class="form-sub">Step 1 of 3 — Tell us about your company. Takes less than 2 minutes.</p>
+
+      <div class="sso-row">
+        <button class="sso-btn" type="button">
+          <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Google Workspace
+        </button>
+        <button class="sso-btn" type="button">
+          <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><rect x="1" y="1" width="10" height="10" fill="#F25022"/><rect x="13" y="1" width="10" height="10" fill="#7FBA00"/><rect x="1" y="13" width="10" height="10" fill="#00A4EF"/><rect x="13" y="13" width="10" height="10" fill="#FFB900"/></svg>
+          Microsoft 365
+        </button>
+      </div>
+
+      <div class="divider"><div class="divider-line"></div><span class="divider-text">or fill in manually</span><div class="divider-line"></div></div>
+
+      <form id="vendorForm" novalidate>
+
+        <div class="section-label">Company details</div>
+
+        <div class="row">
+          <div class="field">
+            <label>Company name <span class="req">*</span></label>
+            <input type="text" placeholder="e.g. Acme Corp" required/>
+          </div>
+          <div class="field">
+            <label>Industry <span class="req">*</span></label>
+            <select required>
+              <option value="" disabled selected>Select industry</option>
+              <option>Technology &amp; Software</option>
+              <option>Finance &amp; Banking</option>
+              <option>Healthcare</option>
+              <option>Education</option>
+              <option>Retail &amp; E-commerce</option>
+              <option>Manufacturing</option>
+              <option>Consulting</option>
+              <option>Media &amp; Advertising</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label>Company size <span class="req">*</span></label>
+            <select required>
+              <option value="" disabled selected>Select size</option>
+              <option>1 – 10 employees</option>
+              <option>11 – 50 employees</option>
+              <option>51 – 200 employees</option>
+              <option>201 – 500 employees</option>
+              <option>500+ employees</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Year founded</label>
+            <input type="number" placeholder="e.g. 2010" min="1800" max="2025"/>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Company website</label>
+          <input type="url" placeholder="https://yourcompany.com"/>
+        </div>
+
+        <div class="field">
+          <label>Company description <span class="req">*</span></label>
+          <textarea placeholder="Brief description of what your company does, your culture, and why students should join..." required></textarea>
+        </div>
+
+        <div class="field">
+          <label>Company logo</label>
+          <div class="upload-zone" onclick="document.getElementById('logoUpload').click()">
+            <div class="upload-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+            <div class="upload-text"><strong>Click to upload logo</strong><span>PNG, JPG or SVG · Max 2MB</span></div>
+          </div>
+          <input type="file" id="logoUpload" accept="image/*" style="display:none"/>
+        </div>
+
+        <div class="section-label">Company verification</div>
+
+        <div class="info-box">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Upload at least one document. Your account will be reviewed within 24 hours before going live.
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label>Country of registration <span class="req">*</span></label>
+            <select id="countrySelect" onchange="toggleDocs(this.value)" required>
+              <option value="" disabled selected>Select country</option>
+              <option value="india">India</option>
+              <option value="us">United States</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Tax / Registration ID <span class="req">*</span></label>
+            <input type="text" id="taxId" placeholder="GSTIN / EIN / Tax ID" required/>
+          </div>
+        </div>
+
+        <div id="india-docs" style="display:none">
+          <div class="field">
+            <label>Certificate of Incorporation / Udyam Registration</label>
+            <div class="upload-zone" onclick="document.getElementById('incorp').click()">
+              <div class="upload-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+              <div class="upload-text"><strong>Upload document</strong><span>PDF, JPG or PNG · Max 5MB</span></div>
+            </div>
+            <input type="file" id="incorp" accept=".pdf,image/*" style="display:none"/>
+          </div>
+        </div>
+
+        <div id="us-docs" style="display:none">
+          <div class="field">
+            <label>Articles of Incorporation / LLC Formation document</label>
+            <div class="upload-zone" onclick="document.getElementById('articles').click()">
+              <div class="upload-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+              <div class="upload-text"><strong>Upload document</strong><span>PDF, JPG or PNG · Max 5MB</span></div>
+            </div>
+            <input type="file" id="articles" accept=".pdf,image/*" style="display:none"/>
+          </div>
+        </div>
+
+        <div class="section-label">Account credentials</div>
+
+        <div class="info-box">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          We need two emails — one that always belongs to the company, and one for your personal login. This way the account stays safe even if you leave the company.
+        </div>
+
+        <div class="field">
+          <label>Company general email <span class="req">*</span></label>
+          <input type="email" placeholder="e.g. hr@yourcompany.com or hiring@yourcompany.com" required/>
+          <div style="font-size:11px;color:#aaa;margin-top:4px">Permanent contact for your company record — use a shared inbox, not a personal address</div>
+        </div>
+
+        <div class="field">
+          <label>Your personal work email <span class="req">*</span></label>
+          <input type="email" placeholder="e.g. rahul@yourcompany.com" required/>
+          <div style="font-size:11px;color:#aaa;margin-top:4px">This is your login email — must be at the same domain as your company</div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label>Password <span class="req">*</span></label>
+            <input type="password" id="passwordInput" placeholder="Min. 8 characters" required oninput="checkStrength(this.value)"/>
+            <div class="strength-bar"><div class="strength-seg" id="s1"></div><div class="strength-seg" id="s2"></div><div class="strength-seg" id="s3"></div><div class="strength-seg" id="s4"></div></div>
+            <div class="strength-label" id="strengthLabel">—</div>
+          </div>
+          <div class="field">
+            <label>Confirm password <span class="req">*</span></label>
+            <input type="password" placeholder="Re-enter password" required/>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Company phone number</label>
+          <div class="phone-row">
+            <select class="country-code"><option>🇺🇸 +1</option><option>🇬🇧 +44</option><option>🇮🇳 +91</option><option>🇦🇺 +61</option><option>🇨🇦 +1</option></select>
+            <input type="tel" placeholder="(555) 000-0000" style="flex:1"/>
+          </div>
+        </div>
+
+        <div style="margin-top:20px;margin-bottom:6px">
+          <div class="check-row">
+            <input type="checkbox" id="terms" required/>
+            <label for="terms">I agree to ConnectIT's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+          </div>
+          <div class="check-row">
+            <input type="checkbox" id="updates"/>
+            <label for="updates">Send me updates about new features and hiring tips</label>
+          </div>
+        </div>
+
+        <button class="submit-btn" type="button" id="submitBtn" onclick="location.href='vendor-admin-setup.html'">Continue to Step 2 →</button>
+
+        <div class="login-link">Already have an account? <a href="login.html">Sign in</a></div>
+
+      </form>
+    </div>
+  </main>
+</div>
+
+<script>
+function checkStrength(val){
+  const segs=[document.getElementById('s1'),document.getElementById('s2'),document.getElementById('s3'),document.getElementById('s4')]
+  const lbl=document.getElementById('strengthLabel')
+  segs.forEach(s=>s.className='strength-seg')
+  if(!val){lbl.textContent='—';return}
+  let score=0
+  if(val.length>=8)score++
+  if(/[A-Z]/.test(val))score++
+  if(/[0-9]/.test(val))score++
+  if(/[^A-Za-z0-9]/.test(val))score++
+  const cls=['weak','weak','fair','good']
+  const labels=['Too short','Weak — add numbers or symbols','Fair — almost there','Strong password']
+  for(let i=0;i<score;i++)segs[i].classList.add(cls[score-1])
+  lbl.textContent=labels[score-1]||''
+}
+function toggleDocs(country){
+  document.getElementById('india-docs').style.display=country==='india'?'block':'none'
+  document.getElementById('us-docs').style.display=country==='us'?'block':'none'
+  const t=document.getElementById('taxId')
+  if(country==='india')t.placeholder='e.g. 22AAAAA0000A1Z5 (GSTIN)'
+  else if(country==='us')t.placeholder='e.g. 12-3456789 (EIN)'
+  else t.placeholder='Tax ID / Registration number'
+}
+document.getElementById('vendorForm').addEventListener('submit',function(e){
+  e.preventDefault()
+  const btn=document.getElementById('submitBtn')
+  btn.textContent='Saving…'
+  btn.style.opacity='0.7'
+  btn.disabled=true
+  setTimeout(()=>{
+    btn.textContent='✓ Saved — proceeding to Step 2'
+    btn.style.opacity='1'
+    btn.style.background='#16a34a'
+  },1400)
+})
+</script>
+</body>
+</html>

@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ConnectIT — Verify & Go</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f8f8f8;color:#111;line-height:1.6}
+
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:60px;border-bottom:1px solid #e5e5e5;background:#fff;position:sticky;top:0;z-index:200}
+.logo{font-size:20px;font-weight:800;color:#111;letter-spacing:-0.5px;text-decoration:none}
+.logo span{color:#555}
+.nav-r{display:flex;gap:10px}
+.btn-ghost{background:#fff;color:#111;border:1.5px solid #ddd;padding:7px 18px;border-radius:6px;font-size:13px;cursor:pointer;font-weight:500}
+.btn-solid{background:#111;color:#fff;border:none;padding:8px 20px;border-radius:6px;font-size:13px;cursor:pointer;font-weight:600}
+.btn-solid:hover{background:#333}
+
+/* PAGE */
+.page{max-width:600px;margin:0 auto;padding:52px 24px 80px}
+
+/* Step bar */
+.step-bar{display:flex;align-items:center;gap:0;margin-bottom:44px;border:1px solid #e5e5e5;border-radius:8px;overflow:hidden;background:#fff}
+.step{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 10px;font-size:12px;font-weight:600;color:#aaa;border-right:1px solid #e5e5e5;background:#fafafa}
+.step:last-child{border-right:none}
+.step.active{background:#111;color:#fff}
+.step.done{background:#f5f5f5;color:#555}
+.step-num{width:20px;height:20px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0}
+.step.active .step-num{background:#fff;color:#111;border-color:#fff}
+.step.done .step-num{background:#111;color:#fff;border-color:#111}
+
+/* Success icon */
+.success-icon{width:56px;height:56px;border-radius:50%;background:#111;display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+.success-icon svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+.page-title{font-size:26px;font-weight:800;color:#111;letter-spacing:-0.8px;margin-bottom:8px;text-align:center}
+.page-sub{font-size:14px;color:#777;text-align:center;margin-bottom:36px;line-height:1.6}
+
+/* Case ID */
+.case-box{background:#111;border-radius:12px;padding:24px;margin-bottom:12px;text-align:center}
+.case-lbl{font-size:11px;font-weight:700;letter-spacing:3px;color:#666;margin-bottom:8px}
+.case-id{font-size:32px;font-weight:800;color:#fff;letter-spacing:1px;margin-bottom:16px;font-variant-numeric:tabular-nums}
+.copy-btn{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);color:#fff;padding:8px 20px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;font-family:system-ui,-apple-system,sans-serif;transition:all .2s;display:inline-flex;align-items:center;gap:7px}
+.copy-btn:hover{background:rgba(255,255,255,.18)}
+.copy-btn svg{width:13px;height:13px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.copy-hint{font-size:12px;color:#aaa;text-align:center;margin-bottom:28px}
+
+/* Assigned card */
+.card{background:#fff;border:1.5px solid #e5e5e5;border-radius:12px;padding:20px;margin-bottom:14px}
+.card-label{font-size:11px;font-weight:700;letter-spacing:3px;color:#aaa;margin-bottom:14px}
+.assigned-row{display:flex;align-items:center;gap:14px}
+.avatar{width:44px;height:44px;border-radius:50%;background:#111;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0}
+.assigned-info{flex:1}
+.assigned-name{font-size:15px;font-weight:700;color:#111}
+.assigned-role{font-size:12px;color:#777;margin-top:1px}
+.assigned-email{font-size:12px;color:#555;margin-top:6px;display:flex;align-items:center;gap:5px}
+.assigned-email svg{width:12px;height:12px;stroke:#aaa;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.workload-badge{font-size:11px;font-weight:700;background:#f5f5f5;border:1px solid #e5e5e5;color:#555;padding:4px 10px;border-radius:20px;white-space:nowrap}
+
+/* Status row */
+.status-row{display:flex;align-items:center;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid #f0f0f0}
+.status-dot{width:7px;height:7px;border-radius:50%;background:#f59e0b;animation:pulse 2s ease-in-out infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.status-text{font-size:12px;color:#777}
+.status-text strong{color:#111}
+
+/* What's next */
+.next-list{display:flex;flex-direction:column;gap:0;border:1.5px solid #e5e5e5;border-radius:12px;overflow:hidden;background:#fff;margin-bottom:14px}
+.next-item{display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid #f0f0f0}
+.next-item:last-child{border-bottom:none}
+.n-num{width:24px;height:24px;border-radius:50%;background:#111;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.n-num.dim{background:#f5f5f5;color:#bbb;border:1.5px solid #e5e5e5}
+.n-text strong{font-size:13px;font-weight:700;color:#111;display:block;margin-bottom:1px}
+.n-text span{font-size:12px;color:#777}
+.n-eta{font-size:11px;color:#aaa;font-weight:600;margin-left:auto;padding-left:10px;flex-shrink:0;white-space:nowrap}
+
+/* Info box */
+.info-box{background:#fff;border:1px solid #e5e5e5;border-radius:8px;padding:12px 16px;font-size:12px;color:#555;line-height:1.6;display:flex;align-items:flex-start;gap:8px;margin-bottom:24px}
+.info-box svg{width:13px;height:13px;stroke:#aaa;fill:none;stroke-width:2;flex-shrink:0;margin-top:2px;stroke-linecap:round;stroke-linejoin:round}
+
+/* Buttons */
+.btn-row{display:flex;gap:10px}
+.btn-outline{flex:1;background:#fff;color:#111;border:1.5px solid #ddd;padding:12px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:system-ui,-apple-system,sans-serif;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-outline:hover{border-color:#111}
+.btn-primary{flex:1;background:#111;color:#fff;border:none;padding:12px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:system-ui,-apple-system,sans-serif;transition:background .2s}
+.btn-primary:hover{background:#333}
+
+/* Toast */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#111;color:#fff;padding:11px 20px;border-radius:8px;font-size:13px;font-weight:500;transition:transform .3s ease;z-index:999;white-space:nowrap;display:flex;align-items:center;gap:8px}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast svg{width:13px;height:13px;stroke:#4ade80;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* Point of contact fields */
+.poc-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.poc-field{display:flex;flex-direction:column;gap:5px}
+.poc-field label{font-size:12px;font-weight:600;color:#555}
+.poc-field label .req{color:#e55;margin-left:2px}
+.poc-field input,.poc-field select{width:100%;background:#fff;border:1.5px solid #e5e5e5;border-radius:8px;padding:10px 13px;font-size:13px;color:#111;font-family:system-ui,-apple-system,sans-serif;outline:none;transition:border-color .2s;appearance:none;-webkit-appearance:none}
+.poc-field input::placeholder{color:#bbb}
+.poc-field input:focus,.poc-field select:focus{border-color:#111}
+.poc-field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:30px;cursor:pointer}
+.phone-row{display:flex;gap:8px}
+.country-code{appearance:none;-webkit-appearance:none;background:#fff;border:1.5px solid #e5e5e5;border-radius:8px;padding:10px 8px;font-size:12px;color:#111;font-family:system-ui,-apple-system,sans-serif;outline:none;cursor:pointer;transition:border-color .2s}
+.country-code:focus{border-color:#111}
+.hours-row{display:flex;align-items:flex-end;gap:10px}
+.hours-row select{width:100%;background:#fff;border:1.5px solid #e5e5e5;border-radius:8px;padding:10px 13px;font-size:13px;color:#111;font-family:system-ui,-apple-system,sans-serif;outline:none;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;cursor:pointer;transition:border-color .2s}
+.hours-row select:focus{border-color:#111}
+.field-hint{font-size:11px;color:#aaa;line-height:1.5}
+
+/* Additional documents */
+.add-doc-btn{display:flex;align-items:center;gap:7px;background:#fff;border:1.5px dashed #ddd;border-radius:8px;padding:11px 16px;font-size:13px;font-weight:600;color:#555;cursor:pointer;font-family:system-ui,-apple-system,sans-serif;transition:.2s;width:100%;margin-top:4px}
+.add-doc-btn:hover{border-color:#111;color:#111}
+.add-doc-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
+.doc-row{border:1.5px solid #e5e5e5;border-radius:8px;padding:14px;margin-bottom:10px;background:#fafafa}
+.doc-row-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.doc-num{width:22px;height:22px;border-radius:50%;background:#111;color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.doc-name-input{flex:1;background:#fff;border:1.5px solid #e5e5e5;border-radius:6px;padding:8px 12px;font-size:13px;color:#111;font-family:system-ui,-apple-system,sans-serif;outline:none;transition:border-color .2s}
+.doc-name-input:focus{border-color:#111}
+.doc-name-input::placeholder{color:#bbb}
+.doc-remove{background:none;border:none;cursor:pointer;padding:4px;color:#ccc;transition:.2s}
+.doc-remove:hover{color:#e55}
+.doc-remove svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.doc-upload{border:1.5px dashed #e5e5e5;border-radius:6px;padding:14px;text-align:center;cursor:pointer;transition:.2s;background:#fff}
+.doc-upload:hover{border-color:#aaa}
+.doc-upload-inner{display:flex;align-items:center;justify-content:center;gap:8px}
+.doc-upload-inner svg{width:14px;height:14px;stroke:#aaa;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.doc-upload-inner span{font-size:12px;color:#aaa}
+.doc-upload-inner strong{font-size:12px;color:#555;font-weight:600}
+.doc-uploaded{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px}
+.doc-uploaded svg{width:13px;height:13px;stroke:#16a34a;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0}
+.doc-uploaded span{font-size:12px;color:#16a34a;font-weight:600;flex:1}
+.doc-uploaded button{background:none;border:none;cursor:pointer;font-size:11px;color:#aaa;font-family:system-ui,-apple-system,sans-serif}
+.biz-days{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.biz-day{border:1.5px solid #e5e5e5;border-radius:8px;padding:10px 14px;cursor:pointer;transition:all .2s;background:#fff;text-align:center;min-width:96px;user-select:none}
+.biz-day:hover{border-color:#aaa}
+.biz-day.selected{border-color:#111;background:#111;color:#fff}
+.biz-day.holiday{border-color:#fde68a;background:#fffbf0;cursor:default;opacity:.7}
+.biz-day-name{font-size:12px;font-weight:700;color:inherit;display:block;margin-bottom:2px}
+.biz-day-date{font-size:11px;color:inherit;opacity:.7;display:block}
+.biz-day-tag{font-size:10px;font-weight:700;color:#92400e;display:block;margin-top:3px}
+.biz-day.selected .biz-day-name{color:#fff}
+.biz-day.selected .biz-day-date{color:rgba(255,255,255,.7)}
+
+/* Step 3 locked */
+.step.locked{opacity:.4;cursor:not-allowed;display:flex;align-items:center;gap:6px}
+.step.locked svg{flex-shrink:0}
+
+.step3-locked{border:1.5px dashed #e5e5e5;border-radius:12px;overflow:hidden;margin-bottom:28px}
+.step3-locked-inner{display:flex;align-items:center;gap:14px;padding:16px 20px;background:#fafafa;border-bottom:1px solid #e5e5e5}
+.lock-icon{width:36px;height:36px;border-radius:50%;background:#f0f0f0;border:1.5px solid #e5e5e5;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lock-icon svg{width:15px;height:15px;stroke:#aaa;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.step3-locked-text strong{font-size:13px;font-weight:700;color:#111;display:block;margin-bottom:2px}
+.step3-locked-text span{font-size:12px;color:#777}
+
+.step3-preview{padding:20px}
+.preview-label{font-size:11px;font-weight:700;letter-spacing:2px;color:#aaa;margin-bottom:14px}
+.preview-list{display:flex;flex-direction:column;gap:0}
+.preview-item{display:flex;align-items:flex-start;gap:12px;padding:11px 0;border-bottom:1px solid #f5f5f5}
+.preview-item:last-child{border-bottom:none}
+.preview-dot{width:6px;height:6px;border-radius:50%;background:#ddd;flex-shrink:0;margin-top:6px}
+.preview-item div strong{font-size:13px;font-weight:700;color:#aaa;display:block;margin-bottom:1px}
+.preview-item div span{font-size:12px;color:#bbb;line-height:1.5}
+.preview-note{display:flex;align-items:flex-start;gap:8px;margin-top:16px;padding:12px 14px;background:#f5f5f5;border-radius:8px;font-size:12px;color:#777;line-height:1.6}
+.preview-note svg{width:13px;height:13px;stroke:#aaa;fill:none;stroke-width:2;flex-shrink:0;margin-top:1px;stroke-linecap:round;stroke-linejoin:round}
+
+@media(max-width:480px){.poc-row{grid-template-columns:1fr}.hours-row{flex-direction:column;gap:8px}.biz-days{gap:6px}.biz-day{min-width:80px;padding:8px 10px}.step span{display:none}}
+
+/* Buttons */
+.btn-row{display:flex;gap:10px;margin-top:4px}
+.btn-outline{flex:1;background:#fff;color:#111;border:1.5px solid #ddd;padding:12px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:system-ui,-apple-system,sans-serif;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-outline:hover{border-color:#111}
+.btn-primary{flex:2;background:#111;color:#fff;border:none;padding:12px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:system-ui,-apple-system,sans-serif;transition:background .2s}
+.btn-primary:hover{background:#333}
+.btn-primary:disabled{background:#ccc;cursor:not-allowed}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="landing.html" class="logo">Connect<span>IT</span></a>
+  <div class="nav-r">
+    <button class="btn-ghost">Need help?</button>
+    <button class="btn-solid">Sign in</button>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- Step bar -->
+  <div class="step-bar">
+    <div class="step done">
+      <div class="step-num">1</div>
+      <span>Company info</span>
+    </div>
+    <div class="step done">
+      <div class="step-num">2</div>
+      <span>Admin setup</span>
+    </div>
+    <div class="step active">
+      <div class="step-num">3</div>
+      <span>Verify &amp; go</span>
+    </div>
+  </div>
+
+  <!-- Step 3 locked notice — only visible while pending -->
+  <div class="step3-locked" id="step3Locked">
+    <div class="step3-locked-inner">
+      <div class="lock-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <div class="step3-locked-text">
+        <strong>Admin setup unlocks after verification</strong>
+        <span>Once ConnectIT approves your account you'll be able to complete Step 3 here.</span>
+      </div>
+    </div>
+    <div class="step3-preview">
+      <div class="preview-label">What you'll do in Step 3</div>
+      <div class="preview-list">
+        <div class="preview-item">
+          <div class="preview-dot"></div>
+          <div>
+            <strong>Set up your vendor admin account</strong>
+            <span>The admin manages recruiters and has full visibility over all job listings</span>
+          </div>
+        </div>
+        <div class="preview-item">
+          <div class="preview-dot"></div>
+          <div>
+            <strong>Invite your recruiters</strong>
+            <span>Add team members by email and control what each one can do</span>
+          </div>
+        </div>
+        <div class="preview-item">
+          <div class="preview-dot"></div>
+          <div>
+            <strong>Set recruiter permissions</strong>
+            <span>Decide if recruiters can post jobs, view all applicants, or shortlist candidates</span>
+          </div>
+        </div>
+        <div class="preview-item">
+          <div class="preview-dot"></div>
+          <div>
+            <strong>Post your first job listing</strong>
+            <span>Go live on ConnectIT and start receiving student applications</span>
+          </div>
+        </div>
+      </div>
+      <div class="preview-note">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        You'll receive an email from ConnectIT with a direct link to Step 3 once your account is approved.
+      </div>
+    </div>
+  </div>
+
+  <!-- Success -->
+  <div class="success-icon">
+    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+  <h1 class="page-title">Registration submitted!</h1>
+  <p class="page-sub">Your documents are under review. We'll email you once your account is approved.</p>
+
+  <!-- Case ID -->
+  <div class="case-box">
+    <div class="case-lbl">Your case ID</div>
+    <div class="case-id" id="caseId">CIT-2024-00000</div>
+    <button class="copy-btn" onclick="copyCase()">
+      <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      Copy Case ID
+    </button>
+  </div>
+  <p class="copy-hint">Quote this ID whenever you contact ConnectIT support — we'll pull up your details instantly.</p>
+
+  <!-- Assigned team member -->
+  <div class="card">
+    <div class="card-label">Assigned to</div>
+    <div class="assigned-row">
+      <div class="avatar" id="adminAvatar">SR</div>
+      <div class="assigned-info">
+        <div class="assigned-name" id="adminName">Sarah Reynolds</div>
+        <div class="assigned-role" id="adminRole">Vendor Verification · ConnectIT</div>
+        <div class="assigned-email">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <span id="adminEmail">vendors@connectit.com</span>
+        </div>
+      </div>
+      <div class="workload-badge" id="workloadBadge">3 open cases</div>
+    </div>
+    <div class="status-row">
+      <div class="status-dot"></div>
+      <div class="status-text">Status: <strong>Reviewing documents</strong> · Est. response within 24 hrs</div>
+    </div>
+  </div>
+
+  <!-- Point of contact -->
+  <div class="card" style="margin-bottom:14px">
+    <div class="card-label">Point of contact</div>
+    <p style="font-size:13px;color:#777;margin-bottom:16px;line-height:1.6">Who should we reach if we need additional documents or have questions about your registration?</p>
+
+    <div class="poc-row">
+      <div class="poc-field">
+        <label>Full name <span class="req">*</span></label>
+        <input type="text" placeholder="e.g. Rahul Sharma" required/>
+      </div>
+      <div class="poc-field">
+        <label>Designation</label>
+        <input type="text" placeholder="e.g. HR Manager"/>
+      </div>
+    </div>
+
+    <div class="poc-field" style="margin-bottom:12px">
+      <label>Email address <span class="req">*</span></label>
+      <input type="email" placeholder="e.g. rahul@yourcompany.com" required/>
+      <div class="field-hint">We'll email this person if we need anything during review</div>
+    </div>
+
+    <div class="poc-row" style="margin-bottom:12px">
+      <div class="poc-field">
+        <label>Phone number <span class="req">*</span></label>
+        <div class="phone-row">
+          <select class="country-code" style="width:84px;flex-shrink:0;font-size:12px;padding:10px 8px">
+            <option>🇺🇸 +1</option>
+            <option>🇬🇧 +44</option>
+            <option selected>🇮🇳 +91</option>
+            <option>🇦🇺 +61</option>
+            <option>🇨🇦 +1</option>
+          </select>
+          <input type="tel" placeholder="00000 00000" style="flex:1" required/>
+        </div>
+      </div>
+      <div class="poc-field">
+        <label>Timezone <span class="req">*</span></label>
+        <select required>
+          <option value="" disabled selected>Select timezone</option>
+          <optgroup label="India">
+            <option>IST — India Standard Time (UTC+5:30)</option>
+          </optgroup>
+          <optgroup label="United States">
+            <option>EST — Eastern Time (UTC-5) · New York, Miami</option>
+            <option>CST — Central Time (UTC-6) · Chicago, Dallas</option>
+            <option>MST — Mountain Time (UTC-7) · Denver, Phoenix</option>
+            <option>PST — Pacific Time (UTC-8) · Los Angeles, Seattle</option>
+          </optgroup>
+          <optgroup label="Other">
+            <option>GMT — Greenwich Mean Time (UTC+0)</option>
+            <option>GST — Gulf Standard Time (UTC+4)</option>
+            <option>SGT — Singapore Time (UTC+8)</option>
+            <option>AEST — Australian Eastern Time (UTC+10)</option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+
+    <div class="poc-field" style="margin-bottom:12px">
+      <label>Available working hours <span class="req">*</span></label>
+      <div class="hours-row">
+        <div style="flex:1">
+          <div class="field-hint" style="margin-bottom:6px">From</div>
+          <select>
+            <option value="" disabled selected>Start time</option>
+            <option>6:00 AM</option><option>7:00 AM</option><option>8:00 AM</option>
+            <option selected>9:00 AM</option><option>10:00 AM</option><option>11:00 AM</option>
+            <option>12:00 PM</option>
+          </select>
+        </div>
+        <div style="padding-top:22px;color:#aaa;font-size:13px;flex-shrink:0">to</div>
+        <div style="flex:1">
+          <div class="field-hint" style="margin-bottom:6px">To</div>
+          <select>
+            <option value="" disabled selected>End time</option>
+            <option>1:00 PM</option><option>2:00 PM</option><option>3:00 PM</option>
+            <option>4:00 PM</option><option>5:00 PM</option><option selected>6:00 PM</option>
+            <option>7:00 PM</option><option>8:00 PM</option>
+          </select>
+        </div>
+        <div style="flex:1.4">
+          <div class="field-hint" style="margin-bottom:6px">Working days</div>
+          <select>
+            <option>Monday – Friday</option>
+            <option>Monday – Saturday</option>
+            <option>Sunday – Thursday</option>
+            <option>Monday – Sunday</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-hint" style="margin-top:6px">ConnectIT will only contact you during these hours</div>
+    </div>
+
+    <!-- Leave days -->
+    <div class="poc-field" style="margin-bottom:12px">
+      <label>Mark your leave days <span style="font-weight:400;color:#aaa;font-size:11px;letter-spacing:0">(next 5 business days · click days you are unavailable)</span></label>
+      <div class="biz-days" id="bizDays"></div>
+      <div class="field-hint" style="margin-top:8px">Weekends and public holidays are already excluded. ConnectIT will avoid contacting you on marked days.</div>
+    </div>
+
+    <!-- Calendar link -->
+    <div class="poc-field" style="margin-bottom:0">
+      <label>Meeting booking link <span style="font-weight:400;color:#aaa;font-size:11px;letter-spacing:0">(optional but recommended)</span></label>
+      <div style="position:relative">
+        <div style="position:absolute;left:13px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:6px;pointer-events:none">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <input type="url" placeholder="e.g. calendly.com/yourname  or  meet.google.com/..." style="padding-left:36px"/>
+      </div>
+      <div class="field-hint" style="margin-top:5px">Paste your Calendly, Google Meet, Microsoft Teams or Zoom link — ConnectIT can book a call with one click if needed</div>
+    </div>
+  </div>
+
+  <!-- Additional documents -->
+  <div class="card" style="margin-bottom:14px">
+    <div class="card-label">Additional documents <span style="font-size:11px;font-weight:400;color:#aaa;letter-spacing:0">(optional)</span></div>
+    <p style="font-size:13px;color:#777;margin-bottom:16px;line-height:1.6">If ConnectIT requests extra documents during review, you can upload them here. Give each one a clear name so our team knows what it is.</p>
+
+    <div id="docList"></div>
+
+    <button class="add-doc-btn" type="button" onclick="addDoc()">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Add a document
+    </button>
+  </div>
+
+  <!-- What happens next -->
+  <div class="next-list">
+    <div class="next-item">
+      <div class="n-num">1</div>
+      <div class="n-text">
+        <strong>Documents verified</strong>
+        <span>Your GSTIN / EIN checked against government records</span>
+      </div>
+      <div class="n-eta">~24 hrs</div>
+    </div>
+    <div class="next-item">
+      <div class="n-num">2</div>
+      <div class="n-text">
+        <strong>Approval email sent to you</strong>
+        <span>Check your inbox and spam folder</span>
+      </div>
+      <div class="n-eta">After review</div>
+    </div>
+    <div class="next-item">
+      <div class="n-num dim">3</div>
+      <div class="n-text">
+        <strong>Log in &amp; invite your recruiters</strong>
+        <span>Set permissions and start posting jobs</span>
+      </div>
+      <div class="n-eta">After approval</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    If we need extra documents, <span id="infoName">Sarah</span> will email you directly. Always reply with your Case ID in the subject line.
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-outline" onclick="copyCase()">
+      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      Copy Case ID
+    </button>
+    <button class="btn-primary" id="submitBtn" onclick="handleSubmit()">
+      Submit registration →
+    </button>
+  </div>
+
+  <p style="font-size:12px;color:#aaa;text-align:center;margin-top:14px;line-height:1.6">By submitting you confirm all details are accurate. ConnectIT will review your documents within 24 hours.</p>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  Case ID copied!
+</div>
+
+<script>
+// Simulated team — in real app this comes from Firebase
+// Assigned by lowest workload (fewest open cases)
+const team = [
+  { name:'Sarah Reynolds', initials:'SR', role:'Vendor Verification · ConnectIT', email:'vendors@connectit.com', openCases:3 },
+  { name:'James Patel',    initials:'JP', role:'Vendor Verification · ConnectIT', email:'vendors@connectit.com', openCases:7 },
+  { name:'Priya Nair',     initials:'PN', role:'Vendor Verification · ConnectIT', email:'vendors@connectit.com', openCases:5 },
+  { name:'Tom Walsh',      initials:'TW', role:'Vendor Verification · ConnectIT', email:'vendors@connectit.com', openCases:9 }
+]
+
+// Pick team member with fewest open cases
+const assigned = team.reduce((a,b) => a.openCases <= b.openCases ? a : b)
+
+document.getElementById('adminAvatar').textContent  = assigned.initials
+document.getElementById('adminName').textContent    = assigned.name
+document.getElementById('adminRole').textContent    = assigned.role
+document.getElementById('adminEmail').textContent   = assigned.email
+document.getElementById('workloadBadge').textContent= assigned.openCases + ' open cases'
+document.getElementById('infoName').textContent     = assigned.name.split(' ')[0]
+
+// ── ADDITIONAL DOCUMENTS ──
+let docCount = 0
+
+function addDoc(){
+  docCount++
+  const id = 'doc-'+docCount
+  const fileId = 'file-'+docCount
+  const div = document.createElement('div')
+  div.className = 'doc-row'
+  div.id = id
+  div.innerHTML = `
+    <div class="doc-row-top">
+      <div class="doc-num">${docCount}</div>
+      <input class="doc-name-input" type="text" placeholder="Document name · e.g. GST Certificate, Bank Statement, Partnership Deed"/>
+      <button class="doc-remove" onclick="removeDoc('${id}')" title="Remove">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="doc-upload" id="upload-zone-${docCount}" onclick="document.getElementById('${fileId}').click()">
+      <div class="doc-upload-inner">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <span><strong>Click to upload</strong> · PDF, JPG or PNG · Max 5MB</span>
+      </div>
+    </div>
+    <input type="file" id="${fileId}" accept=".pdf,image/*" style="display:none" onchange="fileSelected(this, ${docCount})"/>
+  `
+  document.getElementById('docList').appendChild(div)
+}
+
+function removeDoc(id){
+  const el = document.getElementById(id)
+  if(el) el.remove()
+}
+
+function fileSelected(input, num){
+  const zone = document.getElementById('upload-zone-'+num)
+  if(input.files && input.files[0]){
+    const name = input.files[0].name
+    zone.outerHTML = `
+      <div class="doc-uploaded" id="upload-zone-${num}">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>${name}</span>
+        <button onclick="clearFile(${num})" type="button">Remove</button>
+      </div>`
+  }
+}
+
+function clearFile(num){
+  const zone = document.getElementById('upload-zone-'+num)
+  zone.outerHTML = `
+    <div class="doc-upload" id="upload-zone-${num}" onclick="document.getElementById('file-${num}').click()">
+      <div class="doc-upload-inner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <span><strong>Click to upload</strong> · PDF, JPG or PNG · Max 5MB</span>
+      </div>
+    </div>`
+  const old = document.getElementById('file-'+num)
+  if(old) old.value = ''
+}
+
+function handleSubmit(){
+  const btn = document.getElementById('submitBtn')
+  btn.textContent = 'Submitting…'
+  btn.style.opacity = '0.7'
+  btn.disabled = true
+  setTimeout(()=>{
+    btn.textContent = '✓ Submitted! Redirecting…'; setTimeout(()=>location.href='vendor-dashboard.html',1500)
+    btn.style.opacity = '1'
+    btn.style.background = '#16a34a'
+  }, 1500)
+}
+
+// ── PUBLIC HOLIDAYS (US + India combined, MM-DD format) ──
+const holidays = {
+  '01-01':'New Year\'s Day',
+  '01-15':'Martin Luther King Jr. Day',
+  '02-17':'Presidents\' Day',
+  '05-26':'Memorial Day',
+  '06-19':'Juneteenth',
+  '07-04':'Independence Day (US)',
+  '09-01':'Labor Day',
+  '10-13':'Columbus Day',
+  '11-11':'Veterans Day',
+  '11-27':'Thanksgiving',
+  '12-25':'Christmas Day',
+  '01-26':'Republic Day (India)',
+  '08-15':'Independence Day (India)',
+  '10-02':'Gandhi Jayanti',
+  '04-14':'Dr. Ambedkar Jayanti',
+  '04-18':'Good Friday',
+  '05-01':'Labour Day (India)',
+}
+
+function getNext5BusinessDays(){
+  const days=[]
+  const d=new Date()
+  d.setDate(d.getDate()+1) // start from tomorrow
+  while(days.length<5){
+    const dow=d.getDay()
+    const mm=String(d.getMonth()+1).padStart(2,'0')
+    const dd=String(d.getDate()).padStart(2,'0')
+    const key=mm+'-'+dd
+    if(dow!==0 && dow!==6){
+      days.push({
+        date:new Date(d),
+        holiday:holidays[key]||null
+      })
+    }
+    d.setDate(d.getDate()+1)
+  }
+  return days
+}
+
+function renderBizDays(){
+  const container=document.getElementById('bizDays')
+  const days=getNext5BusinessDays()
+  const dayNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+  const monthNames=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+  container.innerHTML=''
+  days.forEach((item,i)=>{
+    const el=document.createElement('div')
+    el.className='biz-day'+(item.holiday?' holiday':'')
+    el.innerHTML=`
+      <span class="biz-day-name">${dayNames[item.date.getDay()]}</span>
+      <span class="biz-day-date">${item.date.getDate()} ${monthNames[item.date.getMonth()]}</span>
+      ${item.holiday?`<span class="biz-day-tag">🏖 ${item.holiday}</span>`:''}
+    `
+    if(!item.holiday){
+      el.addEventListener('click',()=>{
+        el.classList.toggle('selected')
+      })
+    }
+    container.appendChild(el)
+  })
+}
+
+renderBizDays()
+
+
+const year   = new Date().getFullYear()
+const num    = String(Math.floor(Math.random()*90000)+10000)
+const caseId = 'CIT-' + year + '-' + num
+document.getElementById('caseId').textContent = caseId
+
+// Copy — works on local files too
+function copyCase(){
+  try{
+    navigator.clipboard.writeText(caseId)
+  } catch(e){
+    const el = document.createElement('textarea')
+    el.value = caseId
+    document.body.appendChild(el)
+    el.select()
+    document.execCommand('copy')
+    document.body.removeChild(el)
+  }
+  const t = document.getElementById('toast')
+  t.classList.add('show')
+  setTimeout(()=>t.classList.remove('show'), 2200)
+}
+</script>
+</body>
+</html>
