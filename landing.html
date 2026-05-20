@@ -1,235 +1,1055 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>ConnectIT — The IT Talent Marketplace</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ConnectIT — Local Talent Bridge</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',system-ui,sans-serif;background:#0f0f0e;color:#fff;min-height:100vh}
-a{text-decoration:none;color:inherit}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,sans-serif;background:#fff;color:#111;line-height:1.6}
 
-/* ── NAV ── */
-nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:60px;border-bottom:1px solid #1c1c1b;position:sticky;top:0;background:#0f0f0e;z-index:100}
-.logo{font-size:18px;font-weight:800;letter-spacing:-0.5px}.logo span{color:#3d3d3a}
-.nav-links{display:flex;gap:28px}.nav-links a{font-size:13px;color:#666;font-weight:500;transition:color .15s}.nav-links a:hover{color:#fff}
-.nav-cta{display:flex;gap:10px;align-items:center}
-.btn-ghost{background:transparent;color:#aaa;border:1.5px solid #2a2a29;padding:7px 18px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
-.btn-ghost:hover{border-color:#555;color:#fff}
-.btn-white{background:#fff;color:#111;border:none;padding:8px 20px;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}
-.btn-white:hover{background:#e5e5e5}
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:60px;border-bottom:1px solid #e5e5e5;background:#fff;position:sticky;top:0;z-index:200}
+.logo{font-size:20px;font-weight:800;color:#111;letter-spacing:-0.5px;text-decoration:none}
+.logo span{color:#555}
+.nav-links{display:flex;gap:0}
+.nav-links a{font-size:13px;color:#666;text-decoration:none;padding:0 16px;height:60px;display:flex;align-items:center;border-bottom:2px solid transparent;transition:all .2s}
+.nav-links a:hover,.nav-links a.active{color:#111;border-bottom-color:#111}
+.nav-r{display:flex;gap:10px}
+.btn-ghost{background:#fff;color:#111;border:1.5px solid #ddd;padding:7px 18px;border-radius:6px;font-size:13px;cursor:pointer;font-weight:500;transition:all .2s}
+.btn-ghost:hover{border-color:#111}
+.btn-solid{background:#111;color:#fff;border:none;padding:8px 20px;border-radius:6px;font-size:13px;cursor:pointer;font-weight:600}
+.btn-solid:hover{background:#333}
 
-/* ── HERO ── */
-.hero{text-align:center;padding:100px 24px 80px;max-width:780px;margin:0 auto}
-.hero-badge{display:inline-flex;align-items:center;gap:7px;background:#1a1a19;border:1px solid #2a2a29;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;color:#888;margin-bottom:28px}
-.hero-badge span{width:6px;height:6px;border-radius:50%;background:#16a34a;display:inline-block;animation:pulse 2s infinite}
-h1{font-size:56px;font-weight:800;line-height:1.1;letter-spacing:-2px;margin-bottom:22px;color:#fff}
-h1 em{font-style:normal;color:#4ade80}
-.hero-sub{font-size:17px;color:#666;line-height:1.7;max-width:520px;margin:0 auto 42px}
-.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.btn-green{background:#16a34a;color:#fff;border:none;padding:13px 28px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}
-.btn-green:hover{background:#15803d}
-.btn-outline-white{background:transparent;color:#fff;border:1.5px solid #2a2a29;padding:12px 26px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
-.btn-outline-white:hover{border-color:#666}
+/* HERO */
+.hero{position:relative;overflow:hidden;background:#111;padding:88px 48px 0;text-align:center;min-height:580px}
 
-/* ── STATS ── */
-.stats{display:flex;justify-content:center;gap:60px;padding:32px 0;border-top:1px solid #1c1c1b;border-bottom:1px solid #1c1c1b;margin:0 48px}
-.stat-num{font-size:28px;font-weight:800;color:#fff;letter-spacing:-1px}
-.stat-label{font-size:12px;color:#555;font-weight:500;margin-top:2px}
+/* Grid overlay */
 
-/* ── ROLE CARDS ── */
-.roles-section{padding:80px 48px}
-.section-label{font-size:11px;font-weight:700;letter-spacing:3px;color:#555;text-transform:uppercase;text-align:center;margin-bottom:12px}
-.section-title{font-size:30px;font-weight:800;text-align:center;letter-spacing:-0.8px;margin-bottom:48px}
-.roles-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1100px;margin:0 auto}
-.role-card{background:#141413;border:1.5px solid #1c1c1b;border-radius:12px;padding:28px 24px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
-.role-card:hover{border-color:#333;transform:translateY(-3px)}
-.role-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .2s;border-radius:11px}
-.role-card.vendor::before{background:linear-gradient(135deg,#0d2a1a 0%,transparent 60%)}
-.role-card.recruiter::before{background:linear-gradient(135deg,#0d1a2e 0%,transparent 60%)}
-.role-card.student::before{background:linear-gradient(135deg,#1c1408 0%,transparent 60%)}
-.role-card.admin::before{background:linear-gradient(135deg,#1c0d0d 0%,transparent 60%)}
-.role-card:hover::before{opacity:1}
-.role-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:20px}
-.role-card.vendor .role-icon{background:#0d2a1a}
-.role-card.recruiter .role-icon{background:#0d1a2e}
-.role-card.student .role-icon{background:#1c1408}
-.role-card.admin .role-icon{background:#1c0d0d}
-.role-name{font-size:16px;font-weight:800;margin-bottom:8px;letter-spacing:-0.3px}
-.role-desc{font-size:12px;color:#555;line-height:1.6;margin-bottom:22px}
-.role-perks{display:flex;flex-direction:column;gap:5px;margin-bottom:24px}
-.role-perk{font-size:11px;color:#444;display:flex;align-items:center;gap:6px}
-.role-perk::before{content:'✓';color:#16a34a;font-weight:800;flex-shrink:0}
-.role-btn{width:100%;padding:10px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;border:none;transition:all .15s}
-.role-card.vendor   .role-btn{background:#16a34a;color:#fff}
-.role-card.vendor   .role-btn:hover{background:#15803d}
-.role-card.recruiter .role-btn{background:#1a6bff;color:#fff}
-.role-card.recruiter .role-btn:hover{background:#1557d6}
-.role-card.student  .role-btn{background:#d97706;color:#fff}
-.role-card.student  .role-btn:hover{background:#b45309}
-.role-card.admin    .role-btn{background:#dc2626;color:#fff}
-.role-card.admin    .role-btn:hover{background:#b91c1c}
 
-/* ── HOW IT WORKS ── */
-.how-section{padding:80px 48px;border-top:1px solid #1c1c1b;max-width:1000px;margin:0 auto}
-.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
-.how-card{background:#141413;border:1.5px solid #1c1c1b;border-radius:12px;padding:28px}
-.how-num{font-size:11px;font-weight:800;color:#333;letter-spacing:2px;margin-bottom:14px}
-.how-title{font-size:15px;font-weight:700;margin-bottom:8px}
-.how-desc{font-size:12px;color:#555;line-height:1.7}
+/* Glow orbs */
+.hero-glow1{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.06) 0%,transparent 65%);top:-220px;left:-150px;pointer-events:none;z-index:0}
+.hero-glow2{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.04) 0%,transparent 65%);top:-120px;right:-120px;pointer-events:none;z-index:0}
 
-/* ── FOOTER ── */
-footer{border-top:1px solid #1c1c1b;padding:32px 48px;display:flex;align-items:center;justify-content:space-between}
-.footer-logo{font-size:15px;font-weight:800}.footer-logo span{color:#3d3d3a}
-.footer-links{display:flex;gap:24px}.footer-links a{font-size:12px;color:#444;transition:color .15s}.footer-links a:hover{color:#fff}
-.footer-copy{font-size:11px;color:#333}
+/* USA MAP */
+.hero-map{position:absolute;inset:0;z-index:1;pointer-events:none;display:flex;align-items:center;justify-content:center}
+.hero-map svg{width:100%;height:100%}
 
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+/* City pulse animations */
+@keyframes cityPulse{0%,100%{r:10;opacity:.25}50%{r:18;opacity:.08}}
+@keyframes connDash{from{stroke-dashoffset:200}to{stroke-dashoffset:0}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* Hero text content */
+.hero-content{position:relative;z-index:2}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#ccc;font-size:11px;font-weight:600;padding:5px 14px;border-radius:20px;margin-bottom:24px;letter-spacing:1px}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:blink 2s ease-in-out infinite}
+.hero h1{font-size:56px;font-weight:800;color:#fff;letter-spacing:-2.5px;line-height:1.08;margin-bottom:20px}
+.hero h1 em{color:#ccc;font-style:normal}
+.hero-sub{font-size:17px;color:#666;max-width:520px;margin:0 auto 44px;line-height:1.8}
+
+/* SEARCH */
+.search-wrap{max-width:660px;margin:0 auto}
+.search-box{display:flex;align-items:center;background:#fff;border-radius:10px;overflow:hidden;border:1px solid #e5e5e5}
+.s-icon{padding:0 14px 0 18px;display:flex;align-items:center;flex-shrink:0}
+.s-in{flex:1;border:none;outline:none;font-size:15px;font-weight:500;color:#111;background:transparent;padding:14px 0}
+.s-in::placeholder{color:#bbb;font-weight:400}
+.s-sep{width:1px;height:26px;background:#e5e5e5;flex-shrink:0}
+.s-sel{border:none;outline:none;font-size:13px;color:#111;font-weight:600;padding:0 14px;background:transparent;cursor:pointer;flex-shrink:0}
+.s-btn{background:#111;color:#fff;border:none;padding:14px 26px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.s-btn:hover{background:#333}
+.pop-row{display:flex;align-items:center;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px;padding-bottom:4px}
+.pop-lbl{font-size:12px;color:#555;font-weight:500}
+.pop-city{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#aaa;font-size:12px;font-weight:600;padding:5px 14px;border-radius:6px;cursor:pointer;text-decoration:none;transition:all .2s}
+.pop-city:hover{background:rgba(255,255,255,.16);color:#fff}
+
+/* 3D FLOATING CARDS */
+.cards-3d{position:relative;z-index:2;padding:0 48px;margin-top:48px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;transform:perspective(1000px) rotateX(8deg);transform-origin:top center}
+.fc{background:#fff;border-radius:12px;padding:20px;border:1px solid #e5e5e5;box-shadow:0 12px 40px rgba(0,0,0,.3),0 2px 8px rgba(0,0,0,.15);transition:transform .25s}
+.fc:hover{transform:translateY(-4px)}
+.fc-live{display:inline-flex;align-items:center;gap:5px;font-size:10px;color:#16a34a;font-weight:700;background:#f0fdf4;border:1px solid #bbf7d0;padding:2px 8px;border-radius:20px;margin-bottom:10px}
+.fc-live-dot{width:5px;height:5px;border-radius:50%;background:#4ade80;animation:blink 2s ease-in-out infinite}
+.fc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.fc-city{font-size:14px;font-weight:700;color:#111}
+.fc-cnt{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:#f5f5f5;color:#111;border:1px solid #e5e5e5}
+.fc-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
+.fc-tag{font-size:11px;padding:3px 8px;border-radius:4px;background:#f5f5f5;color:#444;border:1px solid #eee}
+.fc-bot{display:flex;align-items:center;justify-content:space-between}
+.fc-avs{display:flex}
+.fc-av{width:24px;height:24px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;margin-left:-6px;background:#e5e5e5;color:#555}
+.fc-av:first-child{margin-left:0}
+.fc-more{font-size:11px;color:#aaa;margin-left:6px}
+.fc-link{font-size:12px;color:#111;font-weight:700;text-decoration:none}
+.fc-link:hover{text-decoration:underline}
+
+/* TICKER */
+.ticker{background:#1a1a1a;padding:10px 0;overflow:hidden;white-space:nowrap}
+.ticker-track{display:inline-flex;gap:48px;animation:tick 30s linear infinite}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.t-item{font-size:13px;color:#888;font-weight:600;display:inline-flex;align-items:center;gap:8px;letter-spacing:0.2px}
+.t-dot{width:4px;height:4px;border-radius:50%;background:#4ade80;flex-shrink:0}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid #e5e5e5}
+.stat{padding:28px 20px;text-align:center;border-right:1px solid #e5e5e5}
+.stat:last-child{border-right:none}
+.stat-n{font-size:30px;font-weight:800;color:#111;letter-spacing:-1px}
+.stat-l{font-size:11px;color:#aaa;letter-spacing:1.5px;margin-top:4px;font-weight:600}
+
+/* SECTION */
+.section{padding:72px 48px}
+.section.gray{background:#f8f8f8;border-top:1px solid #e5e5e5;border-bottom:1px solid #e5e5e5}
+.sec-label{font-size:11px;font-weight:700;letter-spacing:3px;color:#aaa;margin-bottom:10px}
+.sec-h{font-size:32px;font-weight:800;color:#111;letter-spacing:-1px;margin-bottom:10px}
+.sec-sub{font-size:15px;color:#777;line-height:1.75;margin-bottom:36px;max-width:580px}
+.sec-sub.center{text-align:center;margin-left:auto;margin-right:auto}
+.center-text{text-align:center}
+
+/* WHO GRID */
+.who-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.who-card{border:1.5px solid #e5e5e5;border-radius:12px;padding:28px;transition:all .2s;cursor:pointer}
+.who-card:hover{border-color:#111;box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.wi{width:40px;height:40px;border-radius:10px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.who-title{font-size:15px;font-weight:700;color:#111;margin-bottom:8px}
+.who-desc{font-size:13px;color:#666;line-height:1.7;margin-bottom:14px}
+.who-link{font-size:13px;font-weight:700;color:#111;cursor:pointer}
+
+/* MODULE ROWS */
+.mod-wrap{border-top:1px solid #e5e5e5}
+.mod-row{display:grid;grid-template-columns:280px 1fr;border-bottom:1px solid #e5e5e5}
+.mod-sidebar{padding:48px 40px;border-right:1px solid #e5e5e5;background:#fafafa}
+.mod-num{font-size:11px;font-weight:700;letter-spacing:3px;color:#ccc;margin-bottom:8px}
+.mod-title{font-size:24px;font-weight:800;color:#111;letter-spacing:-0.5px;margin-bottom:10px}
+.mod-short{font-size:13px;color:#777;line-height:1.7}
+.mod-icon{width:48px;height:48px;border-radius:12px;background:#111;display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+.mod-content{padding:48px}
+
+/* FEAT CARDS */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.feat-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px}
+.feat-card{border:1px solid #e5e5e5;border-radius:10px;padding:20px;background:#fff}
+.feat-card:hover{border-color:#aaa}
+.fc2-title{font-size:13px;font-weight:700;color:#111;margin-bottom:6px}
+.fc2-desc{font-size:12px;color:#666;line-height:1.65}
+
+/* FIELD LISTS */
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:20px}
+.f-group-title{font-size:11px;font-weight:700;letter-spacing:2px;color:#aaa;margin-bottom:12px}
+.f-list{list-style:none}
+.f-list li{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:13px;color:#333}
+.f-list li:last-child{border-bottom:none}
+.f-dot{width:6px;height:6px;border-radius:50%;background:#111;flex-shrink:0;margin-top:5px}
+.f-sub{font-size:11px;color:#aaa;margin-top:2px}
+
+/* FILTER */
+.filter-box{background:#f5f5f5;border:1px solid #e5e5e5;border-radius:10px;padding:20px;margin-bottom:20px}
+.filter-tags{display:flex;gap:8px;flex-wrap:wrap}
+.ftag{background:#fff;border:1px solid #ddd;padding:5px 12px;border-radius:6px;font-size:12px;font-weight:500;color:#333;display:flex;align-items:center;gap:6px}
+.ftag-d{width:5px;height:5px;border-radius:50%;background:#111}
+
+/* PAGE CARDS */
+.pages-flow{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.page-card{border:1px solid #e5e5e5;border-radius:10px;overflow:hidden}
+.page-hdr{background:#111;padding:14px 20px;display:flex;align-items:center;gap:12px}
+.page-num-badge{width:26px;height:26px;border-radius:50%;border:1.5px solid rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+.page-htitle{font-size:13px;font-weight:700;color:#fff}
+.page-body{padding:20px}
+.page-body p{font-size:13px;color:#555;line-height:1.65;margin-bottom:14px}
+.page-list{list-style:none}
+.page-list li{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:#333;padding:7px 0;border-bottom:1px solid #f0f0f0}
+.page-list li:last-child{border-bottom:none}
+.p-check{width:16px;height:16px;border-radius:50%;background:#111;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+
+/* INFO / WARN */
+.warn-box{background:#fffbf0;border:1px solid #e5d88a;border-radius:8px;padding:12px 16px;margin-top:14px;display:flex;align-items:flex-start;gap:8px;font-size:12px;color:#6b5500;line-height:1.6}
+.info-box{background:#f5f5f5;border:1px solid #e5e5e5;border-radius:8px;padding:12px 16px;margin-top:14px;font-size:12px;color:#444;line-height:1.6}
+.info-box strong{color:#111}
+
+/* BUY / SELL */
+.bs-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.bs-card{border:1px solid #e5e5e5;border-radius:10px;overflow:hidden}
+.bs-hdr{padding:14px 20px;border-bottom:1px solid #e5e5e5;display:flex;align-items:center;gap:10px}
+.bs-badge{font-size:10px;font-weight:800;letter-spacing:2px;padding:3px 10px;border-radius:4px}
+.bs-sell{background:#111;color:#fff}
+.bs-buy{background:#f5f5f5;color:#111;border:1px solid #ddd}
+.bs-title{font-size:13px;font-weight:700;color:#111}
+.bs-body{padding:20px}
+.bs-body p{font-size:13px;color:#555;line-height:1.65;margin-bottom:12px}
+.bs-list{list-style:none}
+.bs-list li{display:flex;gap:8px;font-size:12px;color:#444;padding:5px 0;border-bottom:1px solid #f5f5f5}
+.bs-list li:last-child{border-bottom:none}
+
+/* PART TIME */
+.pt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+.pt-card{border:1.5px solid #e5e5e5;border-radius:10px;padding:22px}
+.pt-card.dark{background:#111;border-color:#111}
+.pt-card.dark .fc2-title{color:#fff}
+.pt-card.dark .fc2-desc{color:#999}
+.pt-card.dark .f-list li{color:#bbb;border-bottom-color:#333}
+.pt-card.dark .f-dot{background:#fff}
+.pt-eligibility{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 10px;border-radius:4px;margin-top:10px;background:rgba(255,255,255,.1);color:#aaa;border:1px solid rgba(255,255,255,.15)}
+
+/* TRAINING */
+.train-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.train-card{border:1px solid #e5e5e5;border-radius:10px;padding:22px}
+.train-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:2px;padding:3px 10px;border-radius:4px;background:#111;color:#fff;margin-bottom:14px}
+.train-title{font-size:14px;font-weight:700;color:#111;margin-bottom:8px}
+.train-desc{font-size:13px;color:#666;line-height:1.65;margin-bottom:14px}
+
+/* BRIDGE */
+.bridge{padding:72px 48px;background:#111;color:#fff}
+.bridge-inner{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:center;max-width:800px;margin:48px auto 0}
+.b-side{text-align:center;padding:28px 22px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px}
+.b-icon{width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.b-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:6px}
+.b-desc{font-size:12px;color:#666;line-height:1.6}
+.b-list{list-style:none;margin-top:12px;text-align:left}
+.b-list li{font-size:12px;color:#888;padding:3px 0;display:flex;align-items:center;gap:6px}
+.b-mid{padding:0 24px;text-align:center}
+.b-logo{width:64px;height:64px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#111;margin:0 auto 8px}
+.b-lbl{font-size:11px;color:#666;font-weight:600;letter-spacing:1px}
+.b-arr{font-size:20px;color:#444;display:block;margin:8px 0}
+
+/* DOC STRIP */
+.doc-strip{background:#1a1a1a;padding:44px 48px}
+.doc-inner{display:flex;align-items:center;justify-content:space-between;max-width:900px;margin:0 auto;gap:28px;flex-wrap:wrap}
+.doc-inner h3{font-size:20px;font-weight:700;color:#fff;flex:1;min-width:200px;line-height:1.4}
+.doc-inner h3 span{color:#aaa}
+.doc-pills{display:flex;gap:10px;flex-wrap:wrap}
+.d-pill{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:8px 16px;border-radius:8px}
+.d-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.d-txt{font-size:12px;color:rgba(255,255,255,.75);font-weight:500}
+
+/* SUMMARY TABLE */
+.summary{padding:72px 48px;background:#f8f8f8;border-top:1px solid #e5e5e5}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5}
+thead{background:#111}
+thead th{padding:13px 16px;font-size:11px;font-weight:700;color:#fff;letter-spacing:1px;text-align:left}
+tbody td{padding:13px 16px;font-size:13px;color:#333;border-bottom:1px solid #f0f0f0;vertical-align:top}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:#fafafa}
+.pill{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;margin:2px}
+.pill-d{background:#111;color:#fff}
+.pill-l{background:#f0f0f0;color:#555;border:1px solid #ddd}
+
+/* CTA */
+.cta{padding:88px 48px;text-align:center;border-top:1px solid #e5e5e5}
+.cta h2{font-size:40px;font-weight:800;color:#111;letter-spacing:-1.5px;margin-bottom:14px}
+.cta h2 em{font-style:normal;color:#555}
+.cta p{font-size:16px;color:#777;margin-bottom:36px;max-width:460px;margin-left:auto;margin-right:auto;line-height:1.75}
+.cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cta-a{background:#111;color:#fff;border:none;padding:14px 32px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}
+.cta-a:hover{background:#333}
+.cta-b{background:#fff;color:#111;border:1.5px solid #ddd;padding:14px 32px;border-radius:8px;font-size:14px;cursor:pointer;font-weight:500}
+.cta-b:hover{border-color:#111}
+
+/* FOOTER */
+.footer{padding:32px 48px;border-top:1px solid #e5e5e5;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.foot-logo{font-size:16px;font-weight:800;color:#111}
+.foot-logo span{color:#aaa}
+.foot-links{display:flex;gap:24px;font-size:12px}
+.foot-links a{color:#aaa;text-decoration:none}
+.foot-links a:hover{color:#111}
+.foot-copy{font-size:12px;color:#ccc}
+
+/* RESPONSIVE */
 @media(max-width:900px){
-  .roles-grid{grid-template-columns:repeat(2,1fr)}
-  h1{font-size:38px}
-  .stats{gap:32px;margin:0 24px}
-  .how-grid{grid-template-columns:1fr}
-}
-@media(max-width:600px){
-  .roles-grid{grid-template-columns:1fr}
-  nav{padding:0 20px}
-  .nav-links{display:none}
+  .nav{padding:0 20px}.nav-links{display:none}
+  .hero{padding:56px 20px 0}
+  .hero h1{font-size:36px}
+  .cards-3d{grid-template-columns:1fr;padding:0 20px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .section{padding:48px 20px}
+  .who-grid,.feat-grid,.feat-grid-2,.field-grid,.pages-flow,.bs-grid,.pt-grid,.train-grid{grid-template-columns:1fr}
+  .mod-row{grid-template-columns:1fr}
+  .mod-sidebar{border-right:none;border-bottom:1px solid #e5e5e5;padding:32px 20px}
+  .mod-content{padding:32px 20px}
+  .bridge{padding:48px 20px}
+  .bridge-inner{grid-template-columns:1fr;gap:16px}
+  .b-mid{display:flex;align-items:center;gap:16px;padding:0}
+  .b-arr{margin:0}
+  .doc-strip{padding:32px 20px}
+  .summary{padding:48px 20px}
+  table{display:block;overflow-x:auto}
+  .cta{padding:56px 20px}
+  .footer{padding:24px 20px;flex-direction:column;align-items:flex-start;gap:16px}
 }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav>
-  <div class="logo">Connect<span>IT</span></div>
+<nav class="nav">
+  <a class="logo" href="#">Connect<span>IT</span></a>
   <div class="nav-links">
-    <a href="student-jobs.html">Browse Jobs</a>
-    <a href="vendor-register.html">For Companies</a>
-    <a href="#">Certifications</a>
-    <a href="#">Training</a>
+    <a href="#home" class="active">Home</a>
+    <a href="#vendors">Vendors</a>
+    <a href="#students">Students</a>
+    <a href="#training">Training</a>
+    <a href="#certification">Certification</a>
+    <a href="#parttime">Part Time</a>
   </div>
-  <div class="nav-cta">
-    <button class="btn-ghost" onclick="location.href='login.html'">Sign in</button>
-    <button class="btn-white" onclick="location.href='student-register.html'">Get started free</button>
+  <div class="nav-r">
+    <button class="btn-ghost">Sign in</button>
+    <button class="btn-solid">Get started</button>
   </div>
 </nav>
 
 <!-- HERO -->
+<section id="home">
 <div class="hero">
-  <div class="hero-badge"><span></span>Now live — IT Talent Marketplace</div>
-  <h1>Connect IT talent<br/>with <em>real opportunity</em></h1>
-  <p class="hero-sub">ConnectIT bridges companies, recruiters, and students — verified identities, smart location matching, and real job pipelines all in one place.</p>
-  <div class="hero-actions">
-    <button class="btn-green" onclick="location.href='student-register.html'">Join as a student →</button>
-    <button class="btn-outline-white" onclick="location.href='vendor-register.html'">Register your company</button>
-    <button class="btn-ghost" onclick="location.href='login.html'">Sign in</button>
+  
+  <div class="hero-glow1"></div>
+  <div class="hero-glow2"></div>
+
+  <!-- USA MAP BACKGROUND — D3 + TopoJSON accurate all 50 states -->
+  <div class="hero-map">
+    <svg id="usa-map" viewBox="0 0 960 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+      <g id="states-layer" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="0.7" stroke-linejoin="round"></g>
+      <g id="borders-layer" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="0.4"></g>
+      <g id="cities-layer"></g>
+    </svg>
+  </div>
+
+    <!-- HERO CONTENT -->
+  <div class="hero-content">
+    <div class="hero-badge"><div class="live-dot"></div>Live talent near your city — right now</div>
+    <h1>Local <em>talent</em>.<br>Your city. Your stack.</h1>
+    <p class="hero-sub">ConnectIT is the bridge — we connect verified tech professionals and students with vendors near them. No job posts. Just real local connections.</p>
+
+    <div class="search-wrap">
+      <div class="search-box">
+        <div class="s-icon">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="8" r="4.5" stroke="#aaa" stroke-width="1.5"/><circle cx="9" cy="8" r="1.8" fill="#aaa"/><line x1="9" y1="12.5" x2="9" y2="17" stroke="#aaa" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <input class="s-in" id="cityIn" placeholder="Enter your city — New York, Chicago, Dallas..."/>
+        <div class="s-sep"></div>
+        <select class="s-sel" id="stackSel">
+          <option value="">All stacks</option>
+          <option>DevOps / Cloud</option>
+          <option>QA Automation</option>
+          <option>Full Stack</option>
+          <option>Data / ML</option>
+          <option>Cybersecurity</option>
+          <option>Platform Engineering</option>
+        </select>
+        <button class="s-btn" onclick="doSearch()">Find local talent →</button>
+      </div>
+    </div>
+
+    <div class="pop-row">
+      <span class="pop-lbl">Quick:</span>
+      <a class="pop-city" href="#" onclick="setCity('New York');return false">New York</a>
+      <a class="pop-city" href="#" onclick="setCity('New Jersey');return false">New Jersey</a>
+      <a class="pop-city" href="#" onclick="setCity('Chicago');return false">Chicago</a>
+      <a class="pop-city" href="#" onclick="setCity('Dallas');return false">Dallas</a>
+      <a class="pop-city" href="#" onclick="setCity('San Jose');return false">San Jose</a>
+      <a class="pop-city" href="#" onclick="setCity('Atlanta');return false">Atlanta</a>
+      <a class="pop-city" href="#" onclick="setCity('Houston');return false">Houston</a>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker" style="padding:12px 0">
+  <div class="ticker-track">
+    <span class="t-item"><span class="t-dot"></span>Java Developer</span>
+    <span class="t-item"><span class="t-dot"></span>Cloud Developer</span>
+    <span class="t-item"><span class="t-dot"></span>DevOps Engineer</span>
+    <span class="t-item"><span class="t-dot"></span>.NET Developer</span>
+    <span class="t-item"><span class="t-dot"></span>Salesforce Developer</span>
+    <span class="t-item"><span class="t-dot"></span>Microsoft 365 Developer</span>
+    <span class="t-item"><span class="t-dot"></span>Network Engineer</span>
+    <span class="t-item"><span class="t-dot"></span>QA Automation Engineer</span>
+    <span class="t-item"><span class="t-dot"></span>SDET</span>
+    <span class="t-item"><span class="t-dot"></span>SAP Consultant</span>
+    <span class="t-item"><span class="t-dot"></span>Java Developer</span>
+    <span class="t-item"><span class="t-dot"></span>Cloud Developer</span>
+    <span class="t-item"><span class="t-dot"></span>DevOps Engineer</span>
+    <span class="t-item"><span class="t-dot"></span>.NET Developer</span>
+    <span class="t-item"><span class="t-dot"></span>Salesforce Developer</span>
+    <span class="t-item"><span class="t-dot"></span>Microsoft 365 Developer</span>
+    <span class="t-item"><span class="t-dot"></span>Network Engineer</span>
+    <span class="t-item"><span class="t-dot"></span>QA Automation Engineer</span>
+    <span class="t-item"><span class="t-dot"></span>SDET</span>
+    <span class="t-item"><span class="t-dot"></span>SAP Consultant</span>
   </div>
 </div>
+
+
 
 <!-- STATS -->
-<div class="stats">
-  <div><div class="stat-num">2,400+</div><div class="stat-label">Verified students</div></div>
-  <div><div class="stat-num">340+</div><div class="stat-label">Active companies</div></div>
-  <div><div class="stat-num">1,800+</div><div class="stat-label">Jobs posted</div></div>
-  <div><div class="stat-num">94%</div><div class="stat-label">Placement rate</div></div>
-</div>
-
-<!-- ROLE CARDS -->
-<div class="roles-section">
-  <div class="section-label">Who is ConnectIT for?</div>
-  <div class="section-title">Pick your role and get started</div>
-  <div class="roles-grid">
-
-    <div class="role-card vendor" onclick="location.href='vendor-register.html'">
-      <div class="role-icon">🏢</div>
-      <div class="role-name">Vendor / Company</div>
-      <div class="role-desc">Register your company and hire verified IT talent across all visa types and contract structures.</div>
-      <div class="role-perks">
-        <div class="role-perk">Company EIN verification</div>
-        <div class="role-perk">Manage recruiter team</div>
-        <div class="role-perk">View all applicants</div>
-        <div class="role-perk">Filter by visa & contract</div>
-      </div>
-      <button class="role-btn">Register company →</button>
+<div style="background:#fff;border-bottom:1px solid #e5e5e5;padding:36px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px">
+  <div style="flex:1;min-width:200px">
+    <div style="font-size:32px;font-weight:800;color:#111;letter-spacing:-1px;margin-bottom:4px">48 States</div>
+    <div style="font-size:14px;color:#777;line-height:1.6">We cover talent across <strong style="color:#111">48 US states</strong> — wherever you are, ConnectIT finds work near you</div>
+  </div>
+  <div style="width:1px;height:52px;background:#e5e5e5;flex-shrink:0"></div>
+  <div style="flex:2;min-width:280px">
+    <div style="font-size:13px;font-weight:700;letter-spacing:2px;color:#aaa;margin-bottom:10px">ALL TECH STACKS COVERED</div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap">
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">Java</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">Cloud / AWS</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">Azure</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">GCP</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">DevOps</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">.NET</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">Salesforce</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">Microsoft 365</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">Network Eng</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">QA Automation</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">SDET</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">SAP</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">Kubernetes</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">Terraform</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">Python</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">React</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">Node.js</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">Dynatrace</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">Datadog</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">Splunk</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">Docker</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">Jenkins</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">Kafka</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">Snowflake</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">ServiceNow</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">GitHub Actions</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">Ansible</span>
+      <span style="font-size:11px;font-weight:600;background:#f5f5f5;border:1px solid #e5e5e5;color:#333;padding:4px 11px;border-radius:5px">OpenShift</span>
     </div>
-
-    <div class="role-card recruiter" onclick="location.href='login.html?role=recruiter'">
-      <div class="role-icon">🔍</div>
-      <div class="role-name">Recruiter</div>
-      <div class="role-desc">Post jobs, find students near your job location, and manage your full applicant pipeline.</div>
-      <div class="role-perks">
-        <div class="role-perk">Nearby student search</div>
-        <div class="role-perk">Radius & filter tools</div>
-        <div class="role-perk">Post & manage jobs</div>
-        <div class="role-perk">Invite-only access</div>
-      </div>
-      <button class="role-btn">Sign in as recruiter →</button>
-    </div>
-
-    <div class="role-card student" onclick="location.href='student-register.html'">
-      <div class="role-icon">🎓</div>
-      <div class="role-name">Student</div>
-      <div class="role-desc">Build your verified profile, browse real IT jobs, and apply with a single click.</div>
-      <div class="role-perks">
-        <div class="role-perk">DL-verified identity</div>
-        <div class="role-perk">Upload resume & skills</div>
-        <div class="role-perk">Browse & filter jobs</div>
-        <div class="role-perk">GC/Citizen part-time jobs</div>
-      </div>
-      <button class="role-btn">Create student profile →</button>
-    </div>
-
-    <div class="role-card admin" onclick="location.href='login.html?role=admin'">
-      <div class="role-icon">🛡️</div>
-      <div class="role-name">ConnectIT Admin</div>
-      <div class="role-desc">Internal team panel — review vendor applications, approve or reject by Case ID.</div>
-      <div class="role-perks">
-        <div class="role-perk">Approve vendor accounts</div>
-        <div class="role-perk">Search by Case ID</div>
-        <div class="role-perk">Assign team members</div>
-        <div class="role-perk">Platform oversight</div>
-      </div>
-      <button class="role-btn">Admin sign in →</button>
-    </div>
-
+  </div>
+  <div style="width:1px;height:52px;background:#e5e5e5;flex-shrink:0"></div>
+  <div style="flex:1;min-width:200px">
+    <div style="font-size:32px;font-weight:800;color:#111;letter-spacing:-1px;margin-bottom:4px">Local First</div>
+    <div style="font-size:14px;color:#777;line-height:1.6">No relocation. No compromise. <strong style="color:#111">Your city, your career</strong> — family, school and neighbours stay put</div>
+  </div>
+  <div style="width:1px;height:52px;background:#e5e5e5;flex-shrink:0"></div>
+  <div style="flex:1;min-width:200px">
+    <div style="font-size:32px;font-weight:800;color:#111;letter-spacing:-1px;margin-bottom:4px">Verified</div>
+    <div style="font-size:14px;color:#777;line-height:1.6">Every profile is <strong style="color:#111">identity verified</strong> — real people, real skills, zero fake accounts on the platform</div>
   </div>
 </div>
 
-<!-- HOW IT WORKS -->
-<div class="how-section">
-  <div class="section-label" style="text-align:left">How it works</div>
-  <div class="section-title" style="text-align:left">From signup to hired in 3 steps</div>
-  <div class="how-grid">
-    <div class="how-card">
-      <div class="how-num">STEP 01</div>
-      <div class="how-title">Verify your identity</div>
-      <div class="how-desc">Students verify with a driver's license tied to their primary address. Vendors verify with their company EIN or tax ID. No fake accounts, no ghost candidates.</div>
+<!-- WHO WE SERVE -->
+<div class="section">
+  <div class="sec-label">WHO WE SERVE</div>
+  <div class="sec-h">One bridge. Five modules.</div>
+  <div class="sec-sub">ConnectIT connects vendors, professionals, and students — verified, local, and direct. No job boards. No recruiters. Just the right connection.</div>
+  <div class="who-grid">
+    <div class="who-card" onclick="document.getElementById('vendors').scrollIntoView({behavior:'smooth'})">
+      <div class="wi"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="3" width="16" height="14" rx="3" stroke="#111" stroke-width="1.5"/><line x1="6" y1="8" x2="14" y2="8" stroke="#111" stroke-width="1.2" stroke-linecap="round"/><line x1="6" y1="11" x2="11" y2="11" stroke="#111" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+      <div class="who-title">Vendors &amp; companies</div>
+      <div class="who-desc">Register with your EIN, post your requirements, filter verified local talent by city, stack, work auth, and contract type.</div>
+      <div class="who-link">Learn more →</div>
     </div>
-    <div class="how-card">
-      <div class="how-num">STEP 02</div>
-      <div class="how-title">Match by location & skills</div>
-      <div class="how-desc">Recruiters search for students within a custom radius of each job posting — filter by visa, contract type, tech stack, designation, and work mode all at once.</div>
+    <div class="who-card" onclick="document.getElementById('students').scrollIntoView({behavior:'smooth'})">
+      <div class="wi"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3.5" stroke="#111" stroke-width="1.5"/><path d="M3 18c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="#111" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="who-title">Students &amp; professionals</div>
+      <div class="who-desc">Register with a real phone, verify with your Driver's License, and get discovered by vendors in your city who need your exact stack.</div>
+      <div class="who-link">Learn more →</div>
     </div>
-    <div class="how-card">
-      <div class="how-num">STEP 03</div>
-      <div class="how-title">Apply and get hired</div>
-      <div class="how-desc">Students apply directly from the job detail page. Recruiters review, shortlist, and reach out — the full pipeline from discovery to offer in one place.</div>
+    <div class="who-card" onclick="document.getElementById('parttime').scrollIntoView({behavior:'smooth'})">
+      <div class="wi"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="#111" stroke-width="1.5"/><line x1="10" y1="6" x2="10" y2="10" stroke="#111" stroke-width="1.5" stroke-linecap="round"/><line x1="10" y1="10" x2="13" y2="13" stroke="#111" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="who-title">Part time &amp; 1099 / W2</div>
+      <div class="who-desc">GC holders and US Citizens can take on project-based part-time work — 1099 or W2 only. Verified and structured.</div>
+      <div class="who-link">Learn more →</div>
     </div>
+  </div>
+</div>
+
+<!-- MODULE SECTIONS -->
+<div class="mod-wrap">
+
+  <!-- 01 VENDORS -->
+  <div id="vendors" style="border-bottom:1px solid #e5e5e5">
+
+    <!-- VENDOR HERO BANNER -->
+    <div style="background:#111;padding:72px 48px;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center">
+      <div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:3px;color:#555;margin-bottom:14px">MODULE 01 — VENDORS</div>
+        <h2 style="font-size:40px;font-weight:800;color:#fff;letter-spacing:-1.5px;line-height:1.1;margin-bottom:18px">Hire local talent,<br>at your fingertips.</h2>
+        <p style="font-size:16px;color:#666;line-height:1.8;margin-bottom:28px">Stop spending weeks searching job boards. ConnectIT puts pre-verified, stack-matched professionals from your city in front of you in seconds — one click to connect, zero middlemen.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:32px">
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#aaa">
+            <div style="width:6px;height:6px;border-radius:50%;background:#4ade80"></div>
+            Post your requirement
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#aaa">
+            <div style="width:6px;height:6px;border-radius:50%;background:#4ade80"></div>
+            Filter by city &amp; stack
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#aaa">
+            <div style="width:6px;height:6px;border-radius:50%;background:#4ade80"></div>
+            Connect directly
+          </div>
+        </div>
+        <button style="background:#fff;color:#111;border:none;padding:13px 28px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer">Register as vendor →</button>
+      </div>
+
+      <!-- MOCK CANDIDATE CARD UI -->
+      <div style="position:relative">
+        <!-- Search bar mock -->
+        <div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:14px 18px;margin-bottom:12px;display:flex;align-items:center;gap:12px">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4" stroke="#555" stroke-width="1.5"/><line x1="10.5" y1="10.5" x2="14" y2="14" stroke="#555" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span style="font-size:13px;color:#555;flex:1">DevOps Engineer · New York, NY</span>
+          <span style="font-size:11px;font-weight:600;background:#222;color:#777;padding:3px 10px;border-radius:4px;border:1px solid #333">H1B · GC · Citizen</span>
+        </div>
+
+        <!-- Candidate card 1 -->
+        <div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:18px;margin-bottom:10px;display:flex;align-items:center;gap:14px">
+          <div style="width:40px;height:40px;border-radius:50%;background:#2a2a2a;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#888;flex-shrink:0">SK</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:600;color:#ddd;margin-bottom:4px">Sai K. — DevOps Engineer</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <span style="font-size:10px;background:#222;color:#777;padding:2px 8px;border-radius:4px;border:1px solid #333">AWS</span>
+              <span style="font-size:10px;background:#222;color:#777;padding:2px 8px;border-radius:4px;border:1px solid #333">Terraform</span>
+              <span style="font-size:10px;background:#222;color:#777;padding:2px 8px;border-radius:4px;border:1px solid #333">Kubernetes</span>
+              <span style="font-size:10px;background:#222;color:#777;padding:2px 8px;border-radius:4px;border:1px solid #333">8 yrs</span>
+            </div>
+          </div>
+          <div style="font-size:11px;color:#4ade80;font-weight:600;background:rgba(74,222,128,0.08);padding:4px 10px;border-radius:6px;border:1px solid rgba(74,222,128,0.15);white-space:nowrap">Connect →</div>
+        </div>
+
+        <!-- Candidate card 2 -->
+        <div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:18px;margin-bottom:10px;display:flex;align-items:center;gap:14px">
+          <div style="width:40px;height:40px;border-radius:50%;background:#2a2a2a;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#888;flex-shrink:0">MR</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:600;color:#ddd;margin-bottom:4px">Maya R. — Cloud Architect</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <span style="font-size:10px;background:#222;color:#777;padding:2px 8px;border-radius:4px;border:1px solid #333">Azure</span>
+              <span style="font-size:10px;background:#222;color:#777;padding:2px 8px;border-radius:4px;border:1px solid #333">GitHub Actions</span>
+              <span style="font-size:10px;background:#222;color:#777;padding:2px 8px;border-radius:4px;border:1px solid #333">10 yrs</span>
+            </div>
+          </div>
+          <div style="font-size:11px;color:#4ade80;font-weight:600;background:rgba(74,222,128,0.08);padding:4px 10px;border-radius:6px;border:1px solid rgba(74,222,128,0.15);white-space:nowrap">Connect →</div>
+        </div>
+
+        <!-- Candidate card 3 faded -->
+        <div style="background:#1a1a1a;border:1px solid #222;border-radius:12px;padding:18px;display:flex;align-items:center;gap:14px;opacity:0.45">
+          <div style="width:40px;height:40px;border-radius:50%;background:#222;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#555;flex-shrink:0">AK</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:600;color:#777;margin-bottom:4px">Arjun K. — Platform Engineer</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <span style="font-size:10px;background:#1a1a1a;color:#555;padding:2px 8px;border-radius:4px;border:1px solid #2a2a2a">Jenkins</span>
+              <span style="font-size:10px;background:#1a1a1a;color:#555;padding:2px 8px;border-radius:4px;border:1px solid #2a2a2a">OpenShift</span>
+              <span style="font-size:10px;background:#1a1a1a;color:#555;padding:2px 8px;border-radius:4px;border:1px solid #2a2a2a">6 yrs</span>
+            </div>
+          </div>
+          <div style="font-size:11px;color:#555;padding:4px 10px;white-space:nowrap">Connect →</div>
+        </div>
+
+        <!-- Result count badge -->
+        <div style="position:absolute;top:-12px;right:-12px;background:#fff;color:#111;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;border:1px solid #e5e5e5;white-space:nowrap">340 available nearby</div>
+      </div>
+    </div>
+
+    <!-- HOW IT WORKS FOR VENDORS - 3 STEPS -->
+    <div style="padding:56px 48px;background:#fff;border-top:1px solid #e5e5e5">
+      <div style="font-size:11px;font-weight:700;letter-spacing:3px;color:#aaa;margin-bottom:10px">HOW IT WORKS FOR YOU</div>
+      <div style="font-size:24px;font-weight:800;color:#111;letter-spacing:-0.5px;margin-bottom:36px">From requirement to connection — in 3 steps</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid #e5e5e5;border-radius:12px;overflow:hidden">
+
+        <!-- Step 1 -->
+        <div style="padding:32px;border-right:1px solid #e5e5e5">
+          <div style="width:36px;height:36px;border-radius:8px;background:#111;display:flex;align-items:center;justify-content:center;margin-bottom:20px">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="3" width="14" height="12" rx="2" stroke="#fff" stroke-width="1.4"/><line x1="5" y1="7" x2="13" y2="7" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/><line x1="5" y1="10" x2="10" y2="10" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#aaa;margin-bottom:8px">STEP 01</div>
+          <div style="font-size:16px;font-weight:700;color:#111;margin-bottom:10px">Register your company</div>
+          <div style="font-size:13px;color:#666;line-height:1.7">Sign up with your Federal EIN or Tax ID. Takes 2 minutes. One registration per verified business — no duplicates.</div>
+        </div>
+
+        <!-- Step 2 -->
+        <div style="padding:32px;border-right:1px solid #e5e5e5;background:#fafafa">
+          <div style="width:36px;height:36px;border-radius:8px;background:#111;display:flex;align-items:center;justify-content:center;margin-bottom:20px">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6" stroke="#fff" stroke-width="1.4"/><line x1="6" y1="9" x2="12" y2="9" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/><line x1="9" y1="6" x2="9" y2="12" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#aaa;margin-bottom:8px">STEP 02</div>
+          <div style="font-size:16px;font-weight:700;color:#111;margin-bottom:10px">Set your filters</div>
+          <div style="font-size:13px;color:#666;line-height:1.7">Tell us your city, tech stack, work auth, contract type, and experience level. ConnectIT instantly surfaces only the candidates who match.</div>
+          <!-- mini filter chips -->
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:14px">
+            <span style="font-size:10px;background:#fff;border:1px solid #ddd;padding:3px 9px;border-radius:4px;color:#444">City</span>
+            <span style="font-size:10px;background:#fff;border:1px solid #ddd;padding:3px 9px;border-radius:4px;color:#444">Stack</span>
+            <span style="font-size:10px;background:#fff;border:1px solid #ddd;padding:3px 9px;border-radius:4px;color:#444">Work auth</span>
+            <span style="font-size:10px;background:#fff;border:1px solid #ddd;padding:3px 9px;border-radius:4px;color:#444">Contract</span>
+            <span style="font-size:10px;background:#fff;border:1px solid #ddd;padding:3px 9px;border-radius:4px;color:#444">Experience</span>
+            <span style="font-size:10px;background:#fff;border:1px solid #ddd;padding:3px 9px;border-radius:4px;color:#444">Onsite / Hybrid</span>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div style="padding:32px">
+          <div style="width:36px;height:36px;border-radius:8px;background:#111;display:flex;align-items:center;justify-content:center;margin-bottom:20px">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 15l4-4m0 0l2-6 6-2-2 6-6 2z" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#aaa;margin-bottom:8px">STEP 03</div>
+          <div style="font-size:16px;font-weight:700;color:#111;margin-bottom:10px">Connect in one click</div>
+          <div style="font-size:13px;color:#666;line-height:1.7">See verified profiles — name, stack, work auth, years of experience, location, and availability. Click connect and start the conversation directly.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TRUST STRIP -->
+    <div style="padding:28px 48px;background:#f8f8f8;border-top:1px solid #e5e5e5;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
+      <div style="font-size:13px;font-weight:600;color:#111">Every candidate on ConnectIT is identity-verified before you ever see their profile.</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <span style="font-size:11px;background:#fff;border:1px solid #ddd;padding:5px 12px;border-radius:6px;color:#444;font-weight:500">Driver's License verified</span>
+        <span style="font-size:11px;background:#fff;border:1px solid #ddd;padding:5px 12px;border-radius:6px;color:#444;font-weight:500">H1B / Green Card confirmed</span>
+        <span style="font-size:11px;background:#fff;border:1px solid #ddd;padding:5px 12px;border-radius:6px;color:#444;font-weight:500">No fake profiles</span>
+        <span style="font-size:11px;background:#111;color:#fff;padding:5px 12px;border-radius:6px;font-weight:600">Powered by Persona</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 02 STUDENTS & PROFESSIONALS -->
+  <div id="students" style="border-bottom:1px solid #e5e5e5">
+
+    <!-- HERO BANNER -->
+    <div style="background:#fff;padding:72px 48px 0;border-top:1px solid #e5e5e5">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;padding-bottom:64px;border-bottom:1px solid #f0f0f0">
+
+        <!-- LEFT: messaging -->
+        <div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:3px;color:#aaa;margin-bottom:14px">MODULE 02 — STUDENTS &amp; PROFESSIONALS</div>
+          <h2 style="font-size:40px;font-weight:800;color:#111;letter-spacing:-1.5px;line-height:1.1;margin-bottom:20px">Your next opportunity<br>is already nearby.</h2>
+          <p style="font-size:16px;color:#555;line-height:1.85;margin-bottom:28px">Why uproot your life for a new job? Your kids' school, your neighbourhood, your family — they matter. ConnectIT finds you work where you already are. Same city. Right stack. Zero relocation.</p>
+
+          <!-- 3 value props -->
+          <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:32px">
+            <div style="display:flex;align-items:flex-start;gap:14px">
+              <div style="width:36px;height:36px;border-radius:8px;background:#111;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="#fff" stroke-width="1.4"/><path d="M2 14c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></svg>
+              </div>
+              <div>
+                <div style="font-size:14px;font-weight:700;color:#111;margin-bottom:3px">Stay close to what matters</div>
+                <div style="font-size:13px;color:#777;line-height:1.6">Jobs matched to your city — keep your kids in the same school, stay near family, and build your career without starting over somewhere new.</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:14px">
+              <div style="width:36px;height:36px;border-radius:8px;background:#111;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="3" stroke="#fff" stroke-width="1.4"/><line x1="5" y1="8" x2="11" y2="8" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/><line x1="8" y1="5" x2="8" y2="11" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></svg>
+              </div>
+              <div>
+                <div style="font-size:14px;font-weight:700;color:#111;margin-bottom:3px">Your stack. Your terms.</div>
+                <div style="font-size:13px;color:#777;line-height:1.6">Set your tech stack, work auth, and contract preference once. ConnectIT surfaces only vendors in your area who match exactly what you offer.</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:14px">
+              <div style="width:36px;height:36px;border-radius:8px;background:#111;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L14 5v4c0 3-2.5 5.5-6 7C4.5 14.5 2 12 2 9V5l6-3z" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+              </div>
+              <div>
+                <div style="font-size:14px;font-weight:700;color:#111;margin-bottom:3px">Verified once. Trusted always.</div>
+                <div style="font-size:13px;color:#777;line-height:1.6">Complete one-time identity verification and your profile is trusted by every vendor on the platform — no repeated document uploads.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: visual card with neighbourhood feel -->
+        <div style="position:relative">
+          <!-- Location card -->
+          <div style="background:#111;border-radius:16px;padding:28px;color:#fff;margin-bottom:14px">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+              <div style="width:10px;height:10px;border-radius:50%;background:#4ade80"></div>
+              <span style="font-size:12px;color:#888;font-weight:600;letter-spacing:1px">YOUR LOCATION — BAYONNE, NJ</span>
+            </div>
+            <div style="font-size:22px;font-weight:700;margin-bottom:6px">3 vendors found nearby</div>
+            <div style="font-size:13px;color:#555;margin-bottom:20px">within 15 miles · DevOps · AWS · Terraform</div>
+            <!-- distance rings visual -->
+            <div style="position:relative;height:80px;display:flex;align-items:center;justify-content:center;margin-bottom:4px">
+              <div style="position:absolute;width:80px;height:80px;border-radius:50%;border:1px solid rgba(255,255,255,0.08)"></div>
+              <div style="position:absolute;width:56px;height:56px;border-radius:50%;border:1px solid rgba(255,255,255,0.12)"></div>
+              <div style="position:absolute;width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,0.18)"></div>
+              <div style="width:10px;height:10px;border-radius:50%;background:#fff;position:relative;z-index:1"></div>
+              <!-- vendor dots -->
+              <div style="position:absolute;width:8px;height:8px;border-radius:50%;background:#4ade80;top:8px;right:22px"></div>
+              <div style="position:absolute;width:8px;height:8px;border-radius:50%;background:#4ade80;bottom:10px;left:20px"></div>
+              <div style="position:absolute;width:8px;height:8px;border-radius:50%;background:#4ade80;top:18px;left:10px"></div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:8px;justify-content:center">
+              <span style="font-size:10px;color:#4ade80;font-weight:600">● 5 mi</span>
+              <span style="font-size:10px;color:#666">● 11 mi</span>
+              <span style="font-size:10px;color:#666">● 14 mi</span>
+            </div>
+          </div>
+
+          <!-- Tag strip -->
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <span style="font-size:11px;background:#f5f5f5;border:1px solid #e5e5e5;padding:5px 12px;border-radius:6px;color:#444;font-weight:500">No relocation</span>
+            <span style="font-size:11px;background:#f5f5f5;border:1px solid #e5e5e5;padding:5px 12px;border-radius:6px;color:#444;font-weight:500">Same city jobs</span>
+            <span style="font-size:11px;background:#f5f5f5;border:1px solid #e5e5e5;padding:5px 12px;border-radius:6px;color:#444;font-weight:500">Family first</span>
+            <span style="font-size:11px;background:#111;color:#fff;padding:5px 12px;border-radius:6px;font-weight:600">Career growth ↑</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- REGISTRATION FLOW -->
+    <div style="padding:56px 48px;background:#fafafa">
+      <div style="font-size:11px;font-weight:700;letter-spacing:3px;color:#aaa;margin-bottom:10px">HOW TO JOIN</div>
+      <div style="font-size:24px;font-weight:800;color:#111;letter-spacing:-0.5px;margin-bottom:32px">Two steps to get discovered</div>
+
+      <div class="pages-flow">
+        <div class="page-card">
+          <div class="page-hdr"><div class="page-num-badge">1</div><div class="page-htitle">Create your profile</div></div>
+          <div class="page-body">
+            <p>Build your profile with real contact details — students and professionals both register the same way. Everything is validated at entry.</p>
+            <ul class="page-list">
+              <li><div class="p-check"><svg width="8" height="8" viewBox="0 0 8 8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#fff" stroke-width="1.5"/></svg></div><div><strong>Email address</strong> — personal or university email</div></li>
+              <li><div class="p-check"><svg width="8" height="8" viewBox="0 0 8 8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#fff" stroke-width="1.5"/></svg></div><div><strong>Real US carrier phone only</strong> — no VoIP or Google Voice</div></li>
+              <li><div class="p-check"><svg width="8" height="8" viewBox="0 0 8 8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#fff" stroke-width="1.5"/></svg></div><div>Your city, tech stack, and years of experience</div></li>
+              <li><div class="p-check"><svg width="8" height="8" viewBox="0 0 8 8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#fff" stroke-width="1.5"/></svg></div><div>Work authorization status and contract preference</div></li>
+            </ul>
+            <div class="warn-box">⚠&nbsp;<div><strong>Not accepted:</strong> Google Voice, TextNow, TextFree, Burner, Hushed, or any VoIP number. Verified via carrier lookup API at signup.</div></div>
+          </div>
+        </div>
+        <div class="page-card">
+          <div class="page-hdr"><div class="page-num-badge">2</div><div class="page-htitle">Verify your identity</div></div>
+          <div class="page-body">
+            <p>One-time identity verification — done in under 2 minutes. After this, your profile is trusted by every vendor on the platform.</p>
+            <ul class="page-list">
+              <li><div class="p-check"><svg width="8" height="8" viewBox="0 0 8 8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#fff" stroke-width="1.5"/></svg></div><div><strong>Driver's License required</strong> — front and back upload</div></li>
+              <li><div class="p-check"><svg width="8" height="8" viewBox="0 0 8 8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#fff" stroke-width="1.5"/></svg></div><div><strong>Location must match</strong> — DL address matches your registered city</div></li>
+              <li><div class="p-check"><svg width="8" height="8" viewBox="0 0 8 8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#fff" stroke-width="1.5"/></svg></div><div>Live selfie check — confirms you match the document</div></li>
+              <li><div class="p-check"><svg width="8" height="8" viewBox="0 0 8 8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#fff" stroke-width="1.5"/></svg></div><div>No duplicate accounts — one person, one verified profile</div></li>
+            </ul>
+            <div class="info-box"><strong>Powered by Persona</strong> — Verified once, trusted forever. You will never be asked to re-upload documents.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 03 TRAINING -->
+  <div class="mod-row" id="training">
+    <div class="mod-sidebar">
+      <div class="mod-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3L21 8l-9 5-9-5 9-5z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/><path d="M6 11v5c0 2.21 2.686 4 6 4s6-1.79 6-4v-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <div class="mod-num">MODULE 03</div>
+      <div class="mod-title">Training</div>
+      <div class="mod-short">Structured tech training and real project-based learning — all verified by recognized third-party education organizations before going live.</div>
+    </div>
+    <div class="mod-content">
+      <div class="train-grid">
+        <div class="train-card">
+          <div class="train-badge">STRUCTURED TRAINING</div>
+          <div class="train-title">Tech skill training programs</div>
+          <div class="train-desc">Curated programs across top tech domains — every course vetted and certified by a recognized education partner before listing.</div>
+          <ul class="f-list">
+            <li><div class="f-dot"></div>DevOps, Cloud, and CI/CD training</li>
+            <li><div class="f-dot"></div>QA Automation — Selenium, Playwright, Cypress</li>
+            <li><div class="f-dot"></div>Data Engineering and ML fundamentals</li>
+            <li><div class="f-dot"></div>Full Stack development tracks</li>
+            <li><div class="f-dot"></div>Cybersecurity and compliance basics</li>
+          </ul>
+        </div>
+        <div class="train-card">
+          <div class="train-badge">PROJECT BASED</div>
+          <div class="train-title">Real project experience</div>
+          <div class="train-desc">Live project-based programs simulating real client work — verified by education partners, certificates added to your profile automatically.</div>
+          <ul class="f-list">
+            <li><div class="f-dot"></div>Real-world project simulations</li>
+            <li><div class="f-dot"></div>Mentor-guided team projects</li>
+            <li><div class="f-dot"></div>Completion certificate from verified org</li>
+            <li><div class="f-dot"></div>Projects added to student profile automatically</li>
+            <li><div class="f-dot"></div>Visible to vendors searching local talent</li>
+          </ul>
+        </div>
+      </div>
+      <div class="info-box"><strong>Third-party verified only:</strong> All training must be submitted by a registered education organization. Self-submitted or unverified content is not accepted.</div>
+    </div>
+  </div>
+
+  <!-- 04 CERTIFICATION -->
+  <div class="mod-row" id="certification">
+    <div class="mod-sidebar">
+      <div class="mod-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#fff" stroke-width="1.8"/><polyline points="9,12 11,14 15,10" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="mod-num">MODULE 04</div>
+      <div class="mod-title">Certification</div>
+      <div class="mod-short">A marketplace for certification coupons — sell unused vouchers or buy discounted ones, making certifications accessible for everyone.</div>
+    </div>
+    <div class="mod-content">
+      <div class="bs-grid">
+        <div class="bs-card">
+          <div class="bs-hdr"><span class="bs-badge bs-sell">SELL</span><div class="bs-title">Sell your certification coupons</div></div>
+          <div class="bs-body">
+            <p>Have unused discount codes for AWS, Azure, GCP, Kubernetes, Terraform, Dynatrace? List and sell them to other users on ConnectIT.</p>
+            <ul class="bs-list">
+              <li><div class="f-dot"></div>List coupon with certification name and discount value</li>
+              <li><div class="f-dot"></div>Set your own asking price</li>
+              <li><div class="f-dot"></div>Buyer pays securely through ConnectIT</li>
+              <li><div class="f-dot"></div>Coupon code released only after payment confirmed</li>
+              <li><div class="f-dot"></div>Seller rating builds trust over time</li>
+            </ul>
+            <div class="info-box" style="margin-top:12px"><strong>Supported:</strong> AWS, Azure, GCP, CKA/CKAD, Terraform, Dynatrace, CompTIA, Cisco, Splunk, and more.</div>
+          </div>
+        </div>
+        <div class="bs-card">
+          <div class="bs-hdr"><span class="bs-badge bs-buy">BUY</span><div class="bs-title">Buy discounted certification coupons</div></div>
+          <div class="bs-body">
+            <p>Certification too expensive? Browse discounted vouchers sold by verified users — same cert, lower price.</p>
+            <ul class="bs-list">
+              <li><div class="f-dot"></div>Browse coupons by certification name</li>
+              <li><div class="f-dot"></div>See discount percentage and asking price</li>
+              <li><div class="f-dot"></div>Check seller rating before buying</li>
+              <li><div class="f-dot"></div>Secure payment — code released after confirmed</li>
+              <li><div class="f-dot"></div>Report invalid codes within 24 hours</li>
+            </ul>
+            <div class="warn-box" style="margin-top:12px">⚠&nbsp;<div>ConnectIT verifies listings but does not guarantee coupon validity post-purchase. Test immediately and report within 24 hours.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 PART TIME -->
+  <div class="mod-row" id="parttime">
+    <div class="mod-sidebar">
+      <div class="mod-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#fff" stroke-width="1.8"/><line x1="12" y1="7" x2="12" y2="12" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><line x1="12" y1="12" x2="15" y2="15" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <div class="mod-num">MODULE 05</div>
+      <div class="mod-title">Part Time</div>
+      <div class="mod-short">Project-based part-time work exclusively for Green Card holders and US Citizens. Strictly 1099 or W2 only. No sponsorship. No C2C.</div>
+    </div>
+    <div class="mod-content">
+      <div class="pt-grid">
+        <div class="pt-card dark">
+          <div class="fc2-title">Who can participate</div>
+          <div class="fc2-desc" style="margin:8px 0">Part-time project work is restricted to Green Card holders and US Citizens only — enforced at verification before access is granted.</div>
+          <div class="pt-eligibility">GC &amp; Citizen only</div>
+        </div>
+        <div class="pt-card">
+          <div class="fc2-title">Allowed contract types</div>
+          <ul class="f-list" style="margin-top:8px">
+            <li><div class="f-dot"></div><div><div><strong>1099</strong> — Independent contractor</div><div class="f-sub">Self-employed, handles own taxes</div></div></li>
+            <li><div class="f-dot"></div><div><div><strong>W2</strong> — Through employer payroll</div><div class="f-sub">Taxes withheld by employer</div></div></li>
+          </ul>
+          <div class="info-box" style="margin-top:12px">No C2C, no corp-to-corp, no sponsorship arrangements in this section.</div>
+        </div>
+        <div class="pt-card">
+          <div class="fc2-title">Project-based only</div>
+          <ul class="f-list" style="margin-top:8px">
+            <li><div class="f-dot"></div>Fixed scope and timeline</li>
+            <li><div class="f-dot"></div>Defined deliverables</li>
+            <li><div class="f-dot"></div>Hourly or milestone billing</li>
+            <li><div class="f-dot"></div>Fully remote or hybrid</li>
+            <li><div class="f-dot"></div>Max 20–30 hours per week</li>
+          </ul>
+        </div>
+      </div>
+      <div class="warn-box"><span>⚠</span>&nbsp;<div><strong>Strict enforcement:</strong> Any user who misrepresents their work authorization to access part-time roles will be permanently banned. Work auth is verified against the Driver's License submitted during identity verification.</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- BRIDGE -->
+<div class="bridge">
+  <div class="center-text">
+    <div class="sec-label" style="color:#555">HOW CONNECTIT WORKS</div>
+    <div class="sec-h" style="color:#fff">We are the bridge — nothing more</div>
+    <div class="sec-sub center" style="color:#555;margin-bottom:0">No job posts. No recruiter fees. Just verified local connections between vendors who need talent and talent who is ready.</div>
+  </div>
+  <div class="bridge-inner">
+    <div class="b-side">
+      <div class="b-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="14" rx="3" stroke="#fff" stroke-width="1.5"/><line x1="7" y1="10" x2="15" y2="10" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/><line x1="7" y1="13" x2="12" y2="13" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+      <div class="b-title">Vendor / Company</div>
+      <div class="b-desc">Needs local talent with a specific stack</div>
+      <ul class="b-list"><li><span>→</span> Picks city + stack</li><li><span>→</span> Sees verified profiles</li><li><span>→</span> Connects directly</li></ul>
+    </div>
+    <div class="b-mid">
+      <span class="b-arr">→</span>
+      <div class="b-logo">Jr</div>
+      <div class="b-lbl">CONNECTIT</div>
+      <span class="b-arr">→</span>
+    </div>
+    <div class="b-side">
+      <div class="b-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke="#fff" stroke-width="1.5"/><path d="M4 20c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="b-title">Professional / Student</div>
+      <div class="b-desc">Verified, skilled, local, ready</div>
+      <ul class="b-list"><li><span>→</span> Builds profile + city</li><li><span>→</span> Verifies identity once</li><li><span>→</span> Gets discovered locally</li></ul>
+    </div>
+  </div>
+</div>
+
+<!-- DOC STRIP -->
+<div class="doc-strip">
+  <div class="doc-inner">
+    <h3>Every profile is <span>verified</span> —<br>no fakes, no duplicates</h3>
+    <div class="doc-pills">
+      <div class="d-pill"><div class="d-dot" style="background:#ccc"></div><span class="d-txt">Driver's License</span></div>
+      <div class="d-pill"><div class="d-dot" style="background:#aaa"></div><span class="d-txt">H1B Visa (I-797)</span></div>
+      <div class="d-pill"><div class="d-dot" style="background:#bbb"></div><span class="d-txt">Green Card</span></div>
+      <div class="d-pill"><div class="d-dot" style="background:#ddd"></div><span class="d-txt">Student ID</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div class="summary">
+  <div class="sec-label">FULL OVERVIEW</div>
+  <div class="sec-h">All five modules at a glance</div>
+  <table>
+    <thead>
+      <tr><th>Module</th><th>Who it's for</th><th>Key features</th><th>Verification</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Vendors</strong></td><td>Companies, staffing firms</td><td><span class="pill pill-d">EIN / Tax ID</span><span class="pill pill-l">Post requirements</span><span class="pill pill-l">Filter candidates</span></td><td>EIN or Tax ID required</td></tr>
+      <tr><td><strong>Students</strong></td><td>Students, fresh graduates</td><td><span class="pill pill-d">Real phone only</span><span class="pill pill-l">DL verification</span><span class="pill pill-l">Location match</span></td><td>Driver's License mandatory</td></tr>
+      <tr><td><strong>Training</strong></td><td>Students, professionals</td><td><span class="pill pill-d">Verified programs</span><span class="pill pill-l">Project-based</span><span class="pill pill-l">Certificates</span></td><td>Education org verified</td></tr>
+      <tr><td><strong>Certification</strong></td><td>All verified users</td><td><span class="pill pill-d">Sell coupons</span><span class="pill pill-l">Buy discounted</span><span class="pill pill-l">Secure transfer</span></td><td>Account verification</td></tr>
+      <tr><td><strong>Part Time</strong></td><td>GC holders &amp; US Citizens only</td><td><span class="pill pill-d">GC / Citizen only</span><span class="pill pill-l">1099 or W2</span><span class="pill pill-l">20–30 hrs/week</span></td><td>Work auth via DL</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <h2>Find local <em>talent</em> today</h2>
+  <p>Enter your city and stack — ConnectIT shows you verified professionals near you in seconds. No job posts. Just connections.</p>
+  <div class="cta-row">
+    <button class="cta-a" onclick="document.getElementById('home').scrollIntoView({behavior:'smooth'})">Search local talent →</button>
+    <button class="cta-b" onclick="document.getElementById('students').scrollIntoView({behavior:'smooth'})">List your profile</button>
   </div>
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-logo">Connect<span>IT</span></div>
-  <div class="footer-links">
-    <a href="student-jobs.html">Browse Jobs</a>
-    <a href="vendor-register.html">For Companies</a>
+<footer class="footer">
+  <div class="foot-logo">Connect<span>IT</span></div>
+  <div class="foot-links">
+    <a href="#home">Home</a>
+    <a href="#vendors">Vendors</a>
+    <a href="#students">Students</a>
+    <a href="#training">Training</a>
+    <a href="#certification">Certification</a>
+    <a href="#parttime">Part Time</a>
     <a href="#">Privacy</a>
     <a href="#">Terms</a>
   </div>
-  <div class="footer-copy">© 2025 ConnectIT. All rights reserved.</div>
+  <div class="foot-copy">© 2026 ConnectIT — Local talent bridge</div>
 </footer>
 
+<script>
+function setCity(c){document.getElementById('cityIn').value=c}
+function doSearch(){
+  var c=document.getElementById('cityIn').value.trim();
+  var s=document.getElementById('stackSel').value;
+  if(!c){document.getElementById('cityIn').focus();return}
+  alert('Searching '+(s||'all stacks')+' talent in '+c+'.\n\nThis will connect to your backend API.');
+}
+document.querySelectorAll('.nav-links a').forEach(function(a){
+  a.addEventListener('click',function(){
+    document.querySelectorAll('.nav-links a').forEach(function(x){x.classList.remove('active')});
+    this.classList.add('active');
+  });
+});
+window.addEventListener('scroll',function(){
+  var sections=['home','vendors','students','training','certification','parttime'];
+  var current='home';
+  sections.forEach(function(id){
+    var el=document.getElementById(id);
+    if(el&&window.scrollY>=el.offsetTop-80)current=id;
+  });
+  document.querySelectorAll('.nav-links a').forEach(function(a){
+    a.classList.toggle('active',a.getAttribute('href')==='#'+current);
+  });
+});
+
+// ── ACCURATE USA MAP via D3 + TopoJSON ──
+(function loadMap(){
+  var d3Script = document.createElement('script');
+  d3Script.src = 'https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js';
+  d3Script.onload = function(){
+    var topoScript = document.createElement('script');
+    topoScript.src = 'https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js';
+    topoScript.onload = function(){
+      fetch('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json')
+        .then(function(r){return r.json()})
+        .then(function(us){
+          var svg = d3.select('#usa-map');
+          var width = 960, height = 600;
+          var projection = d3.geoAlbersUsa()
+            .scale(900)
+            .translate([width/2, height/2]);
+          var path = d3.geoPath().projection(projection);
+          var states = topojson.feature(us, us.objects.states);
+
+          // Draw filled states (very dark fill so grid shows through)
+          d3.select('#states-layer')
+            .selectAll('path')
+            .data(states.features)
+            .join('path')
+            .attr('d', path)
+            .attr('fill', 'rgba(255,255,255,0.01)')
+            .attr('stroke', 'rgba(255,255,255,0.1)')
+            .attr('stroke-width', '0.5')
+            .attr('stroke-linejoin', 'round');
+
+          // Draw state borders (inner lines slightly lighter)
+          d3.select('#borders-layer')
+            .append('path')
+            .datum(topojson.mesh(us, us.objects.states, function(a,b){return a!==b}))
+            .attr('d', path)
+            .attr('fill', 'none')
+            .attr('stroke', 'rgba(255,255,255,0.07)')
+            .attr('stroke-width', '0.3');
+
+          // City data [name, lon, lat]
+          var cities = [
+            {name:'New York',    lon:-74.006, lat:40.713},
+            {name:'New Jersey',  lon:-74.406, lat:40.058},
+            {name:'Chicago',     lon:-87.629, lat:41.878},
+            {name:'San Jose',    lon:-121.886,lat:37.338},
+            {name:'Dallas',      lon:-96.797, lat:32.776},
+            {name:'Atlanta',     lon:-84.388, lat:33.749},
+            {name:'Houston',     lon:-95.370, lat:29.760},
+            {name:'Seattle',     lon:-122.332,lat:47.606},
+            {name:'Miami',       lon:-80.191, lat:25.774},
+            {name:'Boston',      lon:-71.058, lat:42.360},
+            {name:'Denver',      lon:-104.990,lat:39.739},
+            {name:'Phoenix',     lon:-112.074,lat:33.448},
+            {name:'Austin',      lon:-97.743, lat:30.267}
+          ];
+
+          var citiesG = d3.select('#cities-layer');
+
+
+
+          // Glow rings
+          cities.forEach(function(city){
+            var p = projection([city.lon, city.lat]);
+            if(!p) return;
+            citiesG.append('circle')
+              .attr('cx',p[0]).attr('cy',p[1])
+              .attr('r',18)
+              .attr('fill','none')
+              .attr('stroke','none');
+          });
+
+          // City dots
+          cities.forEach(function(city){
+            var p = projection([city.lon, city.lat]);
+            if(!p) return;
+            citiesG.append('circle')
+              .attr('cx',p[0]).attr('cy',p[1])
+              .attr('r',3)
+              .attr('fill','rgba(255,255,255,0.55)');
+          });
+
+
+        });
+    };
+    document.head.appendChild(topoScript);
+  };
+  document.head.appendChild(d3Script);
+})();
+</script>
 </body>
 </html>
