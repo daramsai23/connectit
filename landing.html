@@ -9,10 +9,36 @@
 html{scroll-behavior:smooth}
 body{font-family:system-ui,-apple-system,sans-serif;background:#fff;color:#111;line-height:1.6}
 
-/* NAV */
+/* ── ZIPHIRE ANIMATED LOGO ── */
+.zh-logo-wrap{position:relative;width:56px;height:56px;flex-shrink:0}
+.zh-hub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:22px;height:22px;background:#111;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;animation:zh-pulse 2s ease-in-out infinite}
+.zh-zip{font-size:5px;font-weight:800;color:#fff;line-height:1;letter-spacing:0}
+.zh-hire{font-size:5px;font-weight:800;color:#fff;line-height:1;letter-spacing:0}
+.zh-ring{position:absolute;top:50%;left:50%;border-radius:50%;border:1px dashed rgba(0,0,0,0.15);transform:translate(-50%,-50%);pointer-events:none}
+.zh-ring1{width:40px;height:40px}
+.zh-ring2{width:54px;height:54px;border-color:rgba(0,0,0,0.08)}
+.zh-node{position:absolute;width:12px;height:12px;background:#111;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:4px;font-weight:700;color:#fff;z-index:5;animation:zh-float 3s ease-in-out infinite}
+.zh-node::after{content:attr(data-label);position:absolute;font-size:4.5px;font-weight:700;color:#111;white-space:nowrap;top:-8px;left:50%;transform:translateX(-50%)}
+.zh-n1{top:2px;left:50%;transform:translateX(-50%);animation-delay:0s}
+.zh-n1::after{top:auto;bottom:-8px}
+.zh-n2{bottom:4px;right:4px;animation-delay:0.8s}
+.zh-n3{bottom:4px;left:4px;animation-delay:1.6s;background:#333;min-width:14px;width:auto;padding:0 3px;border-radius:6px;font-size:4px}
+.zh-line{position:absolute;top:50%;left:50%;height:1px;background:rgba(0,0,0,0.2);transform-origin:left center;z-index:1}
+.zh-l1{width:18px;transform:rotate(-90deg) translateY(-50%)}
+.zh-l2{width:16px;transform:rotate(50deg) translateY(-50%)}
+@keyframes zh-pulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.08)}}
+@keyframes zh-float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-2px)}}
+@keyframes zh-ping{0%{box-shadow:0 0 0 0 rgba(0,0,0,0.2)}100%{box-shadow:0 0 0 8px rgba(0,0,0,0)}}
+.zh-hub{animation:zh-pulse 2s ease-in-out infinite,zh-ping 2s ease-out infinite}
 .nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:60px;border-bottom:1px solid #e5e5e5;background:#fff;position:sticky;top:0;z-index:200}
-.logo{font-size:20px;font-weight:800;color:#111;letter-spacing:-0.5px;text-decoration:none}
-.logo span{color:#555}
+.logo{display:flex;align-items:center;gap:6px;text-decoration:none;cursor:pointer}
+.logo-mark{position:relative;display:flex;align-items:center}
+.logo-zip{font-size:21px;font-weight:800;color:#111;letter-spacing:-1px;line-height:1}
+.logo-hire{font-size:21px;font-weight:800;color:#111;letter-spacing:-1px;line-height:1;opacity:0.35}
+.logo-dot{width:6px;height:6px;background:#111;border-radius:50%;margin-left:1px;margin-bottom:10px;flex-shrink:0;animation:logo-blink 2.5s ease-in-out infinite}
+.logo-divider{width:1px;height:14px;background:#e5e5e5;flex-shrink:0}
+.logo-sub{font-size:8.5px;font-weight:600;color:#bbb;letter-spacing:1.8px;text-transform:uppercase;line-height:1}
+@keyframes logo-blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.7)}}
 .nav-links{display:flex;gap:0}
 .nav-links a{font-size:13px;color:#666;text-decoration:none;padding:0 16px;height:60px;display:flex;align-items:center;border-bottom:2px solid transparent;transition:all .2s}
 .nav-links a:hover,.nav-links a.active{color:#111;border-bottom-color:#111}
@@ -281,7 +307,13 @@ tbody tr:hover{background:#fafafa}
 
 <!-- NAV -->
 <nav class="nav">
-  <a class="logo" href="#">Connect<span>IT</span></a>
+  <a class="logo" href="#">
+    <div class="logo-mark">
+      <span class="logo-zip">Zip</span><span class="logo-hire">Hire</span><span class="logo-dot"></span>
+    </div>
+    <div class="logo-divider"></div>
+    <span class="logo-sub">Local IT Talent</span>
+  </a>
   <div class="nav-links">
     <a href="#home" class="active">Home</a>
     <a href="#vendors">Vendors</a>
@@ -1051,7 +1083,27 @@ window.addEventListener('scroll',function(){
   document.head.appendChild(d3Script);
 })();
 </script>
+<script>
+(function(){
+  const ROLES=['DevOps','Cloud','AWS','Azure','Java','Python','Data','ML/AI',
+    'Salesforce','SAP','Testing','Full Stack','React','Cyber','QA','DBA',
+    'Node.js','.NET','K8s','iOS','Android','Spark','Tableau','Snowflake']
+  let i=0
+  const el=document.getElementById('zh-role')
+  if(el){
+    el.style.transition='opacity 0.3s ease, transform 0.3s ease'
+    setInterval(()=>{
+      el.style.opacity='0'
+      el.style.transform='scale(0.7)'
+      setTimeout(()=>{
+        i=(i+1)%ROLES.length
+        el.textContent=ROLES[i]
+        el.style.opacity='1'
+        el.style.transform='scale(1)'
+      },300)
+    },2000)
+  }
+})()
+</script>
 </body>
 </html>
-test deploy
-test
