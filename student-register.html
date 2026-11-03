@@ -137,7 +137,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
         </div>
       </div>
       <div style="margin-top:16px;margin-bottom:6px">
-        <div class="check-row"><input type="checkbox" id="terms"/><label for="terms">I agree to ConnectIT's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label></div>
+        <div class="check-row"><input type="checkbox" id="terms" onchange="updateSubmit()"/><label for="terms">I agree to ConnectIT's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label></div>
         <div class="check-row"><input type="checkbox" id="alerts"/><label for="alerts">Send me job alerts and career tips</label></div>
       </div>
       <button class="submit-btn" id="submit-btn" onclick="handleRegister()">Continue to Education →</button>
